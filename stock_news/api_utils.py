@@ -65,11 +65,16 @@ def batch_download(
 
 def concanate_files(
     path: str = "./data/batch_download",
-    dest: str = "./data"
+    dest: str = "./data/concat_ds.csv"
 ) -> pd.DataFrame:
     files = sorted(glob.glob("{}/*.csv".format(path)))
-    df = pd.concat(map(pd.read_csv, files))
+    non_empty_files = [
+        f for f in files
+        if os.path.getsize(f) > 0
+    ]
+    print(
+        f"Percentage of non-empty files: {len(non_empty_files)}/{len(files)}")
+    df = pd.concat(map(pd.read_csv, non_empty_files))
     df.reset_index(drop=True, inplace=True)
-    df.to_csv(dest + "/ds.csv")
+    df.to_csv(dest)
     return df
-
