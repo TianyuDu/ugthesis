@@ -46,6 +46,9 @@ def batch_download(
     end: str,
     num_pages: int = 1,
 ):
+    """
+    num_pages: number of pages requested: total news = 50 * num_pages.
+    """
     key = get_key()
     os.system("pwd")
     if not os.path.exists("./data/batch_download"):
