@@ -1,1 +1,5 @@
 .vscode/settings.json
+stock_news/__pycache__/api_utils.cpython-37.pyc
+stock_news/batch_download.ipynb
+
+./data/
