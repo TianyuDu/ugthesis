@@ -77,4 +77,5 @@ def concanate_files(
     df = pd.concat(map(pd.read_csv, non_empty_files))
     df.reset_index(drop=True, inplace=True)
     df.to_csv(dest)
+    print(f"Total number of news: {len(df)}")
     return df
