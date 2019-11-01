@@ -12,7 +12,16 @@ from torch.nn import functional as F
 from torch.nn import init
 from torchsummary import summary
 
-import tqdm
+
+class OneHotCrossEntropyLoss(nn.Module.Loss._Loss):
+    """A modified version of CrossEntropyLoss taking one hot encoded target"""
+    def __init__(self, reduction="mean"):
+        super(OneHotCrossEntropyLoss, self).__init__()
+
+    def forward(self, pred_prob, target):
+        """pred_prob&target.shape = (N, K) K: num_classes"""
+        ce = - torch.mean(torch.log(predicted) * target)
+        return ce
 
 
 class BasicLSTM(nn.Module):
