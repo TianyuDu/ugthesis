@@ -98,23 +98,23 @@ class Optimization:
         for epoch in range(n_epochs):
             start_time = time.time()
             self.futures = []
-            current_epoch_accuracy = []
-            train_loss = 0
+            batch_train_losses = []
+            batch_accuracies = []
             for x_batch, y_batch, batch in self.generate_batch_data(x_train, y_train, batch_size):
                 y_pred = self.model(x_batch)
                 self.optimizer.zero_grad()
                 loss = self.loss_fn(y_pred, y_batch)
                 loss.backward()
                 self.optimizer.step()
-                train_loss += loss.item()
+                batch_train_losses.append(loss.item())
                 # Accuracy.
                 bin_y_pred = torch.argmax(y_pred, axis=1)
                 accuracy = torch.mean((bin_y_pred == y_batch).double())
-                current_epoch_accuracy.append(accuracy.item())
+                batch_accuracies.append(accuracy.item())
 #             self.scheduler.step()
-            train_loss /= batch
+            train_loss = np.mean(batch_train_losses)
             self.train_losses.append(train_loss)
-            accuracy = np.mean(current_epoch_accuracy)
+            accuracy = np.mean(batch_accuracies)
             self.train_accuracy.append(accuracy)
 
             self._validation(x_val, y_val, batch_size)
@@ -124,7 +124,7 @@ class Optimization:
                 print(
                     "Epoch {}, Train CE: {:.6f}, Train Acc: {:3f}. Val CE: {:.6f}, Val Acc: {:3f}. Elapsed time: {:.2f}s.".format(
                         epoch + 1,
-                        train_loss, self.train_accuracy[-1],
+                        self.train_losses[-1], self.train_accuracy[-1],
                         self.val_losses[-1], self.val_accuracy[-1],
                         elapsed
                     )
@@ -151,19 +151,20 @@ class Optimization:
         if x_val is None or y_val is None:
             return None
         with torch.no_grad():
-            val_loss = 0
-            batch_accuracy = []
+            # Metrics across batches.
+            batch_val_losses = []
+            batch_accuracies = []
             for x_batch, y_batch, batch in self.generate_batch_data(x_val, y_val, batch_size):
                 y_pred = self.model(x_batch)
                 loss = self.loss_fn(y_pred, y_batch)
-                val_loss += loss.item()
+                batch_val_losses.append(loss.item())
                 bin_y_pred = torch.argmax(y_pred, axis=1)
-                batch_accuracy.append(torch.mean(
+                batch_accuracies.append(torch.mean(
                     ((bin_y_pred) == y_batch).double()
                 ).item())
-            val_loss /= batch
+            val_loss = np.mean(batch_val_losses)
             self.val_losses.append(val_loss)
-            val_accuracy = np.mean(batch_accuracy)
+            val_accuracy = np.mean(batch_accuracies)
             self.val_accuracy.append(val_accuracy)
 
     def evaluate(self, x_test, y_test, batch_size, future=1):
