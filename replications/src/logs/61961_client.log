@@ -1,0 +1,5 @@
+2019-10-31 14:12:10,837 - utilities - INFO - Loading Stock [JPM]...
+2019-10-31 14:12:31,695 - root - ERROR - Invalid alias: The name clear can't be aliased because it is another magic command.
+2019-10-31 14:12:31,696 - root - ERROR - Invalid alias: The name more can't be aliased because it is another magic command.
+2019-10-31 14:12:31,697 - root - ERROR - Invalid alias: The name less can't be aliased because it is another magic command.
+2019-10-31 14:12:31,698 - root - ERROR - Invalid alias: The name man can't be aliased because it is another magic command.
