@@ -187,3 +187,9 @@ class Optimization:
         plt.plot(self.val_losses, label="Validation loss")
         plt.legend()
         plt.title("Losses")
+
+    def plot_accuracies(self):
+        plt.plot(self.train_accuracy, label="Training accuracy")
+        plt.plot(self.val_accuracy, label="Validation accuracy")
+        plt.legend()
+        plt.title("Accuracies")
