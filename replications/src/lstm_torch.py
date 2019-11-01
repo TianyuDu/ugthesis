@@ -1,5 +1,4 @@
 import random
-
 import time
 
 import matplotlib.pyplot as plt
@@ -12,6 +11,8 @@ from torch.nn import Parameter
 from torch.nn import functional as F
 from torch.nn import init
 from torchsummary import summary
+
+import tqdm
 
 
 class BasicLSTM(nn.Module):
@@ -65,11 +66,10 @@ class BasicLSTM(nn.Module):
 class Optimization:
     """ A helper class to train, test and diagnose the LSTM"""
 
-    def __init__(self, model, loss_fn, optimizer, scheduler):
+    def __init__(self, model, loss_fn, optimizer):
         self.model = model
         self.loss_fn = loss_fn
         self.optimizer = optimizer
-        self.scheduler = scheduler
         self.train_losses = []
         self.train_accuracy = []
         self.val_losses = []
@@ -81,8 +81,8 @@ class Optimization:
         if batch_size == -1:
             return x, y, 1
         for batch, i in enumerate(range(0, len(x) - batch_size, batch_size)):
-            x_batch = x[i : i + batch_size]
-            y_batch = y[i : i + batch_size]
+            x_batch = x[i: i + batch_size]
+            y_batch = y[i: i + batch_size]
             yield x_batch, y_batch, batch
 
     def train(
@@ -187,32 +187,3 @@ class Optimization:
         plt.plot(self.val_losses, label="Validation loss")
         plt.legend()
         plt.title("Losses")
-
-
-if __main__ == "__main__":
-    model = BasicLSTM(input_size=1, hidden_size=32, output_size=2)
-    loss_fn = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=1e-2)
-    # scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.1)
-    optimization = Optimization(model, loss_fn, optimizer, scheduler=None)
-    optimization.train(x_train, y_train, x_val, y_val, n_epochs=100, batch_size=32)
-
-    item = "JPM"
-    price_source = "quandl"
-    x_data, y_data = get_data(False, None, price_source, item)
-    x_train, x_test, y_train, y_test = train_test_split(
-        x_data, y_data, test_size=0.3, random_state=42)
-    x_train, x_val, y_train, y_val = train_test_split(
-        x_train, y_train, test_size=0.25, random_state=42)
-    # y_train, y_test = map(one_hot, (y_train, y_test))
-    x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
-    x_val = np.reshape(x_val, (x_val.shape[0], x_val.shape[1], 1))
-    x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
-
-    x_train = torch.from_numpy(x_train).float()
-    x_val = torch.from_numpy(x_val).float()
-    x_test = torch.from_numpy(x_test).float()
-
-    y_train = torch.from_numpy(y_train).long()
-    y_val = torch.from_numpy(y_val).long()
-    y_test = torch.from_numpy(y_test).long()
