@@ -63,6 +63,33 @@ class BasicLSTM(nn.Module):
         return final_output
 
 
+class StackedLSTM(nn.Module):
+    """
+    A simpler implementation using higher level api.
+    """
+    def __init__(self, input_size, hidden_size, output_size, num_layers, drop_out=0):
+        super(LSTMModel, self).__init__()
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.output_size = output_size
+
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, dropout=0.5)
+        self.linear = nn.Linear(hidden_size, output_dim)
+        self.softmax = nn.Softmax
+
+    def forward(self, x):
+        # h_0 of shape (num_layers * num_directions, batch, hidden_size)
+        # c_0 of shape (num_layers * num_directions, batch, hidden_size)
+        # Initial states
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size, requires_grad=True)
+        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size, requires_grad=True)
+
+        output, (hn, cn) = self.lstm(x, (h0, c0))
+        final_output = self.linear(output[:, -1, :])
+        pred_prob = self.softmax(final_output)
+        return pred_prob
+
+
 class Optimization:
     """ A helper class to train, test and diagnose the LSTM"""
 
@@ -78,6 +105,7 @@ class Optimization:
 
     @staticmethod
     def generate_batch_data(x, y, batch_size):
+        # TODO: replace this with DataLoader.
         if batch_size == -1:
             return x, y, 1
         for batch, i in enumerate(range(0, len(x) - batch_size, batch_size)):
