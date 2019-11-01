@@ -72,7 +72,8 @@ class StackedLSTM(nn.Module):
         self.input_size = input_size
         self.hidden_size = hidden_size
         self.output_size = output_size
-
+        # batch_first: the input and output tensors are provided as (batch, seq, feature)
+        # only change shapes of input and output tensors.
         self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, dropout=0.5)
         self.linear = nn.Linear(hidden_size, output_dim)
         self.softmax = nn.Softmax
