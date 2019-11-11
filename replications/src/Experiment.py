@@ -121,7 +121,7 @@ def processing(price_source, stock, load_articles, full_articles, processing_typ
 if __name__ == '__main__':
     item = 'JPM'
     price_source = 'quandl'
-    processing_type = 'SVM'
+    processing_type = 'Conv'
     sentiment_location = path.join(Constants.DATASETS_MARKET, 'Twitter/psenti.csv')
     # technical analysis
     processing(price_source, item, None, False, processing_type)
@@ -132,7 +132,3 @@ if __name__ == '__main__':
     processing(price_source, item, sentiment_location, False, processing_type)
     # technical analysis + Sentiment + Mood
     processing(price_source, item, sentiment_location, True, processing_type)
-
-
-
-

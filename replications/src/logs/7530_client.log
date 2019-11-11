@@ -16,3 +16,7 @@
 2019-10-31 20:56:36,079 - learning - INFO - {'C': 10, 'gamma': 1, 'kernel': 'rbf'}
 2019-10-31 20:56:36,080 - learning - INFO - Creating calibrated...
 2019-10-31 20:56:36,080 - learning - INFO - Training...
+2019-11-01 01:45:41,930 - root - ERROR - Invalid alias: The name clear can't be aliased because it is another magic command.
+2019-11-01 01:45:41,932 - root - ERROR - Invalid alias: The name more can't be aliased because it is another magic command.
+2019-11-01 01:45:41,933 - root - ERROR - Invalid alias: The name less can't be aliased because it is another magic command.
+2019-11-01 01:45:41,935 - root - ERROR - Invalid alias: The name man can't be aliased because it is another magic command.

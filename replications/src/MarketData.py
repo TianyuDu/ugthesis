@@ -18,6 +18,29 @@ class MarketData(object):
         self.df_additional = df_additional
         self.days = days
 
+    def get_binary_df(self, df, days=5, from_date='2014-04-01', to_date='2015-04-01'):
+        """Returns data frame instead"""
+        df = df.ix[from_date:to_date].copy()
+        df_full = pd.merge(
+            df, self.df.ix[from_date:to_date], left_index=True, right_index=True, how='outer')
+        df_full.to_csv('result.csv')
+        y_data_df = df['Direction'].copy()
+        # df.drop(labels=[HeaderFactory.Price], axis=1, inplace=True)
+        df.drop(labels=['Direction',
+                        'Open',
+                        'High',
+                        'Low',
+                        'Volume',
+                        'Close',
+                        ], axis=1, inplace=True, errors='ignore')
+
+        x_data = df.iloc[1:-days, :]
+        y_data = y_data_df.iloc[1:-days]
+        y_data = pd.DataFrame(y_data)
+        # df['y'] = y_data_df
+        # df.iloc[1:-days].to_csv('training.csv')
+        return x_data, y_data
+
     def get_binary_data(self, df, days=5, from_date='2014-04-01', to_date='2015-04-01'):
 
         df = df.ix[from_date:to_date].copy()
@@ -43,7 +66,9 @@ class MarketData(object):
     def get_stock_data(self):
         df = self.df.copy()
         # Percentage change
+        # HeaderFactory.Price == "Close"
         df['Pct'] = df[HeaderFactory.Price].pct_change()
+        # Create trends.
         df['Direction'] = np.where(df[HeaderFactory.Price].shift(-self.days) <= df[HeaderFactory.Price], 0, 1)
 
         # Moving Average

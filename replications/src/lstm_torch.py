@@ -13,14 +13,14 @@ from torch.nn import init
 from torchsummary import summary
 
 
-class OneHotCrossEntropyLoss(nn.Module.Loss._Loss):
+class OneHotCrossEntropyLoss(nn.Module):
     """A modified version of CrossEntropyLoss taking one hot encoded target"""
     def __init__(self, reduction="mean"):
         super(OneHotCrossEntropyLoss, self).__init__()
 
     def forward(self, pred_prob, target):
         """pred_prob&target.shape = (N, K) K: num_classes"""
-        ce = - torch.mean(torch.log(predicted) * target)
+        ce = - torch.mean(torch.log(pred_prob) * target)
         return ce
 
 
