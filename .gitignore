@@ -36,3 +36,5 @@ embedding/emb_data/glove.6B/6B.50.dat/__attrs__ 2
 embedding/emb_data/glove.6B/6B.50.dat/__attrs__
 embedding/emb_data/glove.6B.zip
 embedding/.ipynb_checkpoints/embedding_utils-checkpoint.ipynb
+embedding/emb_data/glove.6B/6B.50.dat/meta/sizes 3
+embedding/emb_data/glove.6B/6B.50.dat/meta/storage 3
