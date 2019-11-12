@@ -7,21 +7,9 @@ replications/src/__pycache__/
 */__pycache__/
 replications/src/__pycache__/Experiment.cpython-37.pyc
 embedding/lib_data/
-embedding/lib_data/glove.6B.zip
-embedding/lib_data/glove.6B/6B.50_idx.pkl
-embedding/lib_data/glove.6B/6B.50_words.pkl
-embedding/lib_data/glove.6B/glove.6B.50d.txt
-embedding/lib_data/glove.6B/glove.6B.100d.txt
-embedding/lib_data/glove.6B/glove.6B.200d.txt
-embedding/lib_data/glove.6B/glove.6B.300d.txt
-embedding/lib_data/glove.6B/6B.50.dat/__attrs__
-embedding/lib_data/glove.6B/6B.50.dat/__attrs__ 2
-embedding/lib_data/glove.6B/6B.50.dat/meta/sizes
-embedding/lib_data/glove.6B/6B.50.dat/meta/sizes 2
-embedding/lib_data/glove.6B/6B.50.dat/meta/storage
-embedding/lib_data/glove.6B/6B.50.dat/meta/storage 2
 embedding/.ipynb_checkpoints/embedding_utils-checkpoint.ipynb
 embedding/.ipynb_checkpoints/embedding_utils-checkpoint.ipynb
+embedding/emb_data/
 embedding/emb_data/glove.6B/glove.6B.50d.txt
 embedding/emb_data/glove.6B/glove.6B.300d.txt
 embedding/emb_data/glove.6B/glove.6B.200d.txt
@@ -38,3 +26,4 @@ embedding/emb_data/glove.6B.zip
 embedding/.ipynb_checkpoints/embedding_utils-checkpoint.ipynb
 embedding/emb_data/glove.6B/6B.50.dat/meta/sizes 3
 embedding/emb_data/glove.6B/6B.50.dat/meta/storage 3
+embedding/.ipynb_checkpoints/embedding_utils-checkpoint.ipynb
