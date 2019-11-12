@@ -4,6 +4,9 @@ import bcolz
 import pickle
 from tqdm import tqdm
 
+import torch
+import torch.nn as nn
+
 import sys
 sys.path.append("../")
 
@@ -58,6 +61,7 @@ def embedding2weights(glove, words):
             words_found += 1
         except KeyError:
             weights_matrix[i] = np.random.normal(scale=0.6, size=(50,))
+    return weights_matrix
 
 
 def create_weights(path: str = glove_path) -> np.ndarray:
@@ -67,18 +71,22 @@ def create_weights(path: str = glove_path) -> np.ndarray:
     return weights
 
 
-def create_emb_layer(weights_matrix, non_trainable=False):
+def create_emb_layer(
+    weights_matrix: np.ndarray,
+    non_trainable: bool = False
+):
     num_embeddings, embedding_dim = weights_matrix.shape
     emb_layer = nn.Embedding(num_embeddings, embedding_dim)
-    emb_layer.load_state_dict({'weight': weights_matrix})
+    # ==== Alternative Approach ====
+    emb_layer.weight = torch.nn.Parameter(torch.Tensor(weights_matrix))
     if non_trainable:
         emb_layer.weight.requires_grad = False
 
     return emb_layer, num_embeddings, embedding_dim
 
 
-# In[ ]:
-
-
-
-
+if __name__ == "__main__":
+    # Testing
+    glove, (vectors, words, word2idx) = load_embedding()
+    weights_matrix = #TODO
+    emb_layer, num_embeddings, embedding_dim = create_emb_layer()
