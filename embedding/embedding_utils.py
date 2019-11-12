@@ -86,7 +86,18 @@ def create_emb_layer(
 
 
 if __name__ == "__main__":
-    # Testing
+    # Testing code
     glove, (vectors, words, word2idx) = load_embedding()
-    weights_matrix = #TODO
-    emb_layer, num_embeddings, embedding_dim = create_emb_layer()
+    weights_matrix = create_weights()
+    emb_layer, num_embeddings, embedding_dim = create_emb_layer(weights_matrix)
+    src = np.random.randint(0, num_embeddings, 100)
+    inputs = torch.LongTensor(src)
+    emb_results = emb_layer(inputs)
+    assert np.all(np.array(emb_results.detach()).astype(np.float32) == weights_matrix[inputs].astype(np.float32))
+
+    def verify_word(word: str = "torch"):
+        idx = word2idx[word]
+        emb_out = np.array(emb_layer(torch.LongTensor([idx])).detach()).astype(np.float32)
+        raw_out = weights_matrix[idx, :].astype(np.float32)
+        return np.all(emb_out == raw_out)
+    verify_word("python")
