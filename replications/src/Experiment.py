@@ -70,7 +70,7 @@ def get_data(full_articles, sentiment_location, price_source, stock):
                                       source=source,
                                       sentiment_location=sentiment_location,
                                       full_articles=full_articles,
-                                      from_date='2011-04-01', to_date='2015-04-01')
+                                      from_date='2011-01-01', to_date='2015-04-01')
     scaler = preprocessing.StandardScaler()
     scaler.fit(x_data)
     x_data = scaler.transform(x_data)
@@ -119,16 +119,21 @@ def processing(price_source, stock, load_articles, full_articles, processing_typ
 
 
 if __name__ == '__main__':
+    print("======== Here We Go! ========\n\n\n")
     item = 'JPM'
     price_source = 'quandl'
-    processing_type = 'Conv'
-    sentiment_location = path.join(Constants.DATASETS_MARKET, 'Twitter/psenti.csv')
+    processing_type = 'SVM'
+    # sentiment_location = path.join(Constants.DATASETS_MARKET, 'Twitter/psenti.csv')
     # technical analysis
+    print("======== technical analysis ========")
     processing(price_source, item, None, False, processing_type)
     # technical analysis + Sentiment
+    print("======== technical analysis + Sentiment ========")
+    print("======== ++ All articles ========")
     sentiment_location = path.join(Constants.DATASETS_MARKET, 'FinArticles/psenti/all.results.csv')
     processing(price_source, item, sentiment_location, False, processing_type)
-    sentiment_location = path.join(Constants.DATASETS_MARKET, 'FinArticles/psenti/reddit.results.csv')
+    print("======== ++ Reddit articles ========")
+    # sentiment_location = path.join(Constants.DATASETS_MARKET, 'FinArticles/psenti/reddit.results.csv')
     processing(price_source, item, sentiment_location, False, processing_type)
-    # technical analysis + Sentiment + Mood
+    print("======== technical analysis + Sentiment + Mood ========")
     processing(price_source, item, sentiment_location, True, processing_type)

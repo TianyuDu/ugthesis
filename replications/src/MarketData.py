@@ -47,7 +47,7 @@ class MarketData(object):
         df_full = pd.merge(df, self.df.ix[from_date:to_date], left_index=True, right_index=True, how='outer')
         df_full.to_csv('result.csv')
         y_data_df = df['Direction'].copy()
-        # df.drop(labels=[HeaderFactory.Price], axis=1, inplace=True)
+        df.drop(labels=[HeaderFactory.Price], axis=1, inplace=True)
         df.drop(labels=['Direction',
                         'Open',
                         'High',

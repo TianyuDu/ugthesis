@@ -14,7 +14,9 @@ from PortfolioBasic.Technical.Indicators import RsiIndicator, MomentumIndicator,
 class DataLoader(object):
 
     def load_data(self, stock, days, sentiment_location=None, source=QuandlMarketDataSource(), full_articles=True,
-                  from_date='2011-04-01', to_date='2015-04-01'):
+                  from_date='2011-04-01', to_date='2015-04-01',
+                   return_type: str="numpy"
+            ):
         articles = None
         if sentiment_location is not None:
             articles = self.load_sentiment(sentiment_location, full_articles)
@@ -40,7 +42,12 @@ class DataLoader(object):
 
         market = MarketData(stock, price_df, days=days, ma=ma, indicator=indicators, df_additional=articles)
         price_df = market.get_stock_data()
-        return market.get_binary_data(price_df, days=days, from_date=from_date, to_date=to_date)
+        if return_type == "numpy":
+            return market.get_binary_data(price_df, days=days, from_date=from_date, to_date=to_date)
+        elif return_type == "dataframe":
+            return market.get_binary_df(price_df, days=days, from_date=from_date, to_date=to_date)
+        else:
+            return None
 
     def load_sentiment(self, location, full_articles=True):
         articles = pd.read_csv(location, na_values=["nan"])
