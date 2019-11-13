@@ -70,7 +70,7 @@ def get_data(full_articles, sentiment_location, price_source, stock):
                                       source=source,
                                       sentiment_location=sentiment_location,
                                       full_articles=full_articles,
-                                      from_date='2011-01-01', to_date='2015-04-01')
+                                      from_date='2011-04-01', to_date='2015-04-01')
     scaler = preprocessing.StandardScaler()
     scaler.fit(x_data)
     x_data = scaler.transform(x_data)
