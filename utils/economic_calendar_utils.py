@@ -8,6 +8,8 @@ sys.path.append("./")
 
 import CONSTANTS
 
+import tqdm
+
 """
 DATA desc
 column - Event date
@@ -59,8 +61,35 @@ def generate_economic_events(
     return df_merged
 
 
-def load_economic_events(file_dir: str = "./") -> pd.DataFrame:
+def construct_daily_vm(
+    file_dir: str = "./",
+    save_dir: str = None
+) -> pd.DataFrame:
+    # Convert volatility to numerical values.
     df = pd.read_csv(file_dir + DATASET_NAME)
+    df["Volatility"].value_counts()
+    df["VolatilityMeasure"] = 0
+    df["VolatilityMeasure"][df["Volatility"] == "Low Volatility Expected         "] = 1
+    df["VolatilityMeasure"][df["Volatility"] == "Moderate Volatility Expected    "] = 2
+    df["VolatilityMeasure"][df["Volatility"] == "High Volatility Expected        "] = 3
+    # Upsample to daily basis.
+    # Direct solution (robust implementation)
+    # days = list(set(df["EventDate"]))
+    # values = []
+    # for d in days:
+    #     mask = (df["EventDate"] == d)
+    #     values.append(
+    #         df[mask]["VolatilityMeasure"].sum()
+    #     )
+    # df2 = pd.DataFrame(np.array(values), index=[pd.to_datetime(d, format="%Y-%m-%d") for d in days])
+    # df2.sort_index(inplace=True)
+    daily_vm = df.groupby(["EventDate"]).sum()
+    assert len(daily_vm) == len(set(df["EventDate"]))
+    if save_dir is not None:
+        print(f"Merged event file is saved to: {save_dir + 'daily_vm.csv'}")
+        daily_vm.to_csv(save_dir + 'daily_vm.csv')
+    return daily_vm
+
 
 
 if __name__ == "__main__":
