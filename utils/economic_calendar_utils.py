@@ -65,6 +65,9 @@ def construct_daily_vm(
     file_dir: str = "./",
     save_dir: str = None
 ) -> pd.DataFrame:
+    """
+    Group volatiliyt measures into daily basis.
+    """
     # Convert volatility to numerical values.
     df = pd.read_csv(file_dir + DATASET_NAME)
     df["Volatility"].value_counts()
