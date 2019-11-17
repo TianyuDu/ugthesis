@@ -3,6 +3,11 @@ from typing import List
 import numpy as np
 import pandas as pd
 
+import sys
+sys.path.append("./")
+
+import CONSTANTS
+
 """
 DATA desc
 column - Event date
@@ -18,8 +23,11 @@ column - Previous data on this event (with comments if there were any interim ch
 """
 
 COLUMNS = [
-    "EventDate", "EventTime",
-    "Country", "Volatility", "Description", 
+    "EventDate",
+    "EventTime",
+    "Country",
+    "Volatility",
+    "Description",
     "Evaluation",
     "DataFormat",
     "ActualData",
@@ -40,21 +48,23 @@ def generate_economic_events(
     load_file = lambda f: pd.read_csv(f, sep=";", names=COLUMNS)
     cluster2 = list(map(load_file, [file_dir + "D2014-18.csv", file_dir + "D2019.csv"]))
     df_merged = pd.concat(cluster1 + cluster2, axis=0)
-    # Parse datetime (daily basis)
-    df_merged.index = pd.to_datetime(df_merged["Event date"], format="%Y/%m/%d")
-    print(f"Total number of events loaded: {len(merged)}")
+    # Parse datetime and group them daily basis.
+    df_merged.index = pd.to_datetime(df_merged["EventDate"], format="%Y/%m/%d")
+    df_merged.drop(columns=["EventDate"], inplace=True)
+    print(df_merged.head())
+    print(f"Total number of events loaded: {len(df_merged)}")
     if save_dir is not None:
+        print(f"Merged event file is saved to: {save_dir + DATASET_NAME}")
         df_merged.to_csv(save_dir + DATASET_NAME)
     return df_merged
 
 
 def load_economic_events(file_dir: str = "./") -> pd.DataFrame:
     df = pd.read_csv(file_dir + DATASET_NAME)
-    
-
-def extract_info() -> pd.DataFrame:
-    df = load_economic_events()
 
 
 if __name__ == "__main__":
-    df = parser()
+    df = generate_economic_events(
+        file_dir=CONSTANTS.DIR_ECONOMIC_CALENDAR_DATA,
+        save_dir=CONSTANTS.DIR_ECONOMIC_CALENDAR_DATA
+    )
