@@ -94,7 +94,6 @@ def construct_daily_vm(
     return daily_vm
 
 
-
 if __name__ == "__main__":
     df = generate_economic_events(
         file_dir=CONSTANTS.DIR_ECONOMIC_CALENDAR_DATA,
