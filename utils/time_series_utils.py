@@ -10,8 +10,8 @@ import pandas as pd
 
 def differencing(
     src_df: pd.DataFrame,
-    order: int=1,
-    periods: Union[int, List[int]]=1
+    order: int = 1,
+    periods: Union[int, List[int]] = 1
 ) -> pd.DataFrame:
     """
     Generate the differenced data frame of the given data frame.
@@ -48,7 +48,7 @@ def differencing(
         df = df.diff(periods=lookback)
 
     # Rename column.
-    new_cols = [col+f"_period{periods}_order{order}" for col in df.columns]
+    new_cols = [col + f"_period{periods}_order{order}" for col in df.columns]
     df.columns = new_cols
     return df
 
@@ -142,7 +142,7 @@ def gen_supervised_sequence(
         target_column:
             Column name of target column in source panel data.
         sequence_label:
-            See returns section below.    
+            See returns section below.
     Returns:
         X: The array with shape (num_obs, lags, num_inputs), where num_inputs is the number of columns in src_df.
         y: if sequential_label is True, then with shape (num_obs, lags, 1).
