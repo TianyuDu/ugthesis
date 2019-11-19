@@ -1,5 +1,5 @@
 # Formatting stock data, generate the dataset for supervised learning problem.
-from typing import List
+from typing import List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -7,7 +7,7 @@ import pandas as pd
 import CONSTANTS
 
 
-def get_local_dataset(symb: str) -> pd.DataFrame:
+def load_local_dataset(symb: str) -> pd.DataFrame:
     """
     Loads stock info from local disk, serves as a helper function.
     Args:
@@ -54,6 +54,18 @@ def gen_classification_label(
         pd.DataFrame(ter_label, columns=["ter_label"])
     ], axis=1)
     return merged
+
+
+def gen_lagged_values(
+    df: pd.DataFrame,
+    lookback: int = 5
+) -> pd.DataFrame:
+    """
+    Generates historical values for the supervised learning problem.
+    lookback:
+        df[t-lookback] ~ df[t-1] are used to predict df[t]
+    """
+    raise NotImplementedError
 
 
 if __name__ == "__main__":
