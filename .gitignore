@@ -1,6 +1,4 @@
 .vscode/settings.json
-
-data/
 stock_news/api_utils.py
 replications/src/logs/
 replications/src/__pycache__/
