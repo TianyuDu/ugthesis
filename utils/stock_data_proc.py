@@ -1,8 +1,9 @@
 # Formatting stock data, generate the dataset for supervised learning problem.
-from typing import List, Tuple, Union
+from typing import List
 
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 import CONSTANTS
 
@@ -58,6 +59,7 @@ def gen_classification_label(
 
 def gen_lagged_values(
     df: pd.DataFrame,
+    columns: List[str],
     lookback: int = 5
 ) -> pd.DataFrame:
     """
@@ -65,9 +67,28 @@ def gen_lagged_values(
     lookback:
         df[t-lookback] ~ df[t-1] are used to predict df[t]
     """
-    raise NotImplementedError
+    # ==== Check ====
+    assert np.all([c in df.columns for c in columns]), "Column requested not found in data frame."
+    # ==== Core ====
+    new_features = []
+    days = df.index
+    for col in columns:
+        new_columns = [f"{col}_lag{x + 1}" for x in range(lookback)]
+        features = pd.DataFrame(columns=new_columns, index=days, dtype=np.float64)
+        for i, day in tqdm(enumerate(days)):
+            if i < lookback:
+                continue
+            features.loc[day, :] = [
+                df.loc[days[i - lag - 1], col]
+                for lag in range(lookback)
+            ]
+        new_features.append(features)
+    df_result = pd.concat([df] + new_features, axis=1)
+    return df_result
 
 
 if __name__ == "__main__":
     # For debugging purpose.
-    pass
+    df = load_local_dataset("AAPL")
+    df = gen_classification_label(df)
+    df = gen_lagged_values(df, columns=["Adj Close"], lookback=5)
