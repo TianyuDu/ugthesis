@@ -25,3 +25,6 @@ embedding/.ipynb_checkpoints/embedding_utils-checkpoint.ipynb
 embedding/emb_data/glove.6B/6B.50.dat/meta/sizes 3
 embedding/emb_data/glove.6B/6B.50.dat/meta/storage 3
 embedding/.ipynb_checkpoints/embedding_utils-checkpoint.ipynb
+
+./data/*
+data/ravenpack/equ_dj_oct_2019.csv
