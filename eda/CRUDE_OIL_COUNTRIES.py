@@ -1,10 +1,10 @@
-// Top Crude Oil Producing and Consuming Countries, with country code.
-// Reference: https://www.eia.gov/tools/faqs/faq.php?id=709&t=6
+# Top Crude Oil Producing and Consuming Countries, with country code.
+# Reference: https://www.eia.gov/tools/faqs/faq.php?id=709&t=6
 
-// Country Code to Alpha-2 Code.
+# Country Code to Alpha-2 Code.
 
-// 2018
-TOP_OIL_CONSUMERSj = {
+# 2018
+TOP_OIL_CONSUMERS = {
     "United States": "US",
     "Saudi Arabia": "SA",
     "Russia": "RU",
@@ -18,7 +18,7 @@ TOP_OIL_CONSUMERSj = {
 }
 
 
-// 2016
+# 2016
 TOP_OIL_PRODUCERS = {
     "United States": "US",
     "China": "CN",
