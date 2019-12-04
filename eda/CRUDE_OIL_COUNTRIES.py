@@ -4,7 +4,7 @@
 # Country Code to Alpha-2 Code.
 
 # 2018
-TOP_OIL_CONSUMERS = {
+TOP_OIL_PRODUCERS = {
     "United States": "US",
     "Saudi Arabia": "SA",
     "Russia": "RU",
@@ -17,9 +17,8 @@ TOP_OIL_CONSUMERS = {
     "Kuwait": "KW"
 }
 
-
 # 2016
-TOP_OIL_PRODUCERS = {
+TOP_OIL_CONSUMERS = {
     "United States": "US",
     "China": "CN",
     "India": "IN",
