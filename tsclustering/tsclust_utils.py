@@ -5,13 +5,14 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 
-def series_summary(
+def _series_summary(
     series: pd.DataFrame,
     acf_lags: int = 5,
     pacf_lags: int = 5
 ) -> pd.DataFrame:
     """
     Extracts features for time series data.
+    This function should not be called directly.
     """
     collection = pd.DataFrame()
     collection["mean"] = np.mean(series).values
@@ -33,7 +34,7 @@ def series_summary(
 
 def monthly_subsequence(
     df: pd.DataFrame,
-    statistic: callable = series_summary
+    statistic: callable = _series_summary
 ) -> (Dict[str, pd.DataFrame], pd.DataFrame):
     """
     Groups the entire series to monthly subsequences.
