@@ -5,6 +5,32 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 
+def series_summary(
+    series: pd.DataFrame,
+    acf_lags: int = 5,
+    pacf_lags: int = 5
+) -> pd.DataFrame:
+    """
+    Extracts features for time series data.
+    """
+    collection = pd.DataFrame()
+    collection["mean"] = np.mean(series).values
+    collection["std"] = np.std(series).values
+    collection["median"] = np.std(series).values
+
+    # Use acf and pacf to characterize the dynamics of series
+    acf = pd.DataFrame(
+        sm.tsa.stattools.acf(series, nlags=acf_lags)[1:].reshape(1, -1),
+        columns=[f"acf_lag_{i}" for i in range(1, acf_lags + 1)]
+    )
+    pacf = pd.DataFrame(
+        sm.tsa.stattools.pacf(series, nlags=pacf_lags)[1:].reshape(1, -1),
+        columns=[f"pacf_lag_{i}" for i in range(1, pacf_lags + 1)]
+    )
+    collection = pd.concat([collection, acf, pacf], axis=1)
+    return collection
+
+
 def monthly_subsequence(
     df: pd.DataFrame,
     statistic: callable = series_summary
