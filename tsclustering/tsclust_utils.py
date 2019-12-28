@@ -4,6 +4,9 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
+from sklearn.mixture import GaussianMixture
+from sklearn.preprocessing import StandardScaler
+
 
 def _series_summary(
     series: pd.DataFrame,
@@ -66,8 +69,25 @@ def monthly_subsequence(
 
 def time_series_clustering(
     df_features: pd.DataFrame,
+    n_clusters: int = 3,
+    normalize: bool = True,
 ) -> pd.DataFrame:
     """
     Clusters months into clusters using created features.
+    However, standardizing procedures are executed before
+    clustering, standardization/scaling is necessary for k-mean
+    but unnecessary for other methods including Gaussian mixture.
     """
-    raise NotImplementedError
+    if normalize:
+        # Normalize features.
+        scaler = StandardScaler()
+        norm_fea = scaler.fit_transform(df_features.values)
+    else:
+        norm_fea = df_features.values
+
+    gmm = GaussianMixture(n_components=n_clusters)
+    gmm_labels = gmm.fit_predict(norm_fea)
+    df_gmm_labels = pd.DataFrame(
+        data={"label": gmm_labels},
+        index=df_features.index
+    )
