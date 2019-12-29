@@ -47,8 +47,6 @@ def main(
         save_dir="./figures/wti_return_regime.png"
     )
 
-    
-
 
 if __name__ == "__main__":
     # Matplotlib Conifg
