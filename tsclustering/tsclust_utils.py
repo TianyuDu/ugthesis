@@ -95,3 +95,31 @@ def time_series_clustering(
         index=df_features.index
     )
     return df_gmm_labels
+
+
+def regime_plot(
+    df: pd.DataFrame,
+    labels: np.array,
+    plot_col: str,
+    color_map: dict = {0: "r", 1: "g", 2: "b"}
+) -> None:
+    """
+    Plots the time series while using different colors for different
+    regimes(labels).
+    """
+    assert len(df) == len(
+        labels), "labels and dataframe should have the same length."
+    plt.close()
+    for r, current_label in enumerate(set(labels)):
+        current_df = df.copy()
+        # Replace other label as None, so not plotted.
+        mask = (labels == current_label)
+        current_df[np.logical_not(mask)] = None
+        plt.plot(
+            current_df[plot_col],
+            color=color_map[current_label],
+            linewidth=0.5,
+            label=f"{plot_col} cluster #{r}"
+        )
+    plt.legend()
+    plt.show()
