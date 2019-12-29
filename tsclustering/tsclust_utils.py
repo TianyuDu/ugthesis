@@ -147,7 +147,8 @@ def regime_plot(
             current_df[plot_col],
             color=color_map[current_label],
             linewidth=0.5,
-            label=f"{plot_col} cluster #{r}"
+            label=f"{plot_col} cluster #{r}",
+            alpha=0.7
         )
     plt.legend()
     if save_dir is None:
