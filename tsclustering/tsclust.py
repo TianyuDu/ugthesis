@@ -32,14 +32,14 @@ def main(
         ),
         (df_wti_return, df_wti_real)
     )
-
+    plt.close()
     tsclust_utils.regime_plot(
         df_wti_real_labelled,
         df_wti_real_labelled["label"].values,
         "DCOILWTICO_REAL",
         save_dir="./figures/wti_real_regime.png"
     )
-
+    plt.close()
     tsclust_utils.regime_plot(
         df_wti_return_labelled,
         df_wti_return_labelled["label"].values,
