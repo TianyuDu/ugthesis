@@ -1,11 +1,12 @@
 import sys
 from datetime import datetime
 
-from typing import Union
+from typing import Dict, Union
 
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+plt.style.use("seaborn-dark ")
 
 from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import StandardScaler
