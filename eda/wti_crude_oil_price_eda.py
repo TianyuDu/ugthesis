@@ -32,7 +32,7 @@ def main(
     write_to_disk: bool = False,
     save_dir: Union[str, None] = None
 ) -> None:
-    print("write")
+    print(f"write to {save_dir}")
     df_wti_raw = pd.read_csv(
         wti_price_dir,
         index_col=0,
@@ -71,11 +71,11 @@ def main(
     df_norm_cpi = df_cpi / df_cpi.iloc[0, 0]  # 2000.01.01 as 1.00 index.
     df_norm_cpi_daily = df_norm_cpi.resample(
         "d", fill_method="ffill", label="left")
-    fig = plt.figure(figsize=(15, 3), dpi=300)
-    plt.scatter(df_norm_cpi.index, df_norm_cpi.values, label="monthly", alpha=0.7, s=1, color="red")
-    plt.plot(df_norm_cpi_daily, label="daily", alpha=0.3)
-    plt.legend()
-    plt.show()
+    # fig = plt.figure(figsize=(15, 3), dpi=300)
+    # plt.scatter(df_norm_cpi.index, df_norm_cpi.values, label="monthly", alpha=0.7, s=1, color="red")
+    # plt.plot(df_norm_cpi_daily, label="daily", alpha=0.3)
+    # plt.legend()
+    # plt.show()
     df_norm_cpi = df_norm_cpi_daily
 
     # Normalize operation, sequential implementation.
@@ -96,14 +96,13 @@ def main(
         plt.show()
     else:
         plt.savefig(save_dir + "nominal_and_real_wti_price.png", dpi=300)
-
+    plt.close()
     # Construct returns.
     df_wti_return = construct_return(df_wti_real)
-
     # Histogram of returns
     sns.distplot(
         df_wti_return.values,
-        bins=80,
+        # bins=80,
         fit=norm,
         fit_kws={"lw": 1, "label": "Gaussian Fit"},
         kde=True,
@@ -114,7 +113,7 @@ def main(
         plt.show()
     else:
         plt.savefig(save_dir + "hist_wti_return.png", dpi=300)
-
+    plt.close()
     # The return as a series.
     plt.plot(
         df_wti_return,
@@ -126,7 +125,7 @@ def main(
         plt.show()
     else:
         plt.savefig(save_dir + "wti_return.png", dpi=300)
-
+    plt.close()
     # ACF and PACF.
     # For real prices.
     sm.tsa.graphics.plot_acf(df_wti_real.dropna().values, lags=32)
@@ -134,39 +133,39 @@ def main(
         plt.show()
     else:
         plt.savefig(save_dir + "wti_real_acf.png", dpi=300)
-
+    plt.close()
     sm.tsa.graphics.plot_pacf(df_wti_real.dropna(), lags=32)
     if save_dir is None:
         plt.show()
     else:
         plt.savefig(save_dir + "wti_real_pacf.png", dpi=300)
-
+    plt.close()
     # For change on real prices.
     sm.tsa.graphics.plot_acf(df_wti_real.diff().dropna().values, lags=32)
     if save_dir is None:
         plt.show()
     else:
         plt.savefig(save_dir + "wti_diff_real_aacf.png", dpi=300)
-
+    plt.close()
     sm.tsa.graphics.plot_pacf(df_wti_real.diff().dropna(), lags=32)
     if save_dir is None:
         plt.show()
     else:
         plt.savefig(save_dir + "wti_diff_real_pacf.png", dpi=300)
-
+    plt.close()
     # For returns on real prices.
     sm.tsa.graphics.plot_acf(df_wti_return.dropna().values, lags=32)
     if save_dir is None:
         plt.show()
     else:
         plt.savefig(save_dir + "wti_return_acf.png", dpi=300)
-
+    plt.close()
     sm.tsa.graphics.plot_pacf(df_wti_return.dropna(), lags=32)
     if save_dir is None:
         plt.show()
     else:
         plt.savefig(save_dir + "wti_return_pacf.png", dpi=300)
-
+    plt.close()
     if write_to_disk:
         # Save generated results
         df_wti_real.dropna().to_csv("../data/ready_to_use/wti_crude_oil_price_real.csv")
@@ -179,3 +178,4 @@ if __name__ == "__main__":
     plt.rcParams["figure.dpi"] = 300
     plt.rcParams["axes.grid"] = True
     main(save_dir="./figures/")
+    # main(save_dir=None)
