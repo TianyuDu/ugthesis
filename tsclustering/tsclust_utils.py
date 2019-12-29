@@ -136,7 +136,7 @@ def regime_plot(
     """
     if not (len(df) == len(labels)):
         raise ValueError("labels and dataframe should have the same length.")
-    if not (len(color_map) == len(set(labels))):
+    if not (len(color_map) >= len(set(labels))):
         raise ValueError("Color map is not sufficient for labels.")
     for r, current_label in enumerate(set(labels)):
         current_df = df.copy()
