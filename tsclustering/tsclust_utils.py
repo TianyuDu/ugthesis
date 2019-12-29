@@ -101,6 +101,26 @@ def time_series_clustering(
     return df_gmm_labels
 
 
+def broadcast_monthly_clustering(
+    df_data_raw: pd.DataFrame,
+    df_label: pd.DataFrame
+) -> pd.DataFrame:
+    """
+    Casts monthly clustering assignments to daily level.
+    """
+    if "label" in df_data_raw.columns:
+        raise KeyError("df should not have label column.")
+    df_data = df_data_raw.copy()
+    df_data["label"] = -1
+    parsed_date_data = np.array(df_data.index.strftime("%Y-%m"), dtype=str)
+    parsed_date_label = np.array(df_label.index.strftime("%Y-%m"), dtype=str)
+    for t, label in zip(parsed_date_label, df_label.values):
+        # Replace the day to 01, so represents the month.
+        df_data["label"][parsed_date_data == t] = label
+    assert np.all(df_data["label"] >= 0)
+    return df_data
+
+
 def regime_plot(
     df: pd.DataFrame,
     labels: np.array,
