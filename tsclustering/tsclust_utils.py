@@ -77,6 +77,9 @@ def time_series_clustering(
     However, standardizing procedures are executed before
     clustering, standardization/scaling is necessary for k-mean
     but unnecessary for other methods including Gaussian mixture.
+
+    Returns the clustered label dataframe, which uses the same indices
+    as df_features.
     """
     if normalize:
         # Normalize features.
@@ -91,3 +94,4 @@ def time_series_clustering(
         data={"label": gmm_labels},
         index=df_features.index
     )
+    return df_gmm_labels
