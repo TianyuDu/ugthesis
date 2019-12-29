@@ -127,7 +127,7 @@ def regime_plot(
     df: pd.DataFrame,
     labels: np.array,
     plot_col: str,
-    color_map: dict = {0: "r", 1: "g", 2: "b"},
+    color_map: dict = {0: "b", 1: "g", 2: "r", 3: "c", 4: "m", 5: "y", 6: "k", 7: "w"},
     save_dir: Union[str, None] = None
 ) -> None:
     """
