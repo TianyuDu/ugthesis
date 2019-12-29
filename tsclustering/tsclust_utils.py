@@ -11,6 +11,8 @@ plt.style.use("seaborn-dark")
 from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import StandardScaler
 
+import statsmodels.api as sm
+
 
 def _series_summary(
     series: pd.DataFrame,
