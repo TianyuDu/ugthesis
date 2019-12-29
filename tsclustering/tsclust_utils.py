@@ -1,5 +1,8 @@
 import sys
 from datetime import datetime
+
+from typing import Union
+
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -101,15 +104,17 @@ def regime_plot(
     df: pd.DataFrame,
     labels: np.array,
     plot_col: str,
-    color_map: dict = {0: "r", 1: "g", 2: "b"}
+    color_map: dict = {0: "r", 1: "g", 2: "b"},
+    save_dir: Union[str, None] = None
 ) -> None:
     """
     Plots the time series while using different colors for different
     regimes(labels).
     """
-    assert len(df) == len(
-        labels), "labels and dataframe should have the same length."
-    plt.close()
+    if not (len(df) == len(labels)):
+        raise ValueError("labels and dataframe should have the same length.")
+    if not (len(color_map) == len(set(labels))):
+        raise ValueError("Color map is not sufficient for labels.")
     for r, current_label in enumerate(set(labels)):
         current_df = df.copy()
         # Replace other label as None, so not plotted.
@@ -122,4 +127,8 @@ def regime_plot(
             label=f"{plot_col} cluster #{r}"
         )
     plt.legend()
-    plt.show()
+    if save_dir is None:
+        plt.show()
+    else:
+        plt.savefig(save_dir, dpi=300)
+        print(f"Output figure is saved to {save_dir}")
