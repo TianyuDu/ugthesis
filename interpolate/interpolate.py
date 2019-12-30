@@ -8,7 +8,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-import tsintropolate_utils as utils
+import interpolate_utils as utils
 
 
 def main(
