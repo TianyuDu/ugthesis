@@ -63,7 +63,7 @@ def arima_interpolate(
                 assert not any(np.isnan(history)),\
                     f"All previous values at {t} should be filled, nan detected! Check if implemented correctly."
                 model = ARIMA(history, order=arima_order)
-                model_fit = model.fit(disp = 1 if verbose else 0)
+                model_fit = model.fit(disp=0)
                 pred = model_fit.forecast(steps=1)
                 yhat = pred[0]  # pred = (yhat, std, (low_ci, high_ci))
                 # Insert interpolated value
