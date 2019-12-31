@@ -7,6 +7,8 @@ import statsmodels.api as sm
 from statsmodels.tsa.arima_model import ARIMA
 from tqdm import tqdm
 
+plt.style.use("seaborn-dark")
+
 
 def arima_interpolate(
     raw: pd.DataFrame,
@@ -87,7 +89,7 @@ def _check_output(df: pd.DataFrame) -> None:
     return None
 
 
-def visualize_interpolate(
+def visualize_interpolation(
     df: pd.DataFrame,
     df_filled: pd.DataFrame,
     figure_dir: Union[str, None] = None
@@ -101,18 +103,28 @@ def visualize_interpolate(
         (lambda x: x.iloc[:size, :], "first_10_pct"),
         (lambda x: x.iloc[-size:, :], "last_10_pct"),
     ]
+
+    def _count(x):
+        num_is_nan = np.sum(np.isnan(x.values))
+        num_not_nan = len(x) - num_is_nan
+        return (num_is_nan, num_not_nan)
     for subset, figure_name in plot_lst:
+        N1, N2 = _count(subset(df))
         plt.close()
-        fig = plt.figure(figsize=(15, 3))
+        fig = plt.figure(figsize=(15, 4))
         plt.plot(
-            subset(df_filled), linewidth=0.7,
-            alpha=1, linestyle="--",
-            color="r", label="interpolated"
+            subset(df_filled), linewidth=0.5,
+            alpha=1,# linestyle="-",
+            color="r", label=f"interpolated, N={N1}"
         )
         plt.plot(
-            subset(df), alpha=1,
-            linewidth=1.2, color="b",
-            label="original"
+            subset(df), alpha=1.0,
+            linewidth=1, color="b",
+            label=f"original, N={N2}"
         )
+        plt.ylabel(df.columns[0])
+        plt.xlabel("Date")
+        plt.grid(True)
         plt.legend()
-        plt.savefig(figure_dir + figure_name + ".png")
+        out_file = figure_dir + figure_name + ".png"
+        plt.savefig(out_file, dpi=450)
