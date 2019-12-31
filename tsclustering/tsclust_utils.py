@@ -118,7 +118,7 @@ def broadcast_monthly_clustering(
     for t, label in zip(parsed_date_label, df_label.values):
         # Replace the day to 01, so represents the month.
         df_data["label"][parsed_date_data == t] = label
-    assert np.all(df_data["label"] >= 0)
+    assert np.all(df_data["label"] != -1), f"labels found: {set(df_data['label'])}"
     return df_data
 
 
