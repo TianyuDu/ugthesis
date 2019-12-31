@@ -1,6 +1,7 @@
 """
 Main file
 """
+import argparse
 import sys
 from datetime import datetime
 from typing import Tuple
@@ -78,7 +79,7 @@ def visualize_from_file(
         header=0,
         parse_dates=["DATE"],
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
-    )
+    ).replace(".", np.NaN).astype(np.float32)
 
     df_filled = pd.read_csv(
         filled_dir,
@@ -86,18 +87,28 @@ def visualize_from_file(
         header=0,
         parse_dates=["DATE"],
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
-    )
+    ).replace(".", np.NaN).astype(np.float32)
 
     utils.visualize_interpolate(df, df_filled, figure_dir)
 
 
 if __name__ == "__main__":
     print(sys.version)
-    main(
-        ts_dir="/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/fred/DCOILWTICO.csv",
-        save_dir="./test_file.csv",
-        figure_dir="./figures/arima_intropolate_",
-        arima_order=(7, 2, 0),
-        start=datetime(2000, 1, 1),
-        end=datetime(2019, 9, 30),
-    )
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--interpolate", type=int, default=1)
+    args = parser.parse_args()
+    if args.interpolate:
+        main(
+            ts_dir="./data/fred/DCOILWTICO.csv",
+            save_dir="./data/read_to_use/DCOILWTICO_FILLED.csv",
+            figure_dir="./figures/arima_intropolate_",
+            arima_order=(7, 2, 0),
+            start=datetime(2000, 1, 1),
+            end=datetime(2019, 9, 30),
+        )
+    else:
+        visualize_from_file(
+            ts_dir="./data/ready_to_use/DCOILWTICO.csv",
+            filled_dir="./data/ready_to_use/DCOILWTICO_FILLED.csv",
+            figure_dir="./figures/arima_intropolate_"
+        )
