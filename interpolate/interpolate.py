@@ -3,10 +3,8 @@ Main file
 """
 import sys
 from datetime import datetime
-
 from typing import Tuple
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -61,9 +59,36 @@ def main(
     )
     df_filled.to_csv(save_dir)
     # Visualize Interpolation results.
-    utils.visualize(df, df_filled, figure_dir)
+    utils.visualize_interpolate(df, df_filled, figure_dir)
     # return df, df_filled
     return None
+
+
+def visualize_from_file(
+    ts_dir: str,
+    filled_dir: str,
+    figure_dir: str
+) -> None:
+    """
+    Visualize local file only without running the interpolation.
+    """
+    df = pd.read_csv(
+        ts_dir,
+        index_col=0,
+        header=0,
+        parse_dates=["DATE"],
+        date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
+    )
+
+    df_filled = pd.read_csv(
+        filled_dir,
+        index_col=0,
+        header=0,
+        parse_dates=["DATE"],
+        date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
+    )
+
+    utils.visualize_interpolate(df, df_filled, figure_dir)
 
 
 if __name__ == "__main__":
@@ -71,7 +96,7 @@ if __name__ == "__main__":
     main(
         ts_dir="/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/fred/DCOILWTICO.csv",
         save_dir="./test_file.csv",
-        figure_dir="./figures/arima_interpolate.png",
+        figure_dir="./figures/arima_intropolate_",
         arima_order=(7, 2, 0),
         start=datetime(2000, 1, 1),
         end=datetime(2019, 9, 30),
