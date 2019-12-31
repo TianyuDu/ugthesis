@@ -101,7 +101,7 @@ if __name__ == "__main__":
         main(
             ts_dir="./data/fred/DCOILWTICO.csv",
             save_dir="./data/read_to_use/DCOILWTICO_FILLED.csv",
-            figure_dir="./figures/arima_intropolate_",
+            figure_dir="./figures/interpolate/arima_interpolate_",
             arima_order=(7, 2, 0),
             start=datetime(2000, 1, 1),
             end=datetime(2019, 9, 30),
@@ -110,5 +110,5 @@ if __name__ == "__main__":
         visualize_from_file(
             ts_dir="./data/ready_to_use/DCOILWTICO.csv",
             filled_dir="./data/ready_to_use/DCOILWTICO_FILLED.csv",
-            figure_dir="./figures/arima_intropolate_"
+            figure_dir="./figures/interpolate/arima_interpolate_"
         )
