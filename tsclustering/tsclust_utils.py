@@ -1,17 +1,16 @@
+import colorsys
 import sys
 from datetime import datetime
-
 from typing import Dict, Union
 
 import numpy as np
 import pandas as pd
+import statsmodels.api as sm
 from matplotlib import pyplot as plt
-plt.style.use("seaborn-dark")
-
 from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import StandardScaler
 
-import statsmodels.api as sm
+plt.style.use("seaborn-dark")
 
 
 def _series_summary(
@@ -127,13 +126,21 @@ def regime_plot(
     df: pd.DataFrame,
     labels: np.array,
     plot_col: str,
-    color_map: dict = {0: "b", 1: "g", 2: "r", 3: "c", 4: "m", 5: "y", 6: "k", 7: "w"},
+    color_map: Union[dict, "auto"] = {0: "b", 1: "g", 2: "r", 3: "c", 4: "m", 5: "y", 6: "k", 7: "w"},
     save_dir: Union[str, None] = None
 ) -> None:
     """
     Plots the time series while using different colors for different
     regimes(labels).
     """
+    if color_map == "auto":
+        # Automatically create color mapping dictionary.
+        num_labels = len(set(labels))
+        hsv = np.linspace(0, 360, num_labels + 1)
+        color_map = dict()
+        for i in range(num_labels):
+            color_map[i] = colorsys.hsv_to_rgb(hsv[i] / 360, 1, 1)
+
     if not (len(df) == len(labels)):
         raise ValueError("labels and dataframe should have the same length.")
     if not (len(color_map) >= len(set(labels))):
