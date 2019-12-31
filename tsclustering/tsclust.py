@@ -1,6 +1,7 @@
 """
 Time series clustering.
 """
+import argparse
 from datetime import datetime
 
 import matplotlib.pyplot as plt
@@ -13,6 +14,7 @@ import tsclust_utils
 def main(
     df_wti_real: pd.DataFrame,
     df_wti_return: pd.DataFrame,
+    n_clusters: int = 3,
     verbose: bool = True
 ) -> None:
     if verbose:
@@ -23,7 +25,7 @@ def main(
     mo_subseqs, mo_stats = tsclust_utils.monthly_subsequence(df_wti_return)
     df_gmm_labels = tsclust_utils.time_series_clustering(
         mo_stats,
-        n_clusters=3,
+        n_clusters=n_clusters,
         normalize=True
     )
     df_wti_return_labelled, df_wti_real_labelled = map(
@@ -38,7 +40,7 @@ def main(
         df_wti_real_labelled["label"].values,
         "DCOILWTICO_REAL",
         color_map="auto",
-        save_dir="./figures/wti_real_regime.png"
+        save_dir=f"./figures/wti_real_{n_clusters}regime.png"
     )
     plt.close()
     tsclust_utils.regime_plot(
@@ -46,11 +48,14 @@ def main(
         df_wti_return_labelled["label"].values,
         "DCOILWTICO_RETURN_REAL",
         color_map="auto",
-        save_dir="./figures/wti_return_regime.png"
+        save_dir=f"./figures/wti_return_{n_clusters}_regime.png"
     )
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--n_clusters", type=int, default=3)
+    args = parser.parse_args()
     # Matplotlib Conifg
     plt.rcParams["figure.figsize"] = (15, 3)
     plt.rcParams["figure.dpi"] = 300
@@ -70,4 +75,8 @@ if __name__ == "__main__":
         parse_dates=["DATE"],
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
     )
-    main(df_wti_real, df_wti_return)
+    main(
+        df_wti_real,
+        df_wti_return,
+        n_clusters=args.n_clusters
+    )
