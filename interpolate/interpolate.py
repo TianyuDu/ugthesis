@@ -32,11 +32,13 @@ def main(
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
     )
     df.replace(".", np.NaN, inplace=True)
+    df = df.astype(np.float32)
     if verbose:
-        print("Nan ratio:")
-        print(np.mean(df.isna()))
-    # Check dataset.
-    # TODO: stopped here.
+        df.info()
+        print(f"Nan ratio: {np.mean(np.isnan(df.values.squeeze())) * 100: .2}%")
+    #  dataset.
+    df.astype()
+
 
 if __name__ == "__main__":
     print(sys.version)
