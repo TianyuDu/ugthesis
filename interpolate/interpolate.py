@@ -60,7 +60,7 @@ def main(
     )
     df_filled.to_csv(save_dir)
     # Visualize Interpolation results.
-    utils.visualize_interpolate(df, df_filled, figure_dir)
+    utils.visualize_interpolation(df, df_filled, figure_dir)
     # return df, df_filled
     return None
 
@@ -89,7 +89,7 @@ def visualize_from_file(
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
     ).replace(".", np.NaN).astype(np.float32)
 
-    utils.visualize_interpolate(df, df_filled, figure_dir)
+    utils.visualize_interpolation(df, df_filled, figure_dir)
 
 
 if __name__ == "__main__":
