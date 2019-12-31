@@ -1,11 +1,10 @@
+from typing import Tuple, Union, List
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
-from typing import Tuple, Union
-
 import statsmodels.api as sm
 from statsmodels.tsa.arima_model import ARIMA
-
 from tqdm import tqdm
 
 
@@ -86,3 +85,34 @@ def _check_output(df: pd.DataFrame) -> None:
     if np.sum(np.isnan(df.values)) > 0:
         raise Exception("Dataframe is not completely filled.")
     return None
+
+
+def visualize_interpolate(
+    df: pd.DataFrame,
+    df_filled: pd.DataFrame,
+    figure_dir: Union[str, None] = None
+) -> None:
+    """
+    Visualizes the interpolated result.
+    """
+    size = int(0.1 * len(df))
+    plot_lst = [
+        (lambda x: x, "all"),
+        (lambda x: x.iloc[:size, :], "first_10_pct"),
+        (lambda x: x.iloc[-size:, :], "last_10_pct"),
+    ]
+    for subset, figure_name in plot_lst:
+        plt.close()
+        fig = plt.figure(figsize=(15, 3))
+        plt.plot(
+            subset(df_filled), linewidth=0.7,
+            alpha=1, linestyle="--",
+            color="r", label="interpolated"
+        )
+        plt.plot(
+            subset(df), alpha=1,
+            linewidth=1.2, color="b",
+            label="original"
+        )
+        plt.legend()
+        plt.savefig(figure_dir + figure_name + ".png")
