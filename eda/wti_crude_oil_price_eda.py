@@ -174,7 +174,7 @@ def main(
 
 if __name__ == "__main__":
     print(sys.version)
-    plt.rcParams["figure.figsize"] = (15, 5)
+    plt.rcParams["figure.figsize"] = (15, 4)
     plt.rcParams["figure.dpi"] = 300
     plt.rcParams["axes.grid"] = True
     main(save_dir="./figures/")
