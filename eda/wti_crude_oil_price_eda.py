@@ -171,7 +171,7 @@ def main(
     plt.close()
     if write_to_disk is not None:
         # Save generated results
-        df_wti_real.to_csv(
+        df_wti_real.dropna().to_csv(
             write_to_disk + "wti_crude_oil_price_real.csv")
         df_wti_return.to_csv(
             write_to_disk + "wti_crude_oil_return_real.csv")
