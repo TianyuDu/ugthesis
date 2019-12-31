@@ -40,15 +40,15 @@ def main(
         df_wti_real_labelled["label"].values,
         "DCOILWTICO_REAL",
         color_map="auto",
-        save_dir=f"./figures/wti_real_{n_clusters}regime.png"
+        save_dir=f"./figures/tsclust/wti_real_{n_clusters}_regime.png"
     )
     plt.close()
     tsclust_utils.regime_plot(
         df_wti_return_labelled,
         df_wti_return_labelled["label"].values,
-        "DCOILWTICO_RETURN_REAL",
+        "DCOILWTICO_REAL_RETURN",
         color_map="auto",
-        save_dir=f"./figures/wti_return_{n_clusters}_regime.png"
+        save_dir=f"./figures/tsclust/wti_return_{n_clusters}_regime.png"
     )
 
 
