@@ -37,6 +37,7 @@ def main(
         df_wti_real_labelled,
         df_wti_real_labelled["label"].values,
         "DCOILWTICO_REAL",
+        color_map="auto",
         save_dir="./figures/wti_real_regime.png"
     )
     plt.close()
@@ -44,6 +45,7 @@ def main(
         df_wti_return_labelled,
         df_wti_return_labelled["label"].values,
         "DCOILWTICO_RETURN_REAL",
+        color_map="auto",
         save_dir="./figures/wti_return_regime.png"
     )
 
