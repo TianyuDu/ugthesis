@@ -16,6 +16,7 @@ import interpolate_utils as utils
 def main(
     ts_dir: str,
     save_dir: str,
+    figure_dir: str,
     arima_order: Tuple[int] = (7, 2, 0),
     start = datetime(2000, 1, 1),
     end = datetime(2019, 9, 30),
@@ -59,16 +60,19 @@ def main(
         verbose=verbose
     )
     df_filled.to_csv(save_dir)
-    return df_filled
+    # Visualize Interpolation results.
+    utils.visualize(df, df_filled, figure_dir)
+    # return df, df_filled
+    return None
 
 
 if __name__ == "__main__":
     print(sys.version)
-    df_filled = main(
+    main(
         ts_dir="/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/fred/DCOILWTICO.csv",
         save_dir="./test_file.csv",
+        figure_dir="./figures/arima_interpolate.png",
         arima_order=(7, 2, 0),
         start=datetime(2000, 1, 1),
         end=datetime(2019, 9, 30),
     )
-    # Visualize Interpolation results.
