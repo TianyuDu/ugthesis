@@ -28,6 +28,10 @@ def main(
         n_clusters=n_clusters,
         normalize=True
     )
+
+    df_gmm_labels.to_csv(
+        f"./data/ready_to_use/gmm_labels_{n_clusters}_clusters.csv")
+
     df_wti_return_labelled, df_wti_real_labelled = map(
         lambda x: tsclust_utils.broadcast_monthly_clustering(
             x, df_gmm_labels
@@ -39,7 +43,7 @@ def main(
         df_wti_real_labelled,
         df_wti_real_labelled["label"].values,
         "DCOILWTICO_REAL",
-        color_map="auto",
+        # color_map="auto",
         save_dir=f"./figures/tsclust/wti_real_{n_clusters}_regime.png"
     )
     plt.close()
@@ -47,7 +51,7 @@ def main(
         df_wti_return_labelled,
         df_wti_return_labelled["label"].values,
         "DCOILWTICO_REAL_RETURN",
-        color_map="auto",
+        # color_map="auto",
         save_dir=f"./figures/tsclust/wti_return_{n_clusters}_regime.png"
     )
 
