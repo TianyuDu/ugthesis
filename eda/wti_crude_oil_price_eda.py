@@ -28,9 +28,9 @@ def main(
     cpi_dir: str = "./data/fred/CPIAUCSL.csv",
     start=datetime(2000, 1, 1),
     end=datetime(2019, 9, 30),
-    verbose: bool = True,
-    write_to_disk: bool = False,
-    save_dir: Union[str, None] = None
+    save_dir: Union[str, None] = None,
+    write_to_disk: Union[str, None] = None,
+    verbose: bool = True
 ) -> None:
     print(f"write to {save_dir}")
     df_wti_raw = pd.read_csv(
@@ -49,13 +49,13 @@ def main(
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
     )
 
-    def select_range(df):
+    def _select_range(df):
         return df[np.logical_and(
             df.index >= start, df.index <= end
         )]
 
-    df_wti, df_cpi = map(select_range, (df_wti_raw, df_cpi_raw))
-    df_wti = df_wti[df_wti.values != "."]
+    df_wti, df_cpi = map(_select_range, (df_wti_raw, df_cpi_raw))
+    # df_wti = df_wti[df_wti.values != "."]
     df_wti, df_cpi = map(lambda x: x.astype(np.float32), (df_wti, df_cpi))
 
     if verbose:
@@ -70,7 +70,10 @@ def main(
     # Creating CPI referencing series
     df_norm_cpi = df_cpi / df_cpi.iloc[0, 0]  # 2000.01.01 as 1.00 index.
     df_norm_cpi_daily = df_norm_cpi.resample(
-        "d", fill_method="ffill", label="left")
+        "d",
+        fill_method="ffill",
+        label="left"
+    )
     # fig = plt.figure(figsize=(15, 3), dpi=300)
     # plt.scatter(df_norm_cpi.index, df_norm_cpi.values, label="monthly", alpha=0.7, s=1, color="red")
     # plt.plot(df_norm_cpi_daily, label="daily", alpha=0.3)
@@ -166,10 +169,12 @@ def main(
     else:
         plt.savefig(save_dir + "wti_return_pacf.png", dpi=300)
     plt.close()
-    if write_to_disk:
+    if write_to_disk is not None:
         # Save generated results
-        df_wti_real.dropna().to_csv("../data/ready_to_use/wti_crude_oil_price_real.csv")
-        df_wti_return.dropna().to_csv("../data/ready_to_use/wti_crude_oil_return_real.csv")
+        df_wti_real.to_csv(
+            write_to_disk + "wti_crude_oil_price_real.csv")
+        df_wti_return.to_csv(
+            write_to_disk + "wti_crude_oil_return_real.csv")
 
 
 if __name__ == "__main__":
@@ -177,5 +182,9 @@ if __name__ == "__main__":
     plt.rcParams["figure.figsize"] = (15, 4)
     plt.rcParams["figure.dpi"] = 300
     plt.rcParams["axes.grid"] = True
-    main(save_dir="./figures/")
+    main(
+        wti_price_dir="./data/ready_to_use/DCOILWTICO_Filled.csv",
+        save_dir="./figures/",
+        write_to_disk="./data/ready_to_use/"
+    )
     # main(save_dir=None)
