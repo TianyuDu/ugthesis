@@ -157,6 +157,8 @@ def regime_plot(
             label=f"{plot_col} cluster #{r}",
             alpha=0.7
         )
+    plt.xlabel("Date")
+    plt.ylabel(df.columns[0])
     plt.legend()
     if save_dir is None:
         plt.show()
