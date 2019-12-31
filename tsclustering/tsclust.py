@@ -17,9 +17,9 @@ def main(
 ) -> None:
     if verbose:
         print("REAL PRICE series received:")
-        print(df_wti_real.info())
+        df_wti_real.info()
         print("LOG-DIFF RETURN ON REAL PRICE series received:")
-        print(df_wti_return.info())
+        df_wti_return.info()
     mo_subseqs, mo_stats = tsclust_utils.monthly_subsequence(df_wti_return)
     df_gmm_labels = tsclust_utils.time_series_clustering(
         mo_stats,

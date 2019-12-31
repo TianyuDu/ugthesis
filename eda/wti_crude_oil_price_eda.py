@@ -59,10 +59,10 @@ def main(
     df_wti, df_cpi = map(lambda x: x.astype(np.float32), (df_wti, df_cpi))
 
     if verbose:
-        print(df_wti.info())
+        df_wti.info()
         print(df_wti.head())
         print(df_wti.tail())
-        print(df_cpi.info())
+        df_cpi.info()
         print(df_cpi.head())
         print(df_cpi.tail())
 
