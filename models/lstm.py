@@ -70,7 +70,7 @@ class StackedLstm(nn.Module):
 
 def preprocessing(
     df: pd.DataFrame,
-):
+) -> (np.ndarray, "MinMaxScaler"):
     """
     Normalizes the dataset.
     """
