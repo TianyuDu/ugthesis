@@ -183,6 +183,28 @@ def gen_supervised_sequence(
     return X, y
 
 
+def create_inout_sequences(
+    input_data: np.ndarray,
+    tw: int,
+    rg: int = 1
+) -> (np.ndarray, np.ndarray):
+    """
+    A simpler numpy based implementation of gen_supervised_sequence
+    """
+    fea_seq, lab_seq = [], []
+    L, num_attr = input_data.shape
+    for i in range(L - tw):
+        X = input_data[i: i + tw, :]
+        y = input_data[i + tw: i + tw + rg, :]
+        fea_seq.append(X)
+        lab_seq.append(y)
+    fea_seq = np.array(fea_seq)
+    lab_seq = np.array(lab_seq)
+    assert fea_seq.shape == (L - tw, tw, num_attr)
+    assert lab_seq.shape == (L - tw, rg, num_attr)
+    return fea_seq, lab_seq
+
+
 def clean_nan(
     X: pd.DataFrame,
     y: pd.DataFrame
