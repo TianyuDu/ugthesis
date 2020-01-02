@@ -7,6 +7,8 @@ from typing import List, Tuple, Union
 import numpy as np
 import pandas as pd
 
+from tqdm import tqdm
+
 
 def differencing(
     src_df: pd.DataFrame,
@@ -193,7 +195,7 @@ def create_inout_sequences(
     """
     fea_seq, lab_seq = [], []
     L, num_attr = input_data.shape
-    for i in range(L - lags):
+    for i in tqdm(range(L - lags)):
         X = input_data[i: i + lags, :]
         y = input_data[i + lags: i + lags + rg, :]
         fea_seq.append(X)
