@@ -3,10 +3,8 @@ Models of LSTM family.
 """
 import argparse
 import sys
-sys.path.append("../")
-sys.path.append("./")
-
 from datetime import datetime
+from typing import Tuple
 
 import numpy as np
 import pandas as pd
@@ -14,8 +12,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-
-from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
@@ -94,9 +90,15 @@ def train(
     y: np.ndarray,
     model_config: dict,
     epoch: int = 20,
+    batch_size: int = 32,
+    lr: float = 0.001,
     train_size: float = 0.7,
-    shuffle: bool = True,
-):
+    shuffle: bool = False,
+) -> (nn.Module, Tuple[np.ndarray]):
+    """
+    # TODO: docstring :P
+    """
+    # Split dataset.
     X_train, X_val, y_train, y_val = train_test_split(
         X, y,
         train_size=train_size,
@@ -106,8 +108,37 @@ def train(
         lambda z: torch.Tensor(z.astype(np.float32)),
         (X_train, X_val, y_train, y_val)
     )
+    # Construct model.
     model = StackedLstm(**model_config)
-    raise NotImplementedError
+    loss_function = nn.MSELoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    print(model)
+    batch_index_lst = train_utils.batch_sampler(
+        batch_size=batch_size,
+        data_size=X_train.shape[0]
+    )
+
+    for e in range(epoch):
+        for (low, high) in batch_index_lst:
+            seq = X_train[low: high, :, :]
+            lab = y_train[low: high, :, :]
+            lab = lab.reshape(-1, 1)
+            optimizer.zero_grad()
+            # Initialize hidden states and cell states.
+            model.reset_hidden(batch_size=lab.shape[0])
+            y_pred = model(seq)
+            batch_loss = loss_function(y_pred, lab)
+            batch_loss.backward()
+            optimizer.step()
+        # validation
+        if e % 5 == 1:
+            with torch.no_grad():
+                model.reset_hidden(batch_size=y_val.shape[0])
+                val_pred = model(X_val)
+                y_val = y_val.reshape(-1, 1)
+                val_loss = loss_function(val_pred, y_val)
+            print(f"epoch: {e: 3} train loss: {batch_loss.item(): 10.8f} validation loss: {val_loss.item(): 10.8f}")
+    return model, (X_train, X_val, y_train, y_val)
 
 
 def predict():
@@ -136,5 +167,10 @@ if __name__ == "__main__":
     model_config = dict(input_size=1,
                         hidden_size=128,
                         output_size=1,
-                        num_layers=2)
+                        num_layers=2,
+                        drop_prob=0.5)
 
+    train(
+        X, y,
+        model_config=model_config
+    )
