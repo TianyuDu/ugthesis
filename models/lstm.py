@@ -18,18 +18,54 @@ from sklearn.model_selection import train_test_split
 import utils.time_series_utils as ts_utils
 
 
-class BasicLstm(nn.Module):
-    def __init__(self):
-        super(BasicLstm, self).__init__()
+class StackedLstm(nn.Module):
+    def __init__(
+        self,
+        input_size: int,
+        hidden_size: int,
+        output_size: int,
+        num_layers: int,
+        drop_prob: float = 0.5
+    ) -> None:
+        super(StackedLstm, self).__init__()
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.output_size = output_size
+        self.num_layers = num_layers
+
         self.lstm = nn.LSTM(
-            input_size=5,
-            hidden_size=256,
-            num_layers=2,
-            batch_first=True
+            input_size=self.input_size,
+            hidden_size=self.hidden_size,
+            num_layers=self.num_layers,
+            # dropout=drop_prob,
+            batch_first=True  # Only affect input tensor and output tensor
         )
 
-    def forward(self, x):
-        out, (h_n, h_n) = None
+        self.dropout = nn.Dropout(drop_prob)
+
+        self.fc = nn.Linear(self.hidden_size, self.output_size)
+
+        self.hidden_cell = (None, None)
+
+    def forward(self, input_seq):
+        lstm_out, self.hidden_cell = self.lstm(
+            # input_seq.view(len(input_seq) ,1, -1),
+            # input of shape (batch, seq_len, input_size)
+            input_seq,
+            self.hidden_cell
+        )
+        # lstm output of shape (batch, seq_len, num_directions * hidden_size)
+        out = self.dropout(lstm_out)
+        pred = self.fc(out)
+        # pred of shape (batch, seq_len, output_size)
+        return pred[:, -1, :]
+
+    def reset_hidden(self, batch_size) -> None:
+        # both hidden h and cell c.
+        self.hidden_cell = (
+            torch.randn(self.num_layers, batch_size, self.hidden_size),
+            torch.randn(self.num_layers, batch_size, self.hidden_size)
+        )
 
 
 def preprocessing(
