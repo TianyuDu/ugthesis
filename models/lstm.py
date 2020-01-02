@@ -3,6 +3,9 @@ Models of LSTM family.
 """
 import argparse
 import sys
+sys.path.append("../")
+sys.path.append("./")
+
 from datetime import datetime
 
 import numpy as np
