@@ -21,3 +21,11 @@ class BasicLstm(nn.Module):
 
 def predict():
     raise NotImplementedError
+
+
+def train():
+    raise NotImplementedError
+
+
+if __name__ == "__main__":
+    raise NotImplementedError
