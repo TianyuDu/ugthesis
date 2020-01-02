@@ -13,6 +13,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
 
 import utils.time_series_utils as ts_utils
 
@@ -46,8 +47,21 @@ def preprocessing(
 def train(
     X: np.ndarray,
     y: np.ndarray,
-    train_ratio: float = 0.7
+    model_config: dict,
+    epoch: int = 20,
+    train_size: float = 0.7,
+    shuffle: bool = True,
 ):
+    X_train, X_val, y_train, y_val = train_test_split(
+        X, y,
+        train_size=train_size,
+        shuffle=shuffle
+    )
+    X_train, X_val, y_train, y_val = map(
+        lambda z: torch.Tensor(z.astype(np.float32)),
+        (X_train, X_val, y_train, y_val)
+    )
+    model = StackedLstm(**model_config)
     raise NotImplementedError
 
 
@@ -67,7 +81,15 @@ if __name__ == "__main__":
         parse_dates=["DATE"],
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
     )
+
     data_normalized, scaler = preprocessing(df)
     X, y = ts_utils.create_inout_sequences(
-        input_data=data_normalized
+        input_data=data_normalized,
+        lags=365
     )
+
+    model_config = dict(input_size=1,
+                        hidden_size=128,
+                        output_size=1,
+                        num_layers=2)
+
