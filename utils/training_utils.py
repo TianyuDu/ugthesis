@@ -10,11 +10,13 @@ def batch_sampler(
 ) -> List[Tuple[int]]:
     """
     Generates a sequence of (low, high) index pairs for mini-batches.
+    Args:
+        batch_size: if -1: use full-batch.
     Usage:
         for (low, high) in batch_sampler:
             mini_batch = X[low: high, :]
     """
-    if batch_size >= data_size:
+    if batch_size >= data_size or batch_size == -1:
         return (0, data_size)  # returns the entire dataset.
     lst = list()
     low = 0
