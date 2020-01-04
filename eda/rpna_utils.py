@@ -18,11 +18,39 @@ def convert_timestamp_wti(
     return df
 
 
-def aggregate_daily():
+def aggregate_daily(
+    raw: pd.DataFrame,
+    attr_col: str,
+    time_col: str = "TIMESTAMP_WTI"
+) -> pd.DataFrame:
+    df = raw.copy()
+    dates = df[time_col].dt.strftime("%Y-%m-%d")
+    df.insert(loc=0, value=dates, column="DATE")
+    mean_ess = pd.DataFrame(
+        df.groupby("DATE").mean()[attr_col]
+    )
+    total_ess = pd.DataFrame(
+        df.groupby("DATE").sum()[attr_col]
+    )
+    num_events = pd.DataFrame(
+        df.groupby("DATE").size()
+    )
+    daily = pd.concat([mean_ess, total_ess, num_events], axis=1)
+    daily.columns = ["MEAN_ESS", "TOTAL_ESS", "NUM_EVENTS"]
+#     daily.index = pd.to_datetime(daily.index, format="%Y-%m-%d")
+    return daily
+
+
+def select_features():
     raise NotImplementedError
 
 
 def preprocessing(
-    raw: pd.DataFrame
+    raw: pd.DataFrame,
 ) -> pd.DataFrame:
-    raise NotImplementedError
+    """
+    Gathers above methods, the complete pipeline.
+    """
+    df = raw.copy()
+    # convert to wti us central timezone.
+    df = convert_timestamp_wti(df)
