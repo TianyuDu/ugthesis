@@ -37,7 +37,7 @@ def aggregate_daily(
     )
     daily = pd.concat([mean_ess, total_ess, num_events], axis=1)
     daily.columns = ["MEAN_ESS", "TOTAL_ESS", "NUM_EVENTS"]
-#     daily.index = pd.to_datetime(daily.index, format="%Y-%m-%d")
+    daily.index = pd.to_datetime(daily.index, format="%Y-%m-%d")
     return daily
 
 
