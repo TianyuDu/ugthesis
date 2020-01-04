@@ -57,5 +57,23 @@ def preprocessing(
     Gathers above methods, the complete pipeline.
     """
     df = raw.copy()
+    df["ESS"] = df["ESS"] - 50  # Normalize
     # convert to wti us central timezone.
     df = convert_timestamp_wti(df)
+    # Aggregate daily ESS.
+    daily_ess = aggregate_daily(df, attr_col="ESS", date_col="TIMESTAMP_WTI", add_events=False)
+    # Construct ENS weighted ess.
+    df["WESS"] = df["ENS"] * df["ESS"] / 100
+    daily_weighted_ess = aggregate_daily(
+        df,
+        attr_col="WESS",
+        date_col="TIMESTAMP_WTI",
+        add_events=True
+    )
+    df_daily = pd.concat([daily_ess, daily_weighted_ess], axis=1)
+    return df_daily
+
+
+if __name__ == "__main__":
+    df = pd.read_csv("./data/ravenpack/crude_oil_all.csv")
+    p = preprocessing(df)
