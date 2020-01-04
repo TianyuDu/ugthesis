@@ -4,7 +4,7 @@ Models of LSTM family.
 import argparse
 import sys
 from datetime import datetime
-from typing import Tuple
+from typing import Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -141,9 +141,14 @@ def train(
     return model, (X_train, X_val, y_train, y_val)
 
 
-def predict():
-    raise NotImplementedError
-
+def predict(
+    model: nn.Module,
+    data: Tuple[np.ndarray] = "X_train, X_val, y_train, y_val",
+    report_str: bool = False,
+    log_dir: Union[str, None] = None
+) -> Union[str, None]:
+    X_train, X_val, y_train, y_val = data
+    # TODO: stopped here.
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
