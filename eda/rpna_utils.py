@@ -16,3 +16,13 @@ def convert_timestamp_wti(
     dates_wti = dates_utc.dt.tz_localize("UTC").dt.tz_convert("US/Central")
     df.insert(loc=0, column="TIMESTAMP_WTI", value=dates_wti)
     return df
+
+
+def aggregate_daily():
+    raise NotImplementedError
+
+
+def preprocessing(
+    raw: pd.DataFrame
+) -> pd.DataFrame:
+    raise NotImplementedError
