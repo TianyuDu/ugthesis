@@ -21,10 +21,10 @@ def convert_timestamp_wti(
 def aggregate_daily(
     raw: pd.DataFrame,
     attr_col: str,
-    time_col: str = "TIMESTAMP_WTI"
+    date_col: str = "TIMESTAMP_WTI"
 ) -> pd.DataFrame:
     df = raw.copy()
-    dates = df[time_col].dt.strftime("%Y-%m-%d")
+    dates = df[date_col].dt.strftime("%Y-%m-%d")
     df.insert(loc=0, value=dates, column="DATE")
     mean_ess = pd.DataFrame(
         df.groupby("DATE").mean()[attr_col]
