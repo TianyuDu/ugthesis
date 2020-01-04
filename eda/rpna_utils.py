@@ -21,7 +21,8 @@ def convert_timestamp_wti(
 def aggregate_daily(
     raw: pd.DataFrame,
     attr_col: str,
-    date_col: str = "TIMESTAMP_WTI"
+    date_col: str = "TIMESTAMP_WTI",
+    add_events: bool = True
 ) -> pd.DataFrame:
     df = raw.copy()
     dates = df[date_col].dt.strftime("%Y-%m-%d")
@@ -35,8 +36,12 @@ def aggregate_daily(
     num_events = pd.DataFrame(
         df.groupby("DATE").size()
     )
-    daily = pd.concat([mean_ess, total_ess, num_events], axis=1)
-    daily.columns = [f"{attr_col}_MEAN", f"{attr_col}_TOTAL", "NUM_EVENTS"]
+    if add_events:
+        daily = pd.concat([mean_ess, total_ess, num_events], axis=1)
+        daily.columns = [f"{attr_col}_MEAN", f"{attr_col}_TOTAL", "NUM_EVENTS"]
+    else:
+        daily = pd.concat([mean_ess, total_ess], axis=1)
+        daily.columns = [f"{attr_col}_MEAN", f"{attr_col}_TOTAL"]
     daily.index = pd.to_datetime(daily.index, format="%Y-%m-%d")
     return daily
 
