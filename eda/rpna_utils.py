@@ -1,6 +1,9 @@
 """
 Utilities for processing RPNA dataset.
 """
+from typing import Tuple
+
+import numpy as np
 import pandas as pd
 
 
@@ -44,6 +47,35 @@ def aggregate_daily(
         daily.columns = [f"{attr_col}_MEAN", f"{attr_col}_TOTAL"]
     daily.index = pd.to_datetime(daily.index, format="%Y-%m-%d")
     return daily
+
+
+def separate_count(
+    raw: pd.DataFrame,
+    attr_col: str,
+    date_col: str = "TIMESTAMP_WTI",
+    threshold: Tuple[float] = (-10, 10)
+) -> pd.DataFrame:
+    """
+    Generate numbers of positive, negative, and neutral news in each day.
+    """
+    df = raw.copy()
+    dates = df[date_col].dt.strftime("%Y-%m-%d")
+    df.insert(loc=0, value=dates, column="DATE")
+    low, high = threshold
+    df["POS_LABEL"] = (df[attr_col] > high).astype(np.int32)
+    df["NEG_LABEL"] = (df[attr_col] < low).astype(np.int32)
+    df["NEU_LABEL"] = np.logical_and(
+        df[attr_col] <= high,
+        df[attr_col] >= low
+    ).astype(np.int32)
+    count_lst = []
+    for col in ["POS_LABEL", "NEG_LABEL", "NEU_LABEL"]:
+        count = pd.DataFrame(
+            df.groupby("DATE").sum()[col]
+        )
+        count_lst.append(count)
+    df_count = pd.concat(count_lst, axis=1)
+    return df_count
 
 
 def select_features():
