@@ -75,6 +75,7 @@ def separate_count(
         )
         count_lst.append(count)
     df_count = pd.concat(count_lst, axis=1)
+    df_count.columns = ["NUM_POSITIVE", "NUM_NEGATIVE", "NUM_NEUTRAL"]
     return df_count
 
 
