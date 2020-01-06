@@ -143,4 +143,5 @@ if __name__ == "__main__":
     print(p.head())
 
     if args.save_to is not None:
+        print(f"Write file to {args.save_to}")
         p.to_csv(args.save_to)
