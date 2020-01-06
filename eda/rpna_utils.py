@@ -1,7 +1,8 @@
 """
 Utilities for processing RPNA dataset.
 """
-from typing import Tuple
+import argparse
+from typing import Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -130,5 +131,16 @@ def preprocessing(
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("./data/ravenpack/crude_oil_all.csv")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--save_to", type=Union[str, None], default=None)
+    args = parser.parse_args()
+
+    src_file = "./data/ravenpack/crude_oil_all.csv"
+    print(f"Read raw dataset from {src_file}")
+    df = pd.read_csv(src_file)
     p = preprocessing(df)
+    p.info()
+    print(p.head())
+
+    if args.save_to is not None:
+        p.to_csv(args.save_to)
