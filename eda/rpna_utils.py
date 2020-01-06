@@ -113,7 +113,19 @@ def preprocessing(
         date_col="TIMESTAMP_WTI",
         add_events=True
     )
-    df_daily = pd.concat([daily_ess, daily_weighted_ess], axis=1)
+    # Count numbers of positive, negative, and neutral news based on two criteria.
+    ess_count = separate_count(df, attr_col="ESS")
+    wess_count = separate_count(df, attr_col="WESS")
+    _check_equal(ess_count, wess_count)
+
+    assert np.all(daily_ess.index == daily_weighted_ess.index)
+    assert np.all(ess_count.index == wess_count.index)
+    assert np.all(daily_ess.index == ess_count.index)
+
+    df_daily = pd.concat([
+        daily_ess, daily_weighted_ess,
+        ess_count, wess_count
+    ], axis=1)
     return df_daily
 
 
