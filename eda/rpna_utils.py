@@ -83,6 +83,15 @@ def select_features():
     raise NotImplementedError
 
 
+def _check_equal(df1, df2) -> None:
+    if not np.all(df1.index == df2.index):
+        raise IndexError("Two dataframes should share the same index.")
+    a1, a2 = df1.values, df2.values
+    num_fea = a1.shape[1]
+    print(
+        f"Percentage same: {np.mean(np.sum(a1 == a2, axis=1) == num_fea)* 100}% ")
+
+
 def preprocessing(
     raw: pd.DataFrame,
 ) -> pd.DataFrame:
