@@ -132,7 +132,7 @@ def preprocessing(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--save_to", type=Union[str, None], default=None)
+    parser.add_argument("--save_to", type=str, default=None)
     args = parser.parse_args()
 
     src_file = "./data/ravenpack/crude_oil_all.csv"
