@@ -63,12 +63,12 @@ def monthly_subsequence(
                 subsequences[time] = subseq
                 # Summary statistic
                 stats_month = statistic(subseq)
-                stats_month["Date"] = [time]
+                stats_month["DATE"] = [time]
                 stats.append(stats_month)
     stats_all = pd.concat(stats, axis=0)
 #     stats_all.reset_index(inplace=True, drop=True)
-    stats_all.index = pd.to_datetime(stats_all["Date"], format="%Y-%m")
-    stats_all.drop(columns=["Date"], inplace=True)
+    stats_all.index = pd.to_datetime(stats_all["DATE"], format="%Y-%m")
+    stats_all.drop(columns=["DATE"], inplace=True)
     return (subsequences, stats_all)
 
 
