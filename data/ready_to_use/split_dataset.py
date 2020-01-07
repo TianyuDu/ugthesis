@@ -13,6 +13,20 @@ import pandas as pd
 DATE_RANGE_TYPE = Tuple[Union[str, datetime], Union[str, datetime]]
 
 
+def load_dataset(
+    path: str,
+    date_col: str = "DATE"
+) -> pd.DataFrame:
+    df = pd.read_csv(
+        path,
+        index_col=0,
+        header=0,
+        parse_dates=[date_col],
+        date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
+    )
+    return df
+
+
 def main(
     train_range: DATE_RANGE_TYPE,
     test_range: DATE_RANGE_TYPE,
