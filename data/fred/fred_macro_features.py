@@ -8,10 +8,10 @@ import pandas as pd
 
 
 FILE_FREQ = {
-    "Daily": "D",
-    "Monthly": "M",
-    "Quarterly": "Q",
-    "Weekly_Ending_Monday": "W-MON"
+    "Crude_Oil_Macro_Indicators_Daily": "D",
+    "Crude_Oil_Macro_Indicators_Monthly": "M",
+    "Crude_Oil_Macro_Indicators_Quarterly": "Q",
+    "Crude_Oil_Macro_Indicators_Weekly_Ending_Monday": "W-MON"
 }
 
 
