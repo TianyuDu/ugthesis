@@ -67,13 +67,13 @@ def align_dataset(
         df_prev.columns = prev_colns
         df_all = pd.concat([df, df_prev], axis=1)
         data_collection.append(df_all.asfreq("D").ffill()[prev_colns].copy())
-    panel = pd.concat(data_collection, axis=1)
+    macro_features = pd.concat(data_collection, axis=1)
     # Subsetting.
-    panel = panel[start: end]
+    macro_features = macro_features[start: end]
     # Forward filling.
-    panel = panel.astype(np.float32)
-    panel.info()
-    return panel
+    macro_features = macro_features.astype(np.float32)
+    macro_features.info()
+    return macro_features
 
 
 if __name__ == "__main__":
@@ -85,5 +85,5 @@ if __name__ == "__main__":
     log_dir = args.log_dir
     if not log_dir.endswith("/"):
         log_dir += "/"
-    print(f"Write file to {log_dir}")
-    panel.to_csv(f"{log_dir}panel.csv")
+    print(f"Write file to {log_dir}macro_features")
+    panel.to_csv(f"{log_dir}macro_features.csv")
