@@ -9,8 +9,8 @@ import pandas as pd
 
 FILE_FREQ = {
     "Crude_Oil_Macro_Indicators_Daily": "D",
-    "Crude_Oil_Macro_Indicators_Monthly": "M",
-    "Crude_Oil_Macro_Indicators_Quarterly": "Q",
+    "Crude_Oil_Macro_Indicators_Monthly": "MS",
+    "Crude_Oil_Macro_Indicators_Quarterly": "QS",
     "Crude_Oil_Macro_Indicators_Weekly_Ending_Monday": "W-MON"
 }
 
@@ -21,7 +21,7 @@ def align_dataset(
     end: str = "2019-09-30",
     keep_nan: bool = True,
     output_freq: str = "D"
-) -> None:
+) -> pd.DataFrame:
     """
     Main method: Constructs macro indicators (independent variable) from fred dataset.
 
@@ -44,8 +44,34 @@ def align_dataset(
     parser = lambda x: datetime.strptime(x, "%Y-%m-%d")
     (start, end) = map(parser, (start, end))
 
+    data_collection = list()
     for (name, freq) in FILE_FREQ.items():
-        # TODO: stopped here. align dataset
+        print(f"Convert {name} to {freq} frequency.")
+        df = pd.read_csv(
+            f"{src}{name}.txt",
+            index_col=0,
+            header=0,
+            sep="\t",
+            parse_dates=["DATE"],
+            date_parser=parser
+        )
+        df.replace(".", np.nan, inplace=True)
+        # df = df.astype(np.float32)
+        print(f"Missing values for {name}: \n{np.mean(df.isna(), axis=0)}")
+        df = df.asfreq(freq)
+        # Create the features in previous time step.
+        prev_colns = ["Prev_" + c for c in df.columns]
+        df_prev = df.shift(1)
+        df_prev.columns = prev_colns
+        df_all = pd.concat([df, df_prev], axis=1)
+        data_collection.append(df_all.asfreq("D").ffill()[prev_colns].copy())
+    panel = pd.concat(data_collection, axis=1)
+    # Subsetting.
+    panel = panel[start: end]
+    # Forward filling.
+    panel = panel.astype(np.float32)
+    panel.info()
+    return panel
 
 
 if __name__ == "__main__":
