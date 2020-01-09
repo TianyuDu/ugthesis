@@ -1,6 +1,8 @@
 """
 Creates macro variable features.
 """
+import argparse
+
 from datetime import datetime
 
 import numpy as np
@@ -75,4 +77,13 @@ def align_dataset(
 
 
 if __name__ == "__main__":
-    align_dataset("./Crude_Oil_Macro_Indicators")
+    panel = align_dataset("./Crude_Oil_Macro_Indicators")
+
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument("--log_dir", type=str, default="./")
+    args = argparser.parse_args()
+    log_dir = args.log_dir
+    if not log_dir.endswith("/"):
+        log_dir += "/"
+    print(f"Write file to {log_dir}")
+    panel.to_csv(f"{log_dir}panel.csv")
