@@ -96,6 +96,7 @@ def _check_equal(df1, df2) -> None:
 
 def preprocessing(
     raw: pd.DataFrame,
+    threshold: Tuple[float]
 ) -> pd.DataFrame:
     """
     Gathers above methods, the complete pipeline.
@@ -115,8 +116,8 @@ def preprocessing(
         add_events=True
     )
     # Count numbers of positive, negative, and neutral news based on two criteria.
-    ess_count = separate_count(df, attr_col="ESS")
-    wess_count = separate_count(df, attr_col="WESS")
+    ess_count = separate_count(df, attr_col="ESS", threshold=threshold)
+    wess_count = separate_count(df, attr_col="WESS", threshold=threshold)
     _check_equal(ess_count, wess_count)
 
     assert np.all(daily_ess.index == daily_weighted_ess.index)
@@ -133,12 +134,23 @@ def preprocessing(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--save_to", type=str, default=None)
+    parser.add_argument("--radius", type=float, default=None)
+    parser.add_argument("--lower", type=float, default=None)
+    parser.add_argument("--upper", type=float, default=None)
     args = parser.parse_args()
 
     src_file = "./data/ravenpack/crude_oil_all.csv"
     print(f"Read raw dataset from {src_file}")
     df = pd.read_csv(src_file)
-    p = preprocessing(df)
+    if (args.radius is not None) and (args.lower is not None and args.upper is not None):
+        raise ValueError("Cannot set both radius and lower/upper bound.")
+    if args.radius is not None:
+        threshold = (-args.radius, args.radius)
+    elif args.lower is not None and args.upper is not None:
+        threshold = (args.lower, args.upper)
+    else:
+        threshold = (-3, 3)
+    p = preprocessing(df, threshold=threshold)
     p.info()
     print(p.head())
 
