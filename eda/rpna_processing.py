@@ -54,7 +54,7 @@ def separate_count(
     raw: pd.DataFrame,
     attr_col: str,
     date_col: str = "TIMESTAMP_WTI",
-    threshold: Tuple[float] = (-10, 10)
+    threshold: Tuple[float] = (-2, 2)
 ) -> pd.DataFrame:
     """
     Generate numbers of positive, negative, and neutral news in each day.
