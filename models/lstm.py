@@ -147,8 +147,13 @@ def predict(
     report_str: bool = False,
     log_dir: Union[str, None] = None
 ) -> Union[str, None]:
+    """
+    Generates out-of-sample prediction.
+    """
+    # Load the dataset.
     X_train, X_val, y_train, y_val = data
-    # TODO: stopped here.
+    # TODO: Stopped here
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
