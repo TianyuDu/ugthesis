@@ -18,5 +18,5 @@ def main(
 if __name__ == "__main__":
     # Add configuration.
     parser = argparse.ArgumentParser()
-    parser.add_argument()
+    parser.add_argument("--save_to", default="./aggregate_")
     raise NotImplementedError
