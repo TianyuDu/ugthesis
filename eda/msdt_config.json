@@ -1,1 +1,5 @@
-{"rpna.feature": "wess"}
+{
+    "oil.lags": 180,
+    "rpna.criterion": "WESS",
+    "rpna.lags": 180
+}
