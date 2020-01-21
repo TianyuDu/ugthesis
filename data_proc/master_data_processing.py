@@ -29,6 +29,8 @@ def _load_rpna(
         for x in ["NEGATIVE", "NEUTRAL", "POSITIVE"]:
             perc = p[f"NUM_{x}_{y}"].sum() / total
             print(f"{x}: {perc * 100: 0.2f}%")
+    # Convert to freq=D, this may add nan data to weekends.
+    p = p.asfreq("D")
     return p
 
 
