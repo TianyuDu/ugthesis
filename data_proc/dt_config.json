@@ -2,7 +2,7 @@
     "oil.src": "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/DCOILWTICO_FILLED.csv",
     "oil.lags": 180,
     "rpna.criterion": "WESS",
-    "rpna.crude_oil.src": "./data/ravenpack/crude_oil_all.csv",
+    "rpna.crude_oil.src": "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ravenpack/crude_oil_all.csv",
     "rpna.lags": 180,
     "rpna.radius": 1.0
 }
