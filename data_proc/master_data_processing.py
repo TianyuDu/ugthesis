@@ -38,8 +38,9 @@ def _load_wti(config: dict) -> pd.DataFrame:
     raise NotImplementedError
 
 
-def _load_macro(config: dict) -> pd.DataFrame:
-    raise NotImplementedError
+def _load_macro(src_file: str) -> pd.DataFrame:
+    macro_panel = fred_macro_features.align_dataset(src=src_file)
+    return macro_panel
 
 
 def main(
