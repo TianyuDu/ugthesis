@@ -10,11 +10,11 @@ import numpy as np
 import pandas as pd
 
 
-def rpna(config: dict):
+def rpna(config: dict) -> pd.DataFrame:
     raise NotImplementedError
 
 
-def crude_oil(config: dict):
+def crude_oil(config: dict) -> pd.DataFrame:
     raise NotImplementedError
 
 
