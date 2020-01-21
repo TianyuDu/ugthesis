@@ -9,20 +9,49 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-
-def rpna(config: dict) -> pd.DataFrame:
-    raise NotImplementedError
+import rpna_processing
 
 
-def crude_oil(config: dict) -> pd.DataFrame:
+def rpna(
+    src_file: str,
+    radius: float
+) -> pd.DataFrame:
+    threshold = (-radius, radius)
+    print(f"Constructing news count with threshold = {threshold}")
+    df = pd.read_csv(src_file)
+    p = rpna_processing.preprocessing(df, threshold)
+    for y in ["ESS", "WESS"]:
+        print(f"News type composition using {y}.")
+        total = sum(
+            p[f"NUM_{x}_{y}"].sum()
+            for x in ["NEGATIVE", "NEUTRAL", "POSITIVE"]
+        )
+        for x in ["NEGATIVE", "NEUTRAL", "POSITIVE"]:
+            perc = p[f"NUM_{x}_{y}"].sum() / total
+            print(f"{x}: {perc * 100: 0.2f}%")
+    return p
+
+
+def wti(config: dict) -> pd.DataFrame:
     raise NotImplementedError
 
 
 def main(
-    src: str,
     config: dict
 ) -> None:
-    raise NotImplementedError
+    df_lst = list()
+
+    df_rpna_oil = rpna(
+        src_file=config["rpna.crude_oil.src"],
+        radius=config["rpna.radius"]
+    )
+    df_lst.append(df_rpna_oil)
+
+
+# Testing utilities
+def _load_default_config():
+    with open("./dt_config.json", "r") as f:
+        return json.load(f)
 
 
 if __name__ == "__main__":
@@ -36,3 +65,7 @@ if __name__ == "__main__":
     with open(args.config, "r") as f:
         config = json.load(f)
         print(config)
+    # src = args.src
+    # if not src.endswith("/"):
+    #     src += "/"
+    main(config)
