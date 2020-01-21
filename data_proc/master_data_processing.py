@@ -34,8 +34,16 @@ def _load_rpna(
     return p
 
 
-def _load_wti(config: dict) -> pd.DataFrame:
-    raise NotImplementedError
+def _load_wti(src_file: str) -> pd.DataFrame:
+    oil_price = pd.read_csv(
+        src_file,
+        index_col=0,
+        header=0,
+        parse_dates=["DATE"],
+        date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
+    )
+    oil_price = oil_price.asfreq("D")
+    return oil_price
 
 
 def _load_macro(src_file: str) -> pd.DataFrame:
