@@ -12,7 +12,7 @@ import pandas as pd
 import rpna_processing
 
 
-def rpna(
+def _load_rpna(
     src_file: str,
     radius: float
 ) -> pd.DataFrame:
@@ -32,7 +32,11 @@ def rpna(
     return p
 
 
-def wti(config: dict) -> pd.DataFrame:
+def _load_wti(config: dict) -> pd.DataFrame:
+    raise NotImplementedError
+
+
+def _load_macro(config: dict) -> pd.DataFrame:
     raise NotImplementedError
 
 
@@ -41,7 +45,7 @@ def main(
 ) -> None:
     df_lst = list()
 
-    df_rpna_oil = rpna(
+    df_rpna_oil = _load_rpna(
         src_file=config["rpna.crude_oil.src"],
         radius=config["rpna.radius"]
     )
