@@ -72,8 +72,10 @@ def _generate_lags(
             for x in cols
         ]
         collection.append(df_lagged)
-    # TODO: reorder the columns.
-    return pd.concat(collection, axis=1)
+    merged = pd.concat(collection, axis=1)
+    cols = mereged.columns
+    merged = merged(sorted(merged.columns))
+    return merged
 
 # df2 = _generate_lags(df, 3)
 
