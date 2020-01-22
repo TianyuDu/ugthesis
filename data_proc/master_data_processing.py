@@ -74,6 +74,16 @@ def _generate_lags(
     return pd.concat(collection, aixs=1)
 
 
+
+def _check_df_equal(df1, df2) -> bool:
+    out = list()
+    for col in df1.columns:
+        out.append(np.sum(df1[col] - df2[col]) < 1e-12)
+    for col in df2.columns:
+        out.append(np.sum(df1[col] - df2[col]) < 1e-12)
+    return all(out)
+
+
 def main(
     config: dict
 ) -> None:
