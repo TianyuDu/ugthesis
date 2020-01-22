@@ -51,6 +51,29 @@ def _load_macro(src_file: str) -> pd.DataFrame:
     return macro_panel
 
 
+def _generate_lags(
+    df: pd.DataFrame,
+    lags: Union[int, List[int]]
+) -> pd.DataFrame:
+    df = df.copy()
+    # Constructs variables with lagged values.
+    if isinstance(lags, int):
+        lags = range(lags)
+    cols = df.columns
+
+    collection = list()
+
+    for L in lags:
+        df_lagged = df.shift(L)
+        df_lagged.columns = [
+            x + f"_{L}"
+            for x in cols
+        ]
+        collection.append(df_lagged)
+    # TODO: reorder the columns.
+    return pd.concat(collection, aixs=1)
+
+
 def main(
     config: dict
 ) -> None:
