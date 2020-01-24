@@ -5,5 +5,6 @@
     "rpna.crude_oil.src": "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ravenpack/crude_oil_all.csv",
     "rpna.lags": 180,
     "rpna.radius": 1.0,
-    "fred.src": "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/fred/Crude_Oil_Macro_Indicators/"
+    "fred.src": "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/fred/Crude_Oil_Macro_Indicators/",
+    "fred.lags": 12
 }
