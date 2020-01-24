@@ -121,6 +121,9 @@ def main(
     # which indicate measures in the previous measuring period (e.g., month).
     df_lst = [_generate_lags(d) for d in df_lst]
     df_lst.append(df_macro)
+    merged = pd.concat(df_lst, axis=1)
+    merged = merged(sorted(merged.columns))
+    return merged
 
 
 # Testing utilities
