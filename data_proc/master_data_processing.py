@@ -91,38 +91,55 @@ def _check_df_equal(df1: pd.DataFrame, df2: pd.DataFrame) -> bool:
 
 
 def main(
-    config: dict
+    config: dict,
+    master_freq: str = "B"
 ) -> None:
     df_lst = list()
     # Load crude oil price.
     df_oil_price = _load_wti(
         src_file=config["oil.src"]
     )
-    df_lst.append(df_oil_price)
+    df_oil_price = df_oil_price.asfreq(master_freq)
+
+    df_lst.append(
+        _generate_lags(
+            df_oil_price,
+            config["oil.lags"]
+        ))
 
     # Load RPNA dataset on crude oil.
     df_rpna_oil = _load_rpna(
         src_file=config["rpna.crude_oil.src"],
         radius=config["rpna.radius"]
     )
-    df_lst.append(df_rpna_oil)
+    df_rpna_oil = df_rpna_oil.asfreq(master_freq)
+
+    df_lst.append(
+        _generate_lags(
+            df_rpna_oil,
+            config["rpna.lags"]
+        ))
 
     # Load macro variables from Fred.
     df_macro = _load_macro(
         src_file=config["fred.src"]
     )
-    df_lst.append(df_macro)
+    df_macro = df_macro.asfreq(master_freq)
 
-    # Convert to business days.
-    df_lst = [d.asfreq("B") for d in df_lst]
-
-    # Add lags
     # NOTE: macro variables are already lagged variables
     # which indicate measures in the previous measuring period (e.g., month).
-    df_lst = [_generate_lags(d) for d in df_lst]
     df_lst.append(df_macro)
+    df_lst.append(
+        _generate_lags(
+            df_macro,
+            config["fred.lags"]
+        ))
+
+    # Convert to business days.
+    # df_lst = [d.asfreq("B") for d in df_lst]
+
     merged = pd.concat(df_lst, axis=1)
-    merged = merged(sorted(merged.columns))
+    merged = merged[sorted(merged.columns)]
     return merged
 
 
