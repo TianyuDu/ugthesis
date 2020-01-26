@@ -144,9 +144,16 @@ def main(
 
 
 # Testing utilities
-def _load_default_config():
+def __load_default_config():
     with open("./dt_config.json", "r") as f:
         return json.load(f)
+    
+
+def __validate_dataset(
+    df: pd.DataFrame,
+    config: dict
+) -> None:
+    # TODO: stopped here.
 
 
 if __name__ == "__main__":
