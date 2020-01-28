@@ -147,13 +147,26 @@ def main(
 def __load_default_config():
     with open("./dt_config.json", "r") as f:
         return json.load(f)
-    
+
 
 def __validate_dataset(
     df: pd.DataFrame,
-    config: dict
+    config: dict,
+    prop_rand: float = 0.1,
 ) -> None:
-    # TODO: stopped here.
+    """A sanity check on whether feature dataset is correctly
+    constructed.
+    """
+    sampled_idx = np.random.choice(
+        df.index,
+        size=int(prop_rand * len(df))
+    )
+    for t in sampled_idx:
+        current = df.loc[t, :]
+        return (t, current)
+    # TODO: Stopped here.
+
+# t, current = __validate_dataset(df, config)
 
 
 if __name__ == "__main__":
