@@ -35,7 +35,11 @@ def compute_time_lags(
         dlt = (curr - prev).days
         # insert values
         delta["DELTA"][t] = dlt
-    return delta
+    if append_to_original:
+        combined = pd.concat([df, delta], axis=1)
+        return combined
+    else:
+        return delta
 
 
 # ============ Testing Utilities ============
