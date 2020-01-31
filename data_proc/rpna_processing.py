@@ -2,6 +2,7 @@
 Utilities for processing RPNA dataset.
 """
 import argparse
+import warnings
 from typing import Tuple, Union
 
 import numpy as np
@@ -128,6 +129,16 @@ def preprocessing(
         daily_ess, daily_weighted_ess,
         ess_count, wess_count
     ], axis=1)
+
+    # Format data types.
+    df_daily = df_daily.astype(np.float32)
+
+    # Check for Nan values, should be no Nans.
+    if np.sum(df_daily.isna()) > 0:
+        num_missing = np.sum(df_daily.isna().sum(axis=1))
+        warnings.warn(
+            f"Dates with missing values: {num_missing}"
+        )
     return df_daily
 
 
@@ -139,7 +150,7 @@ if __name__ == "__main__":
     parser.add_argument("--upper", type=float, default=None)
     args = parser.parse_args()
 
-    src_file = "./data/ravenpack/crude_oil_all.csv"
+    src_file = "../data/ravenpack/crude_oil_all.csv"
     print(f"Read raw dataset from {src_file}")
     df = pd.read_csv(src_file)
     if (args.radius is not None) and (args.lower is not None and args.upper is not None):
