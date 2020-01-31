@@ -16,6 +16,9 @@ import fred_macro_features
 import rpna_processing
 
 
+# HPTD: add docstrings.
+
+
 def _load_rpna(
     src_file: str,
     radius: float
