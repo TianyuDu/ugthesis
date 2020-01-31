@@ -170,8 +170,8 @@ def __load_default_config():
 
 
 def __report_na(df) -> None:
-    avg = np.mean(df.isna().suma(axis=1) > 0)
-    total = np.total(df.isna().suma(axis=1) > 0)
+    avg = np.mean(df.isna().sum(axis=1) > 0)
+    total = np.sum(df.isna().sum(axis=1) > 0)
     print(f"Dates with invalid entries: {total}({avg * 100}%).")
 
 
