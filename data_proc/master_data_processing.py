@@ -74,7 +74,7 @@ def _generate_lags(
         collection.append(df_lagged)
     merged = pd.concat(collection, axis=1)
     cols = merged.columns
-    merged = merged(sorted(merged.columns))
+    merged = merged[sorted(merged.columns)]
     return merged
 
 # df2 = _generate_lags(df, 3)
@@ -95,45 +95,52 @@ def main(
     master_freq: str = "B"
 ) -> None:
     df_lst = list()
-    # Load crude oil price.
-    df_oil_price = _load_wti(
-        src_file=config["oil.src"]
-    )
-    df_oil_price = df_oil_price.asfreq(master_freq)
+    if config["oil.include"]:
+        # Load crude oil price.
+        df_oil_price = _load_wti(
+            src_file=config["oil.src"]
+        )
+        df_oil_price = df_oil_price.asfreq(master_freq)
 
-    df_lst.append(
-        _generate_lags(
-            df_oil_price,
-            config["oil.lags"]
-        ))
+        df_lst.append(
+            _generate_lags(
+                df_oil_price,
+                config["oil.lags"]
+            ))
+    else:
+        raise UserWarning("Oil dataset is NOT included.")
 
-    # Load RPNA dataset on crude oil.
-    df_rpna_oil = _load_rpna(
-        src_file=config["rpna.crude_oil.src"],
-        radius=config["rpna.radius"]
-    )
-    df_rpna_oil = df_rpna_oil.asfreq(master_freq)
+    if config["rpna.include"]:
+        # Load RPNA dataset on crude oil.
+        df_rpna_oil = _load_rpna(
+            src_file=config["rpna.crude_oil.src"],
+            radius=config["rpna.radius"]
+        )
+        df_rpna_oil = df_rpna_oil.asfreq(master_freq)
 
-    df_lst.append(
-        _generate_lags(
-            df_rpna_oil,
-            config["rpna.lags"]
-        ))
+        df_lst.append(
+            _generate_lags(
+                df_rpna_oil,
+                config["rpna.lags"]
+            ))
+    else:
+        raise UserWarning("Oil dataset is NOT included.")
 
-    # Load macro variables from Fred.
-    df_macro = _load_macro(
-        src_file=config["fred.src"]
-    )
-    df_macro = df_macro.asfreq(master_freq)
+    if config["fred.include"]:
+        # Load macro variables from Fred.
+        df_macro = _load_macro(
+            src_file=config["fred.src"]
+        )
+        df_macro = df_macro.asfreq(master_freq)
 
-    # NOTE: macro variables are already lagged variables
-    # which indicate measures in the previous measuring period (e.g., month).
-    df_lst.append(df_macro)
-    df_lst.append(
-        _generate_lags(
-            df_macro,
-            config["fred.lags"]
-        ))
+        # NOTE: macro variables are already lagged variables
+        # which indicate measures in the previous measuring period (e.g., month).
+        df_lst.append(df_macro)
+        df_lst.append(
+            _generate_lags(
+                df_macro,
+                config["fred.lags"]
+            ))
 
     # Convert to business days.
     # df_lst = [d.asfreq("B") for d in df_lst]
@@ -183,4 +190,4 @@ if __name__ == "__main__":
     # src = args.src
     # if not src.endswith("/"):
     #     src += "/"
-    main(config)
+    df = main(config)
