@@ -169,6 +169,12 @@ def __load_default_config():
         return json.load(f)
 
 
+def __report_na(df) -> None:
+    avg = np.mean(df.isna().suma(axis=1) > 0)
+    total = np.total(df.isna().suma(axis=1) > 0)
+    print(f"Dates with invalid entries: {total}({avg * 100}%).")
+
+
 def __validate_dataset(
     df: pd.DataFrame,
     config: dict,
