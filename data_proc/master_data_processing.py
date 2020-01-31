@@ -217,10 +217,10 @@ def __validate_dataset(
 if __name__ == "__main__":
     # Add configuration.
     parser = argparse.ArgumentParser()
-    now_str = datetime.strftime(datetime.now(), "%D-%T")
+    now_str = datetime.strftime(datetime.now(), "%Y-%m-%d-%H:%M:%S")
     parser.add_argument(
         "--save_to",
-        default=f"./master_dataset_{now_str}.csv",
+        default=f"../data/ready_to_use/master_dataset_{now_str}.csv",
         type=str
     )
     parser.add_argument("--config", default=None, type=str)
