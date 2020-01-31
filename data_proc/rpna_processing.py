@@ -95,7 +95,7 @@ def _check_equal(df1, df2) -> None:
         f"Percentage same: {np.mean(np.sum(a1 == a2, axis=1) == num_fea)* 100: 0.2f} % ")
 
 
-def preprocessing(
+def main(
     raw: pd.DataFrame,
     threshold: Tuple[float]
 ) -> pd.DataFrame:
@@ -161,7 +161,7 @@ if __name__ == "__main__":
         threshold = (args.lower, args.upper)
     else:
         threshold = (-3, 3)
-    p = preprocessing(df, threshold=threshold)
+    p = main(df, threshold=threshold)
     p.info()
     print(p.head())
 
