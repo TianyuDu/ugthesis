@@ -220,19 +220,19 @@ if __name__ == "__main__":
         default=f"./master_dataset_{now_str}.csv",
         type=str
     )
-    parser.add_argument("--config", type=str)
+    parser.add_argument("--config", default=None, type=str)
     args = parser.parse_args()
-    assert os.path.exists(args.config)
-    print(f"Read configuration from {args.config}")
-    with open(args.config, "r") as f:
-        config = json.load(f)
-        print(config)
-    print("==============CONFIG==============")
+
+    if args.config is not None:
+        assert os.path.exists(args.config)
+        print(f"Read configuration from {args.config}")
+        with open(args.config, "r") as f:
+            config = json.load(f)
+    else:
+        print("Read default configuration file.")
+        config = __load_default_config()
+    print("===============CONFIG===============")
     pprint(config)
     print("====================================")
-    # src = args.src
-    # if not src.endswith("/"):
-    #     src += "/"
-    # config = __load_default_config()
     df = main(config)
     df.to_csv(args.save_to)
