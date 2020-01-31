@@ -24,8 +24,13 @@ def compute_time_lags(
 
 
 def _report_missing_days(df: pd.DataFrame) -> None:
-    
-
+    """
+    Helper function.
+    """
+    mask = df.isna().values
+    print(f"{np.mean(mask) * 100}% days are missing")
+    days = df[mask].index.day_name()
+    print(days.value_counts())
 
 
 if __name__ == "__main__":
