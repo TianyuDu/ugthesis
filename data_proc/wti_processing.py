@@ -28,7 +28,7 @@ def _report_missing_days(df: pd.DataFrame) -> None:
     Helper function.
     """
     mask = df.isna().values
-    print(f"{np.mean(mask) * 100}% days are missing")
+    print(f"{np.mean(mask) * 100: 0.3f}% days are missing")
     days = df[mask].index.day_name()
     print(days.value_counts())
 
