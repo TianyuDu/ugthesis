@@ -13,7 +13,7 @@ import pandas as pd
 
 def compute_time_lags(
     df: pd.DataFrame,
-    freq: str = "B",
+    # freq: str = "B",
     append_to_original: bool = False
 ) -> pd.DataFrame:
     """
@@ -21,8 +21,25 @@ def compute_time_lags(
     since last valid observations.
     """
     _report_missing_days(df)
+    df_filled = df.dropna()
+    _report_missing_days(df_filled)
+
+    # Compute delta values for the entire dataset.
+    delta = pd.DataFrame(index=df.index.copy())
+    delta["DELTA"] = pd.NA
+
+    # Leave Nan for t s.t. df[t] = Nan.
+    for i, t in enumerate(df_filled.index):
+        if i == 0:
+            continue
+        curr, prev = t, df_filled.index[i - 1]
+        dlt = (curr - prev).days
+        # insert values
+        delta["DELTA"][t] = dlt
+    return delta
 
 
+# ============ Testing Utilities ============
 def _report_missing_days(df: pd.DataFrame) -> None:
     """
     Helper function.
@@ -39,3 +56,5 @@ if __name__ == "__main__":
         date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
         index_col=0
     )
+    df = df.asfreq("D")
+
