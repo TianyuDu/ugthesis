@@ -22,7 +22,7 @@ def _load_rpna(
     threshold = (-radius, radius)
     print(f"Constructing news count with threshold = {threshold}")
     df = pd.read_csv(src_file)
-    p = rpna_processing.preprocessing(df, threshold)
+    p = rpna_processing.main(df, threshold)
     for y in ["ESS", "WESS"]:
         print(f"News type composition using {y}.")
         total = sum(
@@ -33,7 +33,7 @@ def _load_rpna(
             perc = p[f"NUM_{x}_{y}"].sum() / total
             print(f"{x}: {perc * 100: 0.2f}%")
     # Convert to freq=D, this may add nan data to weekends.
-    p = p.asfreq("D")
+    p = p.asfreq("B")
     return p
 
 
@@ -45,7 +45,7 @@ def _load_wti(src_file: str) -> pd.DataFrame:
         parse_dates=["DATE"],
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
     )
-    oil_price = oil_price.asfreq("D")
+    oil_price = oil_price.asfreq("B")
     return oil_price
 
 
@@ -94,6 +94,19 @@ def _check_df_equal(df1: pd.DataFrame, df2: pd.DataFrame) -> bool:
 def main(
     config: dict,
 ) -> None:
+    parser = lambda x: datetime.strptime(x, "%Y-%m-%d")
+    start_date, end_date = map(
+        parser,
+        (config["index.start_date"], config["index.end_date"])
+    )
+
+    def subset(x):
+        s = np.logical_and(
+            x.index >= start_date,
+            x.index <= end_date
+        )
+        return s
+
     df_lst = list()
     if config["oil.include"]:
         # Load crude oil price.
@@ -101,6 +114,8 @@ def main(
             src_file=config["oil.src"]
         )
         df_oil_price = df_oil_price.asfreq(config["index.master_freq"])
+
+        df_oil_price = df_oil_price[subset(df_oil_price)]
 
         df_lst.append(
             _generate_lags(
@@ -117,6 +132,8 @@ def main(
             radius=config["rpna.radius"]
         )
         df_rpna_oil = df_rpna_oil.asfreq(config["index.master_freq"])
+
+        df_rpna_oil = df_rpna_oil[subset(df_rpna_oil)]
 
         df_lst.append(
             _generate_lags(
@@ -148,14 +165,7 @@ def main(
     merged = pd.concat(df_lst, axis=1)
     merged = merged[sorted(merged.columns)]
 
-    # truncate date.
-    parser = lambda x: datetime.strptime(x, "%Y-%m-%d")
-    start_date, end_date = map(parser, (config["index.start_date"], config["index.end_date"]))
-    subset = np.logical_and(
-        merged.index >= start_date,
-        merged.index <= end_date
-    )
-    merged = merged[subset]
+    # merged = merged[subset]
     merged = merged.asfreq(config["index.master_freq"])
 
     # report summary
