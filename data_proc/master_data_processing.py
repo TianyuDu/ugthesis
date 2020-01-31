@@ -4,6 +4,7 @@ Aggregate data processing utility, generate the ready to use dataset.
 import argparse
 import json
 import os
+import warnings
 from datetime import datetime
 from typing import List, Union
 
@@ -92,7 +93,6 @@ def _check_df_equal(df1: pd.DataFrame, df2: pd.DataFrame) -> bool:
 
 def main(
     config: dict,
-    master_freq: str = "B"
 ) -> None:
     df_lst = list()
     if config["oil.include"]:
@@ -100,7 +100,7 @@ def main(
         df_oil_price = _load_wti(
             src_file=config["oil.src"]
         )
-        df_oil_price = df_oil_price.asfreq(master_freq)
+        df_oil_price = df_oil_price.asfreq(config["index.master_freq"])
 
         df_lst.append(
             _generate_lags(
@@ -108,7 +108,7 @@ def main(
                 config["oil.lags"]
             ))
     else:
-        raise UserWarning("Oil dataset is NOT included.")
+        warnings.warn("Oil dataset is NOT included.")
 
     if config["rpna.include"]:
         # Load RPNA dataset on crude oil.
@@ -116,7 +116,7 @@ def main(
             src_file=config["rpna.crude_oil.src"],
             radius=config["rpna.radius"]
         )
-        df_rpna_oil = df_rpna_oil.asfreq(master_freq)
+        df_rpna_oil = df_rpna_oil.asfreq(config["index.master_freq"])
 
         df_lst.append(
             _generate_lags(
@@ -124,14 +124,14 @@ def main(
                 config["rpna.lags"]
             ))
     else:
-        raise UserWarning("Oil dataset is NOT included.")
+        warnings.warn("RPNA dataset is NOT included.")
 
     if config["fred.include"]:
         # Load macro variables from Fred.
         df_macro = _load_macro(
             src_file=config["fred.src"]
         )
-        df_macro = df_macro.asfreq(master_freq)
+        df_macro = df_macro.asfreq(config["index.master_freq"])
 
         # NOTE: macro variables are already lagged variables
         # which indicate measures in the previous measuring period (e.g., month).
@@ -141,12 +141,25 @@ def main(
                 df_macro,
                 config["fred.lags"]
             ))
+    else:
+        warnings.warn("FRED dataset is NOT included.")
 
-    # Convert to business days.
-    # df_lst = [d.asfreq("B") for d in df_lst]
-
+    # Combine datasets
     merged = pd.concat(df_lst, axis=1)
     merged = merged[sorted(merged.columns)]
+
+    # truncate date.
+    parser = lambda x: datetime.strptime(x, "%Y-%m-%d")
+    start_date, end_date = map(parser, (config["index.start_date"], config["index.end_date"]))
+    subset = np.logical_and(
+        merged.index >= start_date,
+        merged.index <= end_date
+    )
+    merged = merged[subset]
+    merged = merged.asfreq(config["index.master_freq"])
+
+    # report summary
+    print(f"Percent of dates with missing data: {np.mean(merged.isnull().sum(axis=1) > 0) * 100}%")
     return merged
 
 
@@ -190,4 +203,5 @@ if __name__ == "__main__":
     # src = args.src
     # if not src.endswith("/"):
     #     src += "/"
+    config = __load_default_config()
     df = main(config)
