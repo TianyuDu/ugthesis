@@ -1,10 +1,16 @@
 {
+    "index.master_freq": "B",
+    "index.start_date": "2001-01-01",
+    "index.end_date": "2019-05-31",
+    "oil.include": true,
     "oil.src": "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/DCOILWTICO_FILLED.csv",
-    "oil.lags": 180,
+    "oil.lags": 36,
+    "rpna.include": true,
     "rpna.criterion": "WESS",
     "rpna.crude_oil.src": "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ravenpack/crude_oil_all.csv",
-    "rpna.lags": 180,
-    "rpna.radius": 1.0,
+    "rpna.lags": 36,
+    "rpna.radius": 0.5,
+    "fred.include": false,
     "fred.src": "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/fred/Crude_Oil_Macro_Indicators/",
     "fred.lags": 12
 }
