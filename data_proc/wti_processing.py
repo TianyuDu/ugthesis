@@ -13,7 +13,6 @@ import pandas as pd
 
 def compute_time_lags(
     df: pd.DataFrame,
-    # freq: str = "B",
     append_to_original: bool = False
 ) -> pd.DataFrame:
     """
