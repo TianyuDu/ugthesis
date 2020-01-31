@@ -134,7 +134,7 @@ def preprocessing(
     df_daily = df_daily.astype(np.float32)
 
     # Check for Nan values, should be no Nans.
-    if np.sum(df_daily.isna()) > 0:
+    if np.sum(np.sum(df_daily.isna())) > 0:
         num_missing = np.sum(df_daily.isna().sum(axis=1))
         warnings.warn(
             f"Dates with missing values: {num_missing}"
