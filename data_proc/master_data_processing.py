@@ -6,6 +6,7 @@ import json
 import os
 import warnings
 from datetime import datetime
+from pprint import pprint
 from typing import List, Union
 
 import numpy as np
@@ -94,19 +95,6 @@ def _check_df_equal(df1: pd.DataFrame, df2: pd.DataFrame) -> bool:
 def main(
     config: dict,
 ) -> None:
-    parser = lambda x: datetime.strptime(x, "%Y-%m-%d")
-    start_date, end_date = map(
-        parser,
-        (config["index.start_date"], config["index.end_date"])
-    )
-
-    def subset(x):
-        s = np.logical_and(
-            x.index >= start_date,
-            x.index <= end_date
-        )
-        return s
-
     df_lst = list()
     if config["oil.include"]:
         # Load crude oil price.
@@ -114,8 +102,6 @@ def main(
             src_file=config["oil.src"]
         )
         df_oil_price = df_oil_price.asfreq(config["index.master_freq"])
-
-        df_oil_price = df_oil_price[subset(df_oil_price)]
 
         df_lst.append(
             _generate_lags(
@@ -131,9 +117,10 @@ def main(
             src_file=config["rpna.crude_oil.src"],
             radius=config["rpna.radius"]
         )
+
         df_rpna_oil = df_rpna_oil.asfreq(config["index.master_freq"])
 
-        df_rpna_oil = df_rpna_oil[subset(df_rpna_oil)]
+        df_rpna_oil.fillna(0.0, inplace=True)
 
         df_lst.append(
             _generate_lags(
@@ -165,11 +152,30 @@ def main(
     merged = pd.concat(df_lst, axis=1)
     merged = merged[sorted(merged.columns)]
 
-    # merged = merged[subset]
+    # Select subset
+    def parser(x):
+        return datetime.strptime(x, "%Y-%m-%d")
+
+    start_date, end_date = map(
+        parser,
+        (config["index.start_date"], config["index.end_date"])
+    )
+
+    def subset(x):
+        s = np.logical_and(
+            x.index >= start_date,
+            x.index <= end_date
+        )
+        return s
+
+    merged = merged[subset(merged)]
+
+    # Format frequency and data type.
     merged = merged.asfreq(config["index.master_freq"])
+    merged = merged.astype(np.float32)
 
     # report summary
-    print(f"Percent of dates with missing data: {np.mean(merged.isnull().sum(axis=1) > 0) * 100}%")
+    __report_na(merged)
     return merged
 
 
@@ -208,7 +214,12 @@ def __validate_dataset(
 if __name__ == "__main__":
     # Add configuration.
     parser = argparse.ArgumentParser()
-    parser.add_argument("--save_to", default="./master_dataset.csv", type=str)
+    now_str = datetime.strftime(datetime.now(), "%D-%T")
+    parser.add_argument(
+        "--save_to",
+        default=f"./master_dataset_{now_str}.csv",
+        type=str
+    )
     parser.add_argument("--config", type=str)
     args = parser.parse_args()
     assert os.path.exists(args.config)
@@ -216,8 +227,12 @@ if __name__ == "__main__":
     with open(args.config, "r") as f:
         config = json.load(f)
         print(config)
+    print("==============CONFIG==============")
+    pprint(config)
+    print("====================================")
     # src = args.src
     # if not src.endswith("/"):
     #     src += "/"
-    config = __load_default_config()
+    # config = __load_default_config()
     df = main(config)
+    df.to_csv(args.save_to)
