@@ -45,7 +45,7 @@ def Kolmogorov_Smirnov_test(
         results = []
         for d2 in days:
             s1, s2 = collection[d1].values, collection[d2].values
-            stats, pval = ks_2samp(
+            stats, pval = stats.ks_2samp(
                 s1, s2,
                 alternative="two-sided",
                 mode="exact"
