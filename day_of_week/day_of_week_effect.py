@@ -124,7 +124,11 @@ def day_effect(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--fig_dir", type=str)
+    parser.add_argument(
+        "--fig_dir",
+        type=str,
+        default="/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/figures/day_of_week_effect"
+    )
     args = parser.parse_args()
 
     path = args.fig_dir
