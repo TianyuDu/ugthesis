@@ -2,13 +2,15 @@
 Jan. 31, 2019
 Processing utilities for crude oil price dataset.
 """
+from datetime import datetime
 from typing import Union
 
-from datetime import datetime
-
 import matplotlib.pyplot as plt
+
 import numpy as np
 import pandas as pd
+
+plt.style.use("grayscale")
 
 
 def compute_time_lags(
@@ -42,6 +44,67 @@ def compute_time_lags(
         return delta
 
 
+def compute_return(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Computes the accumulated return from last trading day.
+    """
+    raw = df["DCOILWTICO"].copy().dropna()
+    ret = pd.DataFrame(np.log(raw).diff().dropna())
+    ret.columns = ["RETURN"]
+    ret["DAY"] = ret.index.day_name()
+    return ret
+
+
+def day_effect(
+    df: pd.DataFrame,
+) -> None:
+    """
+    Generates a list of distributions based on days and delta values.
+    Test whether there are day effects.
+    """
+    df["DAY"] = df.index.day_name()
+
+    prices, returns = dict(), dict()
+    days = ["Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday", "Saturday", "Sunday"]
+
+    df_returns = compute_return(df)
+
+    for day in days:
+        p = df[df["DAY"] == day]["DCOILWTICO"]
+        prices[day] = p
+        r = df_returns[df_returns["DAY"] == day]["RETURN"]
+        returns[day] = r
+
+    assert sum(len(x) for x in prices.values()) == len(df)
+    assert sum(len(x) for x in returns.values()) == len(df_returns)
+
+    # Plot prices
+    for day in days:
+        if day not in ["Saturday", "Sunday"]:
+            fig, ax = plt.subplots()
+            ax.hist(
+                prices[day], bins=40, label="price"
+            )
+            plt.title(day)
+            ax.set_xlim([-20, 140])
+            plt.show()
+            plt.close()
+
+    # Plot returns.
+    for day in days:
+        if day not in ["Saturday", "Sunday"]:
+            fig, ax = plt.subplots()
+            plt.hist(
+                returns[day], bins=40, label="return"
+            )
+            plt.title(f"{day} (N={len(returns[day])})")
+            ax.set_xlim([-0.2, 0.2])
+            plt.legend()
+            plt.show()
+            plt.close()
+
+
 # ============ Testing Utilities ============
 def _report_missing_days(df: pd.DataFrame) -> None:
     """
@@ -60,4 +123,4 @@ if __name__ == "__main__":
         index_col=0
     )
     df = df.asfreq("D")
-
+    df = compute_time_lags(df, append_to_original=True)
