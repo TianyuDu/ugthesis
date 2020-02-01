@@ -124,6 +124,30 @@ def day_effect(
     return prices, returns
 
 
+def summary_stats(
+    collection: Dict[str, pd.DataFrame]
+) -> None:
+    """
+    Create summary statistics for prices/returns in
+    each day of week.
+    """
+    days = ["Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday"]
+    days_short = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    print("Day, N, mean, std, moment")
+    for d in days:
+        values = collection[d].dropna().values
+        print(
+            "{}, {}, {:0.3f}, {:0.3f}, {:0.7f}".format(
+                d,
+                len(collection[d].dropna()),
+                np.mean(values),
+                np.std(values),
+                moment(values, moment=3)
+            )
+        )
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
