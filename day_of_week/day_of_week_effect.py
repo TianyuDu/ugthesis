@@ -5,7 +5,7 @@ Jan. 31, 2019.
 """
 import argparse
 from datetime import datetime
-from typing import Dict, Union
+from typing import Dict, Union, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -57,7 +57,7 @@ def Kolmogorov_Smirnov_test(
 def day_effect(
     df: pd.DataFrame,
     path: Union[str, None],
-) -> None:
+) -> Tuple[dict]:
     """
     Generates a list of distributions based on days and delta values.
     Test whether there are day effects.
@@ -89,13 +89,13 @@ def day_effect(
             ax.hist(
                 prices[day], bins=40, label="price"
             )
-            plt.title(day)
+            plt.title(f"{day} (N={len(prices[day])})")
             ax.set_xlim([-20, 140])
             if path is None:
                 plt.show()
             else:
                 plt.savefig(
-                    path + f"{day}_prices.png",
+                    path + f"dist_prices_{day}.png",
                     bbox_inches="tight",
                     dpi=300
                 )
@@ -115,11 +115,13 @@ def day_effect(
                 plt.show()
             else:
                 plt.savefig(
-                    path + f"{day}_returns.png",
+                    path + f"dist_returns_{day}.png",
                     bbox_inches="tight",
                     dpi=300
                 )
             plt.close()
+
+    return prices, returns
 
 
 if __name__ == "__main__":
@@ -141,4 +143,10 @@ if __name__ == "__main__":
         index_col=0
     )
 
-    day_effect(df, path=path)
+    prices, returns = day_effect(df, path=path)
+
+    print("Kolmogorov Smirnov test on Prices")
+    Kolmogorov_Smirnov_test(prices)
+    print("\n")
+    print("Kolmogorov Smirnov test on Returns")
+    Kolmogorov_Smirnov_test(returns)
