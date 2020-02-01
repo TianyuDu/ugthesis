@@ -93,7 +93,12 @@ def day_effect(
             ax.set_xlim([-20, 140])
             if path is None:
                 plt.show()
-            else
+            else:
+                plt.savefig(
+                    path + f"{day}_prices.png",
+                    bbox_inches="tight",
+                    dpi=300
+                )
             plt.close()
 
     # Plot returns.
@@ -106,7 +111,14 @@ def day_effect(
             plt.title(f"{day} (N={len(returns[day])})")
             ax.set_xlim([-0.2, 0.2])
             plt.legend()
-            plt.show()
+            if path is None:
+                plt.show()
+            else:
+                plt.savefig(
+                    path + f"{day}_returns.png",
+                    bbox_inches="tight",
+                    dpi=300
+                )
             plt.close()
 
 
