@@ -64,16 +64,19 @@ def day_effect(
     """
     df["DAY"] = df.index.day_name()
 
-    prices, returns = dict(), dict()
     days = ["Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday", "Sunday"]
 
     df_returns = compute_return(df)
 
+    prices, returns = dict(), dict()
     for day in days:
-        p = df[df["DAY"] == day]["DCOILWTICO"]
+        mask = df["DAY"] == day
+        p = df[mask]["DCOILWTICO"]
         prices[day] = p
-        r = df_returns[df_returns["DAY"] == day]["RETURN"]
+
+        mask = df_returns["DAY"] == day
+        r = df_returns[mask]["RETURN"]
         returns[day] = r
 
     assert sum(len(x) for x in prices.values()) == len(df)
