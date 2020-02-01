@@ -1,4 +1,6 @@
 \babel@toc {english}{}
 \contentsline {section}{\numberline {1}Missing Data}{2}{section.1}% 
 \contentsline {section}{\numberline {2}Day of the Week Effect}{2}{section.2}% 
-\contentsline {section}{References}{4}{section*.2}% 
+\contentsline {subsection}{\numberline {2.1}Kolmogorov-Smirnov test for Distributional Similarities}{4}{subsection.2.1}% 
+\contentsline {section}{References}{5}{section*.2}% 
+\contentsline {section}{\numberline {3}Appendix}{5}{section.3}% 

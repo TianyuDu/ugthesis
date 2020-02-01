@@ -28,4 +28,55 @@ Gibbons, M\BPBI R.%
 \begin{APACrefDOI} \doi{10.1086/296147} \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
+\bibitem [\protect \citeauthoryear {%
+Hodges%
+}{%
+Hodges%
+}{%
+{\protect \APACyear {1958}}%
+}]{%
+Hodges1957}
+\APACinsertmetastar {%
+Hodges1957}%
+\begin{APACrefauthors}%
+Hodges, J\BPBI L.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1958}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{The significance probability of the smirnov two-sample
+  test}} {{The significance probability of the smirnov two-sample
+  test}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Arkiv för Matematik}{3}{5}{469--486}.
+\newblock
+\begin{APACrefDOI} \doi{10.1007/bf02589501} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Smirnov%
+}{%
+Smirnov%
+}{%
+{\protect \APACyear {1939}}%
+}]{%
+Smirnov1939}
+\APACinsertmetastar {%
+Smirnov1939}%
+\begin{APACrefauthors}%
+Smirnov, N.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1939}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{On the estimation of the discrepancy between empirical
+  curves of distribution for two independent samples}} {{On the estimation of
+  the discrepancy between empirical curves of distribution for two independent
+  samples}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Bulletin Moscow University}{2}{}{3--16}.
+\PrintBackRefs{\CurrentBib}
+
 \end{thebibliography}
