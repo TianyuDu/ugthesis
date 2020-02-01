@@ -55,6 +55,23 @@ def compute_return(df: pd.DataFrame) -> pd.DataFrame:
     return ret
 
 
+def Kolmogorov_Smirnov_test(
+    collection: Dict[str, pd.DataFrame]
+) -> None:
+    days = ["Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday"]
+    days_short = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    fmt = "{}  {}  {}  {}  {}  {}"
+    print(fmt.format("///", *[x + " " * 10 for x in days_short]))
+    for d1 in days:
+        results = []
+        for d2 in days:
+            s1, s2 = collection[d1].values, collection[d2].values
+            stats, pval = ks_2samp(s1, s2)
+            results.append(f"{stats:0.3f}({pval: 0.3f})")
+        print(fmt.format(d1[:3], *results))
+
+
 def day_effect(
     df: pd.DataFrame,
 ) -> None:
