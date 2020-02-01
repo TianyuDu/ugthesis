@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.5.8)  31 JAN 2020 20:39
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.5.8)  31 JAN 2020 22:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -790,46 +790,54 @@ Package: geometry 2018/04/16 v5.8 Page Geometry
 \Gm@dimlist=\toks40
 ) (/usr/local/texlive/2019/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2011/12/19 v6.7a set line spacing
-) (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/writeup/.texpadtmp/thesis.aux)
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/apacite/apacite.sty
+Package: apacite 2013/07/21 v6.03 APA citation
+\c@BibCnt=\count330
+\bibleftmargin=\skip58
+\bibindent=\skip59
+\bibparsep=\skip60
+\bibitemsep=\skip61
+\biblabelsep=\skip62
+) (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.aux)
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 37.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 37.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 40.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 40.
  (/usr/local/texlive/2019/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    ... okay on input line 40.
 \AtBeginShipoutBox=\box52
-Package hyperref Info: Link coloring OFF on input line 37.
+Package hyperref Info: Link coloring OFF on input line 40.
  (/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
  (/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count330
+\c@section@level=\count331
 )
-LaTeX Info: Redefining \ref on input line 37.
-LaTeX Info: Redefining \pageref on input line 37.
-LaTeX Info: Redefining \nameref on input line 37.
- (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/writeup/.texpadtmp/thesis.out) (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/writeup/.texpadtmp/thesis.out)
+LaTeX Info: Redefining \ref on input line 40.
+LaTeX Info: Redefining \pageref on input line 40.
+LaTeX Info: Redefining \nameref on input line 40.
+ (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.out) (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.out)
 \@outlinefile=\write3
 \openout3 = `thesis.out'.
 
@@ -868,14 +876,20 @@ LaTeX Info: Redefining \nameref on input line 37.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 39.
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsa.fd
+\c@maskedRefs=\count332
+(/usr/local/texlive/2019/texmf-dist/tex/latex/apacite/english.apc
+File: english.apc 2013/07/21 v6.03 apacite language file
+LaTeX Info: Redefining \BPBI on input line 129.
+LaTeX Info: Redefining \BHBI on input line 130.
+)
+LaTeX Font Info:    Try loading font information for U+msa on input line 42.
+ (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 39.
+LaTeX Font Info:    Try loading font information for U+msb on input line 42.
  (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/writeup/.texpadtmp/thesis.toc)
+) (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.toc)
 \tf@toc=\write4
 \openout4 = `thesis.toc'.
 
@@ -884,22 +898,33 @@ File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 ) [1
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 45.
- [2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 45.
- (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/writeup/.texpadtmp/thesis.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 45.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 45.
+File: figures/day_of_week_effect/dist_returns_Monday.png Graphic file (type bmp)
+<figures/day_of_week_effect/dist_returns_Monday.png>
+File: figures/day_of_week_effect/dist_returns_Tuesday.png Graphic file (type bmp)
+<figures/day_of_week_effect/dist_returns_Tuesday.png>
+File: figures/day_of_week_effect/dist_returns_Wednesday.png Graphic file (type bmp)
+<figures/day_of_week_effect/dist_returns_Wednesday.png>
+File: figures/day_of_week_effect/dist_returns_Thursday.png Graphic file (type bmp)
+<figures/day_of_week_effect/dist_returns_Thursday.png>
+File: figures/day_of_week_effect/dist_returns_Friday.png Graphic file (type bmp)
+<figures/day_of_week_effect/dist_returns_Friday.png>
+ [2] (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.bbl [3])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 80.
+ [4]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 80.
+ (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.aux)
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 80.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 80.
 Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: .
  ) 
 Here is how much of TeX's memory you used:
- 25709 strings out of 492916
- 466078 string characters out of 6133346
- 577421 words of memory out of 5000000
- 29494 multiletter control sequences out of 15000+600000
- 549500 words of font info for 112 fonts, out of 8000000 for 9000
+ 26200 strings out of 492916
+ 473334 string characters out of 6133346
+ 590137 words of memory out of 5000000
+ 29947 multiletter control sequences out of 15000+600000
+ 555378 words of font info for 136 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 46i,11n,69p,1022b,446s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 46i,12n,69p,1022b,456s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on /Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/writeup/.texpadtmp/thesis.pdf (2 pages).
+Output written on /Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.pdf (4 pages).

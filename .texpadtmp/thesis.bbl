@@ -1,0 +1,31 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Gibbons%
+\ \BBA {} Hess%
+}{%
+Gibbons%
+\ \BBA {} Hess%
+}{%
+{\protect \APACyear {1981}}%
+}]{%
+Hess1981}
+\APACinsertmetastar {%
+Hess1981}%
+\begin{APACrefauthors}%
+Gibbons, M\BPBI R.%
+\BCBT {}\ \BBA {} Hess, P.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1981}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{Day of the Week Effects and Asset Returns}} {{Day of
+  the Week Effects and Asset Returns}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{The Journal of Business}{54}{4}{579}.
+\newblock
+\begin{APACrefDOI} \doi{10.1086/296147} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}

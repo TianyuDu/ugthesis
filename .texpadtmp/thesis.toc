@@ -1,3 +1,4 @@
 \babel@toc {english}{}
 \contentsline {section}{\numberline {1}Missing Data}{2}{section.1}% 
 \contentsline {section}{\numberline {2}Day of the Week Effect}{2}{section.2}% 
+\contentsline {section}{References}{4}{section*.2}% 
