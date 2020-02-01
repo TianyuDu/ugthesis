@@ -3,12 +3,12 @@ Jan. 31, 2019
 Processing utilities for crude oil price dataset.
 """
 from datetime import datetime
-from typing import Union
+from typing import Dict, Union
 
 import matplotlib.pyplot as plt
-
 import numpy as np
 import pandas as pd
+from scipy.stats import ks_2samp
 
 plt.style.use("grayscale")
 
@@ -58,16 +58,27 @@ def compute_return(df: pd.DataFrame) -> pd.DataFrame:
 def Kolmogorov_Smirnov_test(
     collection: Dict[str, pd.DataFrame]
 ) -> None:
+    """
+    Kolmogorov Smirnov test to determine whether the distribution of oil prices or oil returns are from
+    the same distribution.
+
+    H0: G(x) = F(x)
+    """
     days = ["Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday"]
     days_short = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
     fmt = "{}  {}  {}  {}  {}  {}"
     print(fmt.format("///", *[x + " " * 10 for x in days_short]))
     for d1 in days:
         results = []
         for d2 in days:
             s1, s2 = collection[d1].values, collection[d2].values
-            stats, pval = ks_2samp(s1, s2)
+            stats, pval = ks_2samp(
+                s1, s2,
+                alternative="two-sided",
+                mode="exact"
+            )
             results.append(f"{stats:0.3f}({pval: 0.3f})")
         print(fmt.format(d1[:3], *results))
 
