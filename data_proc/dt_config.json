@@ -1,7 +1,7 @@
 {
     "index.master_freq": "B",
-    "index.start_date": "2001-01-01",
-    "index.end_date": "2019-05-31",
+    "index.start_date": "2000-01-01",
+    "index.end_date": "2019-09-30",
     "oil.include": true,
     "oil.src": "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/DCOILWTICO_FILLED.csv",
     "oil.lags": 36,
