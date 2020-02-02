@@ -63,6 +63,29 @@ def main(df: pd.DataFrame) -> None:
     print("================Overall================")
     report(df)
 
+    # Detailed reports on missing dates.
+    mask = df["DCOILWTICO"].isna()
+    # Missing WEEKdays, weekends are always missing.
+    df_missing = df[mask].copy()
+    df_missing["MONTH_DAY"] = df_missing.index.strftime(
+        "%m-%d")
+    fmt = "================{}================"
+    print(fmt.format("Missing Day"))
+    df_missing["MONTH_DAY"].describe()
+    print(fmt.format("Top 20 Missing Day"))
+    print(df_missing["MONTH_DAY"].value_counts().head(20))
+
+    print(fmt.format("Missing Day without Weekends"))
+    is_weekend = np.logical_or(
+        df_missing["DAY"] == "Saturday",
+        df_missing["DAY"] == "Sunday"
+    )
+    df_missing_weekedays = df_missing[np.logical_not(is_weekend)]
+    df_missing_weekedays["MONTH_DAY"].describe()
+    print(fmt.format("Top 20 Missing Day (exclude Weekends)"))
+    print(df_missing_weekedays["MONTH_DAY"].value_counts().head(20))
+    # Visualize Missing Values
+
 
 # ============ Testing Utilities ============
 def _report_missing_days(df: pd.DataFrame) -> None:
