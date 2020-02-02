@@ -46,14 +46,17 @@
 	\newpage
 
 	\section{Missing Data}
-	\paragraph{} This paper calculates crude oil returns on one particular day $t$ by taking the difference in logged prices at $t$ and the previous trading day:
+	\paragraph{} Because the focus is forecasting crude oil returns, which captures the difference between two consecutive prices, The missing data problem can be crucial here.
+
+	\par This paper calculates crude oil returns on one particular day $t$ by taking the difference in logged prices at $t$ and the previous trading day:
 	\begin{align}
 		r_t &:= \ln(p_t) - \ln(p_{t - \Delta})
 	\end{align}
 	where $t - \Delta$ is the last trading day before day $t$. As mentioned before, the time gap between two observed prices are not even. For instance, if $t$ is a Monday, then $r_t$ computes the crude oil return between the close price on Monday and the close price on Friday (with $\Delta = 3$). The value of $\Delta$ can be even larger with holidays.
 
-	\begin{table}
+	\begin{table}[H]
 		\center
+		\small
 		\begin{tabular}{|l|c c c c c c c|}
 			\hline
 			Day of the week & Num. Days. & Num. Trading Days & $\Delta$=1 & 2 & 3 & 4 & 5 \\
@@ -68,6 +71,16 @@
 			\hline
 			Total & 7211 & 4955 & 3895 & 30 & 883 & 130 & 17 \\
 			\hline
+		\end{tabular}
+		\caption{The values of $\Delta$ used to calculate returns. This table only include trading days, but the first day with price observation in this dataset was dropped because it did not have a previous trading day, so return on this day cannot by computed using our definition.}
+	\end{table}
+	\par As mentioned before, the oil price dataset does not have any prices over weekends. \hl{The table below} summarizes dates that are most frequently associated with a missing data over the span of 20 years.
+
+	\begin{table}
+		\small
+		\center
+		\begin{tabular}
+			
 		\end{tabular}
 		\caption{}
 	\end{table}
