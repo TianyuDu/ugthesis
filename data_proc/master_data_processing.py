@@ -95,6 +95,14 @@ def _check_df_equal(df1: pd.DataFrame, df2: pd.DataFrame) -> bool:
     assert all(out), "Value difference."
 
 
+def _add_target(
+    features: pd.DataFrame,
+    targets: Union[pd.DataFrame, pd.Series]
+) -> pd.DataFrame:
+    # TODO: do this.
+    raise NotImplementedError
+
+
 def main(
     config: dict,
 ) -> None:
