@@ -5,12 +5,12 @@ Jan. 31, 2019.
 """
 import argparse
 from datetime import datetime
-from typing import Dict, Union, Tuple
+from typing import Dict, Tuple, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from scipy.stats import ks_2samp
+from scipy.stats import ks_2samp, moment
 
 plt.style.use("grayscale")
 
@@ -168,7 +168,12 @@ if __name__ == "__main__":
     )
 
     prices, returns = day_effect(df, path=path)
-
+    print("Summary Statistics for Prices")
+    summary_stats(prices)
+    print("\n")
+    print("Summary Statistics for Returns")
+    summary_stats(returns)
+    print("\n")
     print("Kolmogorov Smirnov test on Prices")
     Kolmogorov_Smirnov_test(prices)
     print("\n")
