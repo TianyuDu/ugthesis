@@ -8,6 +8,9 @@ from typing import Dict, Union
 import numpy as np
 import pandas as pd
 
+# import matplotlib.pyplot as plt
+# plt.style.use("grayscale")
+
 
 def compute_time_lags(
     df: pd.DataFrame,
@@ -84,7 +87,6 @@ def main(df: pd.DataFrame) -> None:
     df_missing_weekedays["MONTH_DAY"].describe()
     print(fmt.format("Top 20 Missing Day (exclude Weekends)"))
     print(df_missing_weekedays["MONTH_DAY"].value_counts().head(20))
-    # Visualize Missing Values
 
 
 # ============ Testing Utilities ============
