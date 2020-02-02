@@ -131,6 +131,7 @@ def _save_results(
     if not path.endswith("/"):
         path += "/"
     for day, df in collection.items():
+        print(f"{day}: length: {len(df)}")
         df.to_csv(
             path + day + ".csv"
         )
