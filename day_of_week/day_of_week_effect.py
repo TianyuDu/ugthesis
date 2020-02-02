@@ -124,6 +124,18 @@ def day_effect(
     return prices, returns
 
 
+def _save_results(
+    collection: Dict[str, pd.DataFrame],
+    path: str
+) -> None:
+    if not path.endswith("/"):
+        path += "/"
+    for day, df in collection.items():
+        df.to_csv(
+            path + day + ".csv"
+        )
+
+
 def summary_stats(
     collection: Dict[str, pd.DataFrame]
 ) -> None:
