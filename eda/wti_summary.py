@@ -12,6 +12,30 @@ import statsmodels.api as sm
 plt.style.use("grayscale")
 
 
+def plot_overview(
+    df: pd.DataFrame,
+    returns: pd.DataFrame,
+    path: str
+) -> None:
+    plt.plot(df)
+    plt.xlabel("Date")
+    plt.ylabel("WTI Crude Oil Price")
+    plt.savefig(
+        path + "prices.png",
+        dpi=300,
+        bbox_inches="tight"
+    )
+
+    plt.plot(df)
+    plt.xlabel("Date")
+    plt.ylabel("Returns")
+    plt.savefig(
+        path + "returns.png",
+        dpi = 300,
+        bbox_inches = "tight"
+    )
+
+
 def summary(
     df: pd.DataFrame,
     path: str
