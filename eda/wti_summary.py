@@ -121,7 +121,7 @@ def plot_return_hist(
         fit=norm,
         fit_kws={"lw": 1, "label": "Gaussian Fit"},
         kde=True,
-        kde_kws={"lw": 1, "label": "KDE"},
+        kde_kws={"lw": 1, "label": "KDE", "linestyle": "--"},
         label=f"Returns (N={len(returns.values)})"
     )
     plt.legend()
