@@ -31,15 +31,15 @@ def acf_pacf(
     returns:
         DataFrame for returns.
     """
-    f = sm.tsa.graphics.plot_acf(df)
-    f.savefig(path + "prices_acf.png", dpi=300, bbox_inches="tight")
-    f = sm.tsa.graphics.plot_pacf(df)
-    f.savefig(path + "prices_pacf.png", dpi=300, bbox_inches="tight")
+    sm.tsa.graphics.plot_acf(df)
+    plt.savefig(path + "prices_acf.png", dpi=300, bbox_inches="tight")
+    sm.tsa.graphics.plot_pacf(df)
+    plt.savefig(path + "prices_pacf.png", dpi=300, bbox_inches="tight")
 
-    f = sm.tsa.graphics.plot_acf(returns)
-    f.savefig(path + "returns_acf.png", dpi=300, bbox_inches="tight")
-    f = sm.tsa.graphics.plot_pacf(returns)
-    f.savefig(path + "returns_pacf.png", dpi=300, bbox_inches="tight")
+    sm.tsa.graphics.plot_acf(returns)
+    plt.savefig(path + "returns_acf.png", dpi=300, bbox_inches="tight")
+    sm.tsa.graphics.plot_pacf(returns)
+    plt.savefig(path + "returns_pacf.png", dpi=300, bbox_inches="tight")
 
 
 def main(
