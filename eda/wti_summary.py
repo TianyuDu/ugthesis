@@ -9,19 +9,38 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 
-plt.style.use("graysclae")
+plt.style.use("grayscale")
 
 
-def main(
+def summary(
     df: pd.DataFrame,
     path: str
 ) -> None:
     raise NotImplementedError
 
 
+def acf_pacf(
+    df: pd.DataFrame,
+    path: str
+) -> None:
+    sm.tsa.graphics.plot_acf(df["DCOILWTICO"].dropna())
+    sm.tsa.graphics.plot_pacf(df["DCOILWTICO"].dropna())
+
+
+def main(
+    df: pd.DataFrame,
+    path: str
+) -> None:
+    filtered = df["DCOILWTICO"].dropna()
+    raise NotImplementedError
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--path", type=str)
+    parser.add_argument(
+        "--path", type=str,
+        default="/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/figures/wti_summary"
+    )
     args = parser.parse_args()
     path = args.path
     if not path.endswith("/"):
