@@ -107,6 +107,23 @@ def acf_pacf(
     plt.savefig(path + "returns_pacf.png", dpi=300, bbox_inches="tight")
 
 
+def plot_return_hist(
+    returns: pd.DataFrame,
+    path: str
+) -> None:
+    sns.distplot(
+        returns.values,
+        # bins=80,
+        fit=norm,
+        fit_kws={"lw": 1, "label": "Gaussian Fit"},
+        kde=True,
+        kde_kws={"lw": 1, "label": "KDE"},
+        label=f"Returns (N={len(returns.values)})"
+    )
+    plt.legend()
+    plt.savefig(path + "return_dist.png", dpi=300, bbox_inches="tight")
+
+
 def main(
     df: pd.DataFrame,
     path: str
