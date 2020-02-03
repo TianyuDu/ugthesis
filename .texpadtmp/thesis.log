@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.5.8)  2 FEB 2020 17:26
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2019.5.8)  2 FEB 2020 21:10
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -758,99 +758,15 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Try loading font information for U+msb on input line 45.
  (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.toc)
-\tf@toc=\write4
-\openout4 = `thesis.toc'.
-
- (/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
+) (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.toc (/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
 File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 ) [1
 
-]
-Runaway argument?
-./thesis.tex:83: Paragraph ended before \@array was complete.
-<to be read again> 
-                   \par 
-l.83 ^^I^^I^^I
-              
-I suspect you've forgotten a `}', causing me to apply this
-control sequence to too much text. How can we recover?
-My plan is to forget the whole thing and hope for the best.
+])
+\tf@toc=\write4
+\openout4 = `thesis.toc'.
 
-./thesis.tex:83: Missing $ inserted.
-<inserted text> 
-                $
-l.83 ^^I^^I^^I
-              
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-./thesis.tex:83: Missing } inserted.
-<inserted text> 
-                }
-l.83 ^^I^^I^^I
-              
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-./thesis.tex:84: Misplaced \crcr.
-\endtabular ->\crcr 
-                    \egroup \egroup $\egroup 
-l.84 ^^I^^I\end{tabular}
-                        
-I can't figure out why you would want to use a tab mark
-or \cr or \span just now. If something like a right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-./thesis.tex:84: Extra }, or forgotten \endgroup.
-\endtabular ->\crcr \egroup 
-                            \egroup $\egroup 
-l.84 ^^I^^I\end{tabular}
-                        
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-./thesis.tex:84: Extra }, or forgotten \endgroup.
-\endtabular ->\crcr \egroup \egroup 
-                                    $\egroup 
-l.84 ^^I^^I\end{tabular}
-                        
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-./thesis.tex:84: Extra }, or forgotten $.
-<recently read> \egroup 
-                        
-l.84 ^^I^^I\end{tabular}
-                        
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-./thesis.tex:84: Missing $ inserted.
-<inserted text> 
-                $
-l.84 ^^I^^I\end{tabular}
-                        
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
+ [2] [3] [4]
 File: figures/day_of_week_effect/dist_returns_Monday.png Graphic file (type bmp)
 <figures/day_of_week_effect/dist_returns_Monday.png>
 File: figures/day_of_week_effect/dist_returns_Tuesday.png Graphic file (type bmp)
@@ -861,23 +777,41 @@ File: figures/day_of_week_effect/dist_returns_Thursday.png Graphic file (type bm
 <figures/day_of_week_effect/dist_returns_Thursday.png>
 File: figures/day_of_week_effect/dist_returns_Friday.png Graphic file (type bmp)
 <figures/day_of_week_effect/dist_returns_Friday.png>
-[2] [3] [4] (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 178.
- [5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 178.
+ [5] [6] [7]
+Overfull \hbox (2.98448pt too wide) in paragraph at lines 193--194
+\TU/TimesNewRoman(0)/m/n/12 Newswires, Wall Street Journal, Barron’s and MarketWatch ranges from January 1, 2000, to Septem-
+ []
+
+[8]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 205.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\sim' on input line 205.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 205.
+
+(/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.bbl [9])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 217.
+ [10]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 217.
  (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 178.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 178.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 217.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 217.
 Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: .
  ) 
 Here is how much of TeX's memory you used:
- 24302 strings out of 492916
- 446668 string characters out of 6133346
- 588499 words of memory out of 5000000
- 28102 multiletter control sequences out of 15000+600000
+ 24304 strings out of 492916
+ 446700 string characters out of 6133346
+ 588498 words of memory out of 5000000
+ 28104 multiletter control sequences out of 15000+600000
  544924 words of font info for 102 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 40i,11n,68p,1022b,446s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 40i,11n,68p,1182b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on /Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.pdf (5 pages).
+Output written on /Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.pdf (10 pages).
