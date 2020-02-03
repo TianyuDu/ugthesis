@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 
+
 plt.style.use("grayscale")
 
 
@@ -17,10 +18,19 @@ def plot_overview(
     returns: pd.DataFrame,
     path: str
 ) -> None:
+    # US Recession dates.
+    rece2k1_bgn = datetime(2001, 3, 1)
+    rece2k1_end = datetime(2001, 11, 1)
+
+    rece2k8_bgn = datetime(2007, 12, 1)
+    rece2k8_end = datetime(2009, 6, 1)
+
     fig, ax = plt.subplots(figsize=(9, 3))
     ax.plot(df)
     plt.xlabel("Date")
     plt.ylabel("WTI Crude Oil Price")
+    ax.axvspan(rece2k1_bgn, rece2k1_end, alpha=0.3)
+    ax.axvspan(rece2k8_bgn, rece2k8_end, alpha=0.3)
     plt.savefig(
         path + "prices.png",
         dpi=300,
@@ -32,6 +42,8 @@ def plot_overview(
     ax.plot(returns)
     plt.xlabel("Date")
     plt.ylabel("Returns")
+    ax.axvspan(rece2k1_bgn, rece2k1_end, alpha=0.3)
+    ax.axvspan(rece2k8_bgn, rece2k8_end, alpha=0.3)
     plt.savefig(
         path + "returns.png",
         dpi = 300,
@@ -98,8 +110,16 @@ def main(
     path: str
 ) -> None:
     print("Processing dataset...")
+    print(f"Raw dataset length: {len(df)}")
     filtered = df["DCOILWTICO"].dropna()
+    print(f"Valid dataset length: {len(filtered)}")
     returns = np.log(filtered).diff().dropna().rename("RETURN")
+    print(f"Return dataset length: {len(returns)}")
+
+    print("======== Summary Statistics for Prices ========")
+    summary(df)
+    print("======== Summary Statistics for Returns ========")
+    summary(returns)
 
     print("Plotting overview...")
     plot_overview(filtered, returns, path=path)
