@@ -57,7 +57,7 @@ def summary(
         _min, _max = np.min(values), np.max(values)
         acfs = sm.tsa.acf(values, fft=False)
         # Report
-        print(f"{year} & {N} & {mean:0.3f} & {median:0.3f} & {std:0.3f} & {_min:0.3f} & {_max:0.3f} & {acfs[1]:0.3f} & {acfs[3]:0.3f} & {acfs[5]:0.3f}")
+        print(f"{year} & {N} & {mean:0.3f} & {median:0.3f} & {std:0.3f} & {_min:0.3f} & {_max:0.3f} & {acfs[1]:0.3f} & {acfs[3]:0.3f} & {acfs[5]:0.3f} \\\\")
 
     print("======== Year Distribution ========")
     print("Year & Num. Obs. & Mean & Median & Std. & Min & Max & ACF(1) & ACF(3) & ACF(5) \\\\")
