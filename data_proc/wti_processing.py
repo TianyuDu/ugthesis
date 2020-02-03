@@ -71,12 +71,12 @@ def main(df: pd.DataFrame) -> None:
     # Missing WEEKdays, weekends are always missing.
     df_missing = df[mask].copy()
     df_missing["MONTH_DAY"] = df_missing.index.strftime(
-        "%m-%d")
+        "%B-%d")
     fmt = "================{}================"
     print(fmt.format("Missing Day"))
     df_missing["MONTH_DAY"].describe()
     print(fmt.format("Top 20 Missing Day"))
-    print(df_missing["MONTH_DAY"].value_counts().head(20))
+    print(df_missing["MONTH_DAY"].value_counts().head(40))
 
     print(fmt.format("Missing Day without Weekends"))
     is_weekend = np.logical_or(
@@ -86,7 +86,7 @@ def main(df: pd.DataFrame) -> None:
     df_missing_weekedays = df_missing[np.logical_not(is_weekend)]
     df_missing_weekedays["MONTH_DAY"].describe()
     print(fmt.format("Top 20 Missing Day (exclude Weekends)"))
-    print(df_missing_weekedays["MONTH_DAY"].value_counts().head(20))
+    print(df_missing_weekedays["MONTH_DAY"].value_counts().head(40))
 
 
 # ============ Testing Utilities ============
