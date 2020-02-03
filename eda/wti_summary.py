@@ -21,10 +21,25 @@ def summary(
 
 def acf_pacf(
     df: pd.DataFrame,
+    returns: pd.DataFrame,
     path: str
 ) -> None:
-    sm.tsa.graphics.plot_acf(df["DCOILWTICO"].dropna())
-    sm.tsa.graphics.plot_pacf(df["DCOILWTICO"].dropna())
+    """
+    Plots the ACF and PACF of two main datasets.
+    df:
+        DataFrame for prices.
+    returns:
+        DataFrame for returns.
+    """
+    f = sm.tsa.graphics.plot_acf(df)
+    f.savefig(path + "prices_acf.png", dpi=300, bbox_inches="tight")
+    f = sm.tsa.graphics.plot_pacf(df)
+    f.savefig(path + "prices_pacf.png", dpi=300, bbox_inches="tight")
+
+    f = sm.tsa.graphics.plot_acf(returns)
+    f.savefig(path + "returns_acf.png", dpi=300, bbox_inches="tight")
+    f = sm.tsa.graphics.plot_pacf(returns)
+    f.savefig(path + "returns_pacf.png", dpi=300, bbox_inches="tight")
 
 
 def main(
