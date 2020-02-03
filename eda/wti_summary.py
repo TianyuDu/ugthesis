@@ -97,11 +97,13 @@ def acf_pacf(
     returns:
         DataFrame for returns.
     """
+    plt.close()
     sm.tsa.graphics.plot_acf(df)
     plt.savefig(path + "prices_acf.png", dpi=300, bbox_inches="tight")
     sm.tsa.graphics.plot_pacf(df)
     plt.savefig(path + "prices_pacf.png", dpi=300, bbox_inches="tight")
 
+    plt.close()
     sm.tsa.graphics.plot_acf(returns)
     plt.savefig(path + "returns_acf.png", dpi=300, bbox_inches="tight")
     sm.tsa.graphics.plot_pacf(returns)
@@ -112,6 +114,7 @@ def plot_return_hist(
     returns: pd.DataFrame,
     path: str
 ) -> None:
+    plt.close()
     sns.distplot(
         returns.values,
         # bins=80,
@@ -141,14 +144,17 @@ def main(
     print("======== Summary Statistics for Returns ========")
     summary(returns)
 
+    print("Plotting Return Distribution Contrast...")
+    plt.close()
+    plot_return_hist(returns, path=path)
+
     print("Plotting overview...")
     plot_overview(filtered, returns, path=path)
 
     print("Plotting ACF and PACF for prices and returns...")
     acf_pacf(filtered, returns, path=path)
 
-    print("Plotting Return Distribution Contrast")
-    plot_return_hist(returns)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
