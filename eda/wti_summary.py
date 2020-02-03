@@ -26,9 +26,10 @@ def plot_overview(
     rece2k8_end = datetime(2009, 6, 1)
 
     fig, ax = plt.subplots(figsize=(9, 3))
-    ax.plot(df)
+    ax.plot(df, label="Price")
     plt.xlabel("Date")
     plt.ylabel("WTI Crude Oil Price")
+    plt.legend(loc="upper right")
     ax.axvspan(rece2k1_bgn, rece2k1_end, alpha=0.3)
     ax.axvspan(rece2k8_bgn, rece2k8_end, alpha=0.3)
     plt.savefig(
@@ -39,9 +40,10 @@ def plot_overview(
     plt.close()
 
     fig, ax = plt.subplots(figsize=(9, 3))
-    ax.plot(returns)
+    ax.plot(returns, label="return")
     plt.xlabel("Date")
     plt.ylabel("Returns")
+    plt.legend(loc="upper right")
     ax.axvspan(rece2k1_bgn, rece2k1_end, alpha=0.3)
     ax.axvspan(rece2k8_bgn, rece2k8_end, alpha=0.3)
     plt.savefig(
