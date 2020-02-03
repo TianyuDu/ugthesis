@@ -41,11 +41,33 @@ def plot_overview(
 
 
 def summary(
-    df: pd.DataFrame,
-    returns: pd.DataFrame,
-    path: str
+    df: pd.DataFrame
 ) -> None:
-    raise NotImplementedError
+    YEARS = list(range(
+        int(min(df.index.strftime("%Y"))),
+        int(max(df.index.strftime("%Y"))) + 1
+    ))
+
+    def core(values: np.ndarray, year: str) -> None:
+        # Compute stats
+        N = len(values)
+        mean = np.mean(values)
+        median = np.median(values)
+        std = np.std(values)
+        _min, _max = np.min(values), np.max(values)
+        acfs = sm.tsa.acf(values, fft=False)
+        # Report
+        print(f"{year} & {N} & {mean:0.3f} & {median:0.3f} & {std:0.3f} & {_min:0.3f} & {_max:0.3f} & {acfs[1]:0.3f} & {acfs[3]:0.3f} & {acfs[5]:0.3f}")
+
+    print("======== Year Distribution ========")
+    print("Year & Num. Obs. & Mean & Median & Std. & Min & Max & ACF(1) & ACF(3) & ACF(5) \\\\")
+    for y in YEARS:
+        year_index = df.index.strftime("%Y")
+        mask = year_index == str(y)
+        current_year = df[mask].dropna()  # care about valid data only.
+        core(current_year.values.squeeze(), year=str(y))
+    print("======== Total Distribution ========")
+    core(df.dropna().values.squeeze(), year="Total")
 
 
 def acf_pacf(
