@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.stats import ks_2samp, moment
+import seaborn as sns
 
 plt.style.use("grayscale")
 
@@ -87,7 +88,7 @@ def day_effect(
         if day not in ["Saturday", "Sunday"]:
             fig, ax = plt.subplots()
             ax.hist(
-                prices[day], bins=40, label="price"
+                prices[day], bins=40, label="price", alpha=0.5
             )
             plt.title(f"{day} (N={len(prices[day])})")
             ax.set_xlim([-20, 140])
@@ -106,7 +107,7 @@ def day_effect(
         if day not in ["Saturday", "Sunday"]:
             fig, ax = plt.subplots()
             plt.hist(
-                returns[day], bins=40, label="return"
+                returns[day], bins=40, label="return", alpha=0.5
             )
             plt.title(f"{day} (N={len(returns[day])})")
             ax.set_xlim([-0.2, 0.2])
