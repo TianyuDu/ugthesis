@@ -155,7 +155,6 @@ def main(
     acf_pacf(filtered, returns, path=path)
 
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
