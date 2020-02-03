@@ -17,7 +17,8 @@ def plot_overview(
     returns: pd.DataFrame,
     path: str
 ) -> None:
-    plt.plot(df)
+    fig, ax = plt.subplots(figsize=(9, 3))
+    ax.plot(df)
     plt.xlabel("Date")
     plt.ylabel("WTI Crude Oil Price")
     plt.savefig(
@@ -25,8 +26,10 @@ def plot_overview(
         dpi=300,
         bbox_inches="tight"
     )
+    plt.close()
 
-    plt.plot(df)
+    fig, ax = plt.subplots(figsize=(9, 3))
+    ax.plot(returns)
     plt.xlabel("Date")
     plt.ylabel("Returns")
     plt.savefig(
@@ -34,10 +37,12 @@ def plot_overview(
         dpi = 300,
         bbox_inches = "tight"
     )
+    plt.close()
 
 
 def summary(
     df: pd.DataFrame,
+    returns: pd.DataFrame,
     path: str
 ) -> None:
     raise NotImplementedError
@@ -70,15 +75,22 @@ def main(
     df: pd.DataFrame,
     path: str
 ) -> None:
+    print("Processing dataset...")
     filtered = df["DCOILWTICO"].dropna()
-    raise NotImplementedError
+    returns = np.log(filtered).diff().dropna().rename("RETURN")
+
+    print("Plotting overview...")
+    plot_overview(filtered, returns, path=path)
+
+    print("Plotting ACF and PACF for prices and returns...")
+    acf_pacf(filtered, returns, path=path)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--path", type=str,
-        default="/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/figures/wti_summary"
+        default="/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/figures/wti_summary/"
     )
     args = parser.parse_args()
     path = args.path
@@ -89,3 +101,4 @@ if __name__ == "__main__":
         date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
         index_col=0
     )
+    main(df, path=path)
