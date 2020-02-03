@@ -7,8 +7,9 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import statsmodels.api as sm
-
+from scipy.stats import norm
 
 plt.style.use("grayscale")
 
@@ -121,7 +122,7 @@ def plot_return_hist(
         label=f"Returns (N={len(returns.values)})"
     )
     plt.legend()
-    plt.savefig(path + "return_dist.png", dpi=300, bbox_inches="tight")
+    plt.savefig(path + "return_hist.png", dpi=300, bbox_inches="tight")
 
 
 def main(
@@ -146,6 +147,8 @@ def main(
     print("Plotting ACF and PACF for prices and returns...")
     acf_pacf(filtered, returns, path=path)
 
+    print("Plotting Return Distribution Contrast")
+    plot_return_hist(returns)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
