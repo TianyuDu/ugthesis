@@ -20,15 +20,15 @@
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{3}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {2}Data}{3}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{}{3}{section*.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}The West Texas Intermediate Crude Oil Dataset}{3}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}The West Texas Intermediate (WTI) Crude Oil Dataset}{3}{subsection.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{}{3}{section*.3}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Crude oil prices and returns between January 1, 2000 and September 30, 2019. Shaded areas indicate U.S. recessions.}}{4}{figure.1}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Summary Statistics for Crude Oil Returns in each Year. Note that this dataset only include nine months of 2019.}}{5}{table.1}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces ACF and PACF for Crude Oil Prices (January 2000 to September 2019)}}{5}{figure.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces ACF and PACF for Crude Oil Returns ((January 2000 to September 2019))}}{6}{figure.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \texthl  {TODO:} \emph  {{}}}}{6}{figure.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Missing Data in Crude Oil Dataset}{6}{subsection.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{}{6}{section*.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces ACF and PACF for Crude Oil Returns (January 2000 to September 2019)}}{6}{figure.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Distribution of Crude Oil Returns (January 2000 to September 2019). KDE stands for the kernel density estimation for the empirical distribution. Gaussian fit plots the density function of $\mathcal  {{N}}(\mathaccentV {hat}65E{\mu }_\text  {{sample}}, \mathaccentV {hat}65E{\sigma }_\text  {{sample}})$.}}{6}{figure.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Missing Data in Crude Oil Dataset}{7}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{}{7}{section*.4}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces The values of $\Delta $ used to calculate returns. This table only include trading days, but the first day with price observation in this dataset was dropped because it did not have a previous trading day, so return on this day cannot by computed using our definition.}}{7}{table.2}\protected@file@percent }
 \citation{Hess1981}
 \@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Dates most frequently associates with missing data. Data on January 1, July 4, and December 25 are missing ever year. Because the entire dataset ranges from January 3, 2000 to September 30, 2019, missing data problems on December 25 are only reported 19 times.}}{8}{table.3}\protected@file@percent }
@@ -44,21 +44,27 @@
 \@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces The Kolmogorov-Smirnov $D$-Statistic for all pairs of distributions. Bold font indicates the null hypothesis is rejected at a significance level of 0.05, which implies discrepancy in distributions.}}{11}{table.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4}News and Sentiment Datasets}{11}{subsection.2.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{}{11}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Classifying News Type}{13}{subsection.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Case Studies of Events}{13}{subsection.2.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.1}Positive Spike on November 30, 2016}{13}{subsubsection.2.6.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces }}{13}{figure.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.2}Negative Spike on December 6, 2018}{14}{subsubsection.2.6.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces }}{14}{figure.7}\protected@file@percent }
 \bibstyle{apacite}
 \bibdata{thesis.bib}
 \bibcite{Hess1981}{\citeauthoryear {Gibbons\ \BBA{} Hess}{Gibbons\ \BBA{} Hess}{{\APACyear {1981}}}}
 \APACbibcite{Hess1981}{\citeauthoryear {Gibbons\ \BBA{} Hess}{Gibbons\ \BBA{} Hess}{{\APACyear {1981}}}}
 \bibcite{Hodges1957}{\citeauthoryear {Hodges}{Hodges}{{\APACyear {1958}}}}
 \APACbibcite{Hodges1957}{\citeauthoryear {Hodges}{Hodges}{{\APACyear {1958}}}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Classifying News Type}{12}{subsection.2.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Case Studies of Events}{12}{subsection.2.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.1}Positive Spike on November 30, 2016}{12}{subsubsection.2.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.2}Negative Spike on December 6, 2018}{12}{subsubsection.2.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.3}Positive Spike on June. 12 - 13, 2019}{12}{subsubsection.2.6.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Models}{12}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{12}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{12}{section*.7}\protected@file@percent }
 \bibcite{Smirnov1939}{\citeauthoryear {Smirnov}{Smirnov}{{\APACyear {1939}}}}
 \APACbibcite{Smirnov1939}{\citeauthoryear {Smirnov}{Smirnov}{{\APACyear {1939}}}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Appendix: Supplementary Summary Statistics for Datasets}{13}{section.5}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Summary Statistics for Crude Oil Prices. Note that this dataset only include nine months of 2019.}}{13}{table.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.3}Positive Spike on June. 12 - 13, 2019}{15}{subsubsection.2.6.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces }}{15}{figure.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Models}{15}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{15}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{15}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Appendix: Supplementary Summary Statistics for Datasets}{16}{section.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Summary Statistics for Crude Oil Prices. Note that this dataset only include nine months of 2019.}}{16}{table.7}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces }}{17}{figure.9}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces }}{18}{figure.10}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces }}{19}{figure.11}\protected@file@percent }

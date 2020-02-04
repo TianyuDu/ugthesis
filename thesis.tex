@@ -37,7 +37,7 @@
 % Bib package
 \usepackage{apacite}
 
-\title{Title \footnote{Compile Date: \currenttime\ \today}}
+\title{Forecasting Crude Oil Returns using News Sentiment and Machine Learning \footnote{Compile Date: \currenttime\ \today}}
 
 \author{Tianyu Du \footnote{\texttt{tianyu.du@mail.utoronto.ca}}}
 
@@ -50,12 +50,13 @@
 	\section{Data}
 	\paragraph{}This study involves three major datasets: i) the daily spot price of crude oil at the West Texas Intermediate (WTI), ii) news sentiment dataset from Ravenpack News Analytics (RPNA), and iii) macroeconomic indicators proxying the overall economic state.
 
-	\subsection{The West Texas Intermediate Crude Oil Dataset}
+	\subsection{The West Texas Intermediate (WTI) Crude Oil Dataset}
 	\paragraph{}West Texas Intermediate market spot price (coded as DCOILWTICO in the st. Louis Federal Reserve Economic Data) has been the most commonly used price for crude oil in current literature. The dataset retrieved from the Federal Reserve Bank of St. Louis is measured on a daily level and spans from January 1986 up to the present day (citation: data series). Because of the limited availability of the RavenPack dataset, this paper focuses only on crude oil prices after January 1, 2000. Analysis of the crude oil market (citation: 40-year paper) shows the spot price is highly responsive to news and other macroeconomic shocks, which is exactly the tricky part of forecasting financial time series. If the proposed forecasting pipeline performs well on the crude dataset, such a pipeline is conceivably promising on other datasets as well.
 
 	\par Almost all financial time series suffers from missing data problem, so is the crude oil dataset. Much existing research studying stock market datasets simply drop missing values. Instead, this paper uses an autoregressive integrated moving average (ARIMA) model to interpolate and fill missing data, so that the time gap between two consecutive observations is exactly one trading day. 
 
 	\begin{figure}[H]
+		\small
 		\centering
 		\includegraphics[width=\linewidth]{figures/wti_summary/prices.png}
 		\includegraphics[width=\linewidth]{figures/wti_summary/returns.png}
@@ -99,6 +100,7 @@
 	
 	
 	\begin{figure}[H]
+		\small
 		\centering
 		\includegraphics[width=0.45\linewidth]{figures/wti_summary/prices_acf.png}
 		\includegraphics[width=0.45\linewidth]{figures/wti_summary/prices_pacf.png}
@@ -106,17 +108,18 @@
 	\end{figure}
 
 	\begin{figure}[H]
+		\small
 		\centering
 		\includegraphics[width=0.45\linewidth]{figures/wti_summary/returns_acf.png}
 		\includegraphics[width=0.45\linewidth]{figures/wti_summary/returns_pacf.png}
-		\caption{ACF and PACF for Crude Oil Returns ((January 2000 to September 2019))}
+		\caption{ACF and PACF for Crude Oil Returns (January 2000 to September 2019)}
 	\end{figure}
 
 	\begin{figure}[H]
 		\centering
 		\includegraphics{figures/wti_summary/return_hist.png}
-		\caption{\todo{}}
-	\end{figure}	
+		\caption{Distribution of Crude Oil Returns (January 2000 to September 2019). KDE stands for the kernel density estimation for the empirical distribution. Gaussian fit plots the density function of $\mc{N}(\hat{\mu}_\tx{sample}, \hat{\sigma}_\tx{sample})$.}
+	\end{figure}
 
 	\subsection{Missing Data in Crude Oil Dataset}
 	\paragraph{} Given the focus of this paper is on forecasting crude oil returns, which captures the difference between two consecutive prices, The missing data problem can be crucial here.
@@ -174,6 +177,7 @@
 	\hl{Panels in the figrure below} demonstrate the empirical distributions of returns on each day of the week. We can see that Monday and Wednesday have relatively larger variances, which again matches Gibbons and Hess' observations.
 	\begin{figure}[H]
 		\centering
+		\small
 		\includegraphics[width=0.45\linewidth]{figures/day_of_week_effect/dist_returns_Monday.png}
 		\includegraphics[width=0.45\linewidth]{figures/day_of_week_effect/dist_returns_Tuesday.png}
 		\includegraphics[width=0.45\linewidth]{figures/day_of_week_effect/dist_returns_Wednesday.png}
@@ -262,10 +266,28 @@
 	
 	\subsection{Case Studies of Events}
 	\subsubsection{Positive Spike on November 30, 2016}
+	\begin{figure}[H]
+		\centering
+		\small
+		\includegraphics[width=\linewidth]{figures/case_studies/20161130_10d.png}
+		\caption{}
+	\end{figure}
 	
 	\subsubsection{Negative Spike on December 6, 2018}
+	\begin{figure}[H]
+		\centering
+		\small
+		\includegraphics[width=\linewidth]{figures/case_studies/20181206_10d.png}
+		\caption{}
+	\end{figure}
 	
 	\subsubsection{Positive Spike on June. 12 - 13, 2019}
+	\begin{figure}[H]
+		\centering
+		\small
+		\includegraphics[width=\linewidth]{figures/case_studies/20190612_10d.png}
+		\caption{}
+	\end{figure}
 	\section{Models}
 	
 	\section{Experiments}
@@ -309,6 +331,25 @@
 		\end{tabular}
 		\caption{Summary Statistics for Crude Oil Prices. Note that this dataset only include nine months of 2019.}
 	\end{table}
+	
+	\begin{figure}[H]
+		\centering
+		\small
+		\includegraphics[width=\linewidth]{figures/case_studies/20161130_45d.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[H]
+		\centering
+		\small
+		\includegraphics[width=\linewidth]{figures/case_studies/20181206_45d.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[H]
+		\centering
+		\small
+		\includegraphics[width=\linewidth]{figures/case_studies/20190612_45d.png}
+		\caption{}
+	\end{figure}
 \end{document}
 
 
