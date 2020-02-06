@@ -48,13 +48,14 @@
 	\section{Introduction}
 	
 	\section{Data}
-	\paragraph{}This study involves three major datasets: i) the daily spot price of crude oil at the West Texas Intermediate (WTI), ii) news sentiment dataset from Ravenpack News Analytics (RPNA), and iii) macroeconomic indicators proxying the overall economic state.
+	\paragraph{}In order to identify the predictive power of sentiment data on crude oil returns, this study involves three major datasets, a the daily spot price of crude oil at the West Texas Intermediate (WTI) from which returns are computed, ii) a news sentiment dataset from Ravenpack News Analytics (RPNA), and iii) other macroeconomic indicators proxying the overall economic background.
 
 	\subsection{The West Texas Intermediate (WTI) Crude Oil Dataset}
-	\paragraph{}West Texas Intermediate market spot price (coded as DCOILWTICO in the st. Louis Federal Reserve Economic Data) has been the most commonly used price for crude oil in current literature. The dataset retrieved from the Federal Reserve Bank of St. Louis is measured on a daily level and spans from January 1986 up to the present day (citation: data series). Because of the limited availability of the RavenPack dataset, this paper focuses only on crude oil prices after January 1, 2000. Analysis of the crude oil market (citation: 40-year paper) shows the spot price is highly responsive to news and other macroeconomic shocks, which is exactly the tricky part of forecasting financial time series. If the proposed forecasting pipeline performs well on the crude dataset, such a pipeline is conceivably promising on other datasets as well.
+%	\paragraph{}West Texas Intermediate market spot price (coded as DCOILWTICO in the st. Louis Federal Reserve Economic Data) has been the most commonly used price for crude oil in current literature. The dataset retrieved from the Federal Reserve Bank of St. Louis is measured on a daily level and spans from January 1986 up to the present day (citation: data series). Because of the limited availability of the RavenPack dataset, this paper focuses only on crude oil prices after January 1, 2000. Analysis of the crude oil market (citation: 40-year paper) shows the spot price is higuly responsive to news and other macroeconomic shocks, which is exactly the tricky part of forecasting financial time series. If the proposed forecasting pipeline performs well on the crude dataset, such a pipeline is conceivably promising on other datasets as well.
+	
+%	\par Almost all financial time series suffers from missing data problem, so is the crude oil dataset. Much existing research studying stock market datasets simply drop missing values. Instead, this paper uses an autoregressive integrated moving average (ARIMA) model to interpolate and fill missing data, so that the time gap between two consecutive observations is exactly one trading day. 
 
-	\par Almost all financial time series suffers from missing data problem, so is the crude oil dataset. Much existing research studying stock market datasets simply drop missing values. Instead, this paper uses an autoregressive integrated moving average (ARIMA) model to interpolate and fill missing data, so that the time gap between two consecutive observations is exactly one trading day. 
-
+	\subsection{Summary Statistics of Crude Oil Dataset}
 	\begin{figure}[H]
 		\small
 		\centering
@@ -63,7 +64,7 @@
 		\caption{Crude oil prices and returns between January 1, 2000 and September 30, 2019. Shaded areas indicate U.S. recessions.}
 	\end{figure}
 
-	\par From the \hl{the table below} we can see that the mean return for crude oil are around zero year by year. During periods of recessions (March 2001 to November 2001 and December 2007 to June 2009), the data exhibited negative mean returns as well as relatively high standard deviations.
+	\par From the \textbf{the table below} we can see that the mean returns for crude oil are around zero year by year. During periods of recessions (March 2001 to November 2001 and December 2007 to June 2009), the data exhibited negative mean returns as well as relatively high standard deviations.
 	\begin{table}[H]
 		\small
 		\centering
@@ -98,7 +99,6 @@
 		\caption{Summary Statistics for Crude Oil Returns in each Year. Note that this dataset only include nine months of 2019.}
 	\end{table}
 	
-	
 	\begin{figure}[H]
 		\small
 		\centering
@@ -118,17 +118,18 @@
 	\begin{figure}[H]
 		\centering
 		\includegraphics{figures/wti_summary/return_hist.png}
-		\caption{Distribution of Crude Oil Returns (January 2000 to September 2019). KDE stands for the kernel density estimation for the empirical distribution. Gaussian fit plots the density function of $\mc{N}(\hat{\mu}_\tx{sample}, \hat{\sigma}_\tx{sample})$.}
+		\caption{Distribution of Crude Oil Returns (January 2000 to September 2019). The KDE line stands for the kernel density estimation for the empirical distribution. The 'Gaussian Fit' line corresponds to the density function of $\mc{N}(\hat{\mu}_\tx{sample}, \hat{\sigma}_\tx{sample})$.}
 	\end{figure}
 
 	\subsection{Missing Data in Crude Oil Dataset}
-	\paragraph{} Given the focus of this paper is on forecasting crude oil returns, which captures the difference between two consecutive prices, The missing data problem can be crucial here.
+%	\paragraph{}  Given the focus of this paper is on forecasting crude oil returns, 
 
-	\par This paper calculates crude oil returns on one particular day $t$ by taking the difference in logged prices at $t$ and the previous trading day:
+	\paragraph{} This paper calculates crude oil returns on one particular day $t$ by taking the difference in logged prices at $t$ and the previous trading day:
 	\begin{align}
 		r_t &:= \ln(p_t) - \ln(p_{t - \Delta})
 	\end{align}
-	where $t - \Delta$ is the last trading day before day $t$. As mentioned before, the time gap between two observed prices are not even. For instance, the return on a Monday can be computed by taking difference between the log close price on Monday Friday (if available). In this case, $\Delta = 3$. If the previous Friday was a holiday without valid price data, $r_t$ will be $\ln(p_\tx{Mon}) - \ln(p_{\tx{Prev Thu}})$, and $\Delta = 4$. According to \hl{the table below}, 33 days are in this case.
+	where $t - \Delta$ is the last trading day before day $t$. Different gaps between consecutive trading days, $\Delta$, have salient influence on actual realized returns. Therefore, missing data issue is crucial for this paper.
+	\par As mentioned before, the time gap between two observed prices are not equal. For instance, the return on a Monday can be computed by taking difference between the log close price on Monday and the previous Friday, if available. In this case, $\Delta = 3$. If the previous Friday was a holiday without valid price data, $r_t$ will be $\ln(p_\tx{Mon}) - \ln(p_{\tx{Prev Thu}})$, and $\Delta = 4$. According to \textbf{the table below}, 33 days are in this case.
 	\begin{table}[H]
 		\centering
 		\small
@@ -149,7 +150,7 @@
 		\end{tabular}
 		\caption{The values of $\Delta$ used to calculate returns. This table only include trading days, but the first day with price observation in this dataset was dropped because it did not have a previous trading day, so return on this day cannot by computed using our definition.}
 	\end{table}
-	\par As mentioned before, the oil price dataset does not have any prices over weekends. \hl{The table below} reports dates that are most frequently associated with a missing data over the span of 20 years. The pool of days with missing data is pretty consistent overtime, the market is always closed on January 1, July 4 (Independence Day) and December 25 (Christmas). The group of dates in late November are responsible for missing data on Thanksgiving holiday.
+	\par As mentioned before, the oil price dataset does not have any prices over weekends. \textbf{The table below} reports dates that are most frequently associated with a missing data over the span of 20 years. The pool of days with missing data is pretty consistent overtime, the market is always closed on January 1, July 4 (Independence Day) and December 25 (Christmas). The group of dates in late November are responsible for missing data on Thanksgiving holiday.
 	\begin{table}[H]
 		\small
 		\centering
@@ -173,8 +174,10 @@
  
 	\subsection{Day of the Week Effect in Crude Oil Dataset}
 	\subsubsection{Difference in Returns across the Week}
-	\paragraph{} Gibbons and Hess' work examined returns on stocks from S\&P 500, Dow Jones 30, and Treasury Bills. They found strong negative mean returns on Monday compared with other weekdays. The seasonality persisted even after market adjustment measures, such as using mean-adjusted returns instead, were taken \cite{Hess1981}. Analysis in this paper suggests a similar daily seasonality presents in crude oil returns as well.
-	\hl{Panels in the figrure below} demonstrate the empirical distributions of returns on each day of the week. We can see that Monday and Wednesday have relatively larger variances, which again matches Gibbons and Hess' observations.
+	\paragraph{} Gibbons and Hess' work examined returns on stocks from S\&P 500, Dow Jones 30, and Treasury Bills. They found strong negative mean returns on Monday compared with other weekdays.
+	The seasonality persisted even after taking market adjustment measures, such as using mean-adjusted returns instead \cite{Hess1981}. 
+	Analysis in my paper unveils a similar daily seasonality presents in crude oil returns as well.
+	\textbf{Panels in the figure below} demonstrate the empirical distributions of returns on each day of the week. We can see that Mondays and Wednesdays have relatively larger variances, which again matches Gibbons and Hess' observations.
 	\begin{figure}[H]
 		\centering
 		\small
@@ -183,10 +186,10 @@
 		\includegraphics[width=0.45\linewidth]{figures/day_of_week_effect/dist_returns_Wednesday.png}
 		\includegraphics[width=0.45\linewidth]{figures/day_of_week_effect/dist_returns_Thursday.png}
 		\includegraphics[width=0.45\linewidth]{figures/day_of_week_effect/dist_returns_Friday.png}
-		\caption{Crude oil returns on each weekday. Weekend data are not available in the daily dataset provided by EIA. The range of y-axis in all five histograms are from -0.2 to 0.2. $N$s in parentheses denote the number of observations. See appendix for distributions of crude oil prices.}
+		\caption{Crude oil returns on each weekday. Weekend data are not available in the daily dataset provided by U.S. Energy Information Administration (EIA). $N$s within parentheses in figure titles denote the number of observations. See appendix for distributions of crude oil prices.}
 	\end{figure}
 
-	\par The \hl{two tables} below provide summary statistics for prices and returns on each day. It turns out that Monday is the only weekday with a mean return significantly less than zero.
+	\par The \textbf{two tables} below provide summary statistics for prices and returns on each day. It turns out that Monday is the only weekday with a mean return significantly less than zero.
 	\begin{table}[H]
 		\small
 		\centering
@@ -222,12 +225,12 @@
 			Total & 4955 & & & \\
 			\bottomrule
 		\end{tabular}
-		\caption{Summary statistics of crude oil returns on each day of week. The first day (January 1, 2000) of the oil price dataset was Saturday, and the observation on the following Monday (January 3) was missing. Hence, the return on Tuesday (January 4) could not be computed because it was the first trading day in this dataset, and there are only 1018 Tuesday in the dataset of returns. A value of $-0.000$ indicates a negative value with magnitude less than $0.0005$. $P$-values are calculated in a two-tailed $t$-test with $\mu_0 = 0$. Bold fonts indicate statistically significance at level $\alpha=0.05$.}
+		\caption{Summary statistics of crude oil returns on each day of week. The first day (January 1, 2000) of the oil price dataset was Saturday, and the observation on the following Monday (January 3) was missing. Hence, the return on Tuesday (January 4) could not be computed because it was the first trading day in this dataset, and there are only 1018 Tuesdays in the dataset of returns. A value of $-0.000$ indicates a negative value with magnitude less than $0.0005$. $P$-values are calculated in a two-tailed $t$-test with $\mu_0 = 0$. Bold fonts indicate statistically significance at level $\alpha=0.05$.}
 	\end{table}
 	
 	\subsubsection{Kolmogorov-Smirnov test for Distributional Similarities}
 	\par Smirnov developed a non-parametric method of testing the equality between two continuous distributions, with CDFs $F(x)$ and $G(x)$ respectively, \cite{Smirnov1939}. Refer to Hodges' work for a detailed review on the Kolmogorov-Smirnov test \cite{Hodges1957}. I am using the two-tailed version of Kolmogorov-Smirnov test to check whether distributions of two different days are similar.
-	Given two datasets, take returns on Monday and Tuesday for example, the null hypothesis says those two datasets are drawn from the same distribution, and the alternative says they are from different distributions \footnote{Different alternative hypotheses can be used in Kolmogorov–Smirnov test: i) $H_1: F(x) \geq G(x)$, ii) $H_1: F(x) \leq G(x)$, and iii) $H_1: F(x) \neq G(x)$. This paper is using the third (two-tailed) alternative hypothesis.}.
+	Given two datasets, take returns on Mondays and Tuesdays for example, the null hypothesis says those two datasets are drawn from the same distribution, and the alternative says they are from different distributions \footnote{Different alternative hypotheses can be used in Kolmogorov–Smirnov test: i) $H_1: F(x) \geq G(x)$, ii) $H_1: F(x) \leq G(x)$, and iii) $H_1: F(x) \neq G(x)$. This paper is using the third (two-tailed) alternative hypothesis.}.
 	Firstly, the Kolmogorov–Smirnov test constructs the empirical CDFs $F_{Mon, 927}(x)$ and $F_{Tue, 1018}(x)$ from the dataset. Then, the Kolmogorov–Smirnov statistic measures the maximum discrepancy between two distribution functions, which is
 	\begin{align}
 		D := \sup_x \abs{F_{Mon, 927}(x) - F_{Tue, 1018}(x)} \in [0, 1]
@@ -254,13 +257,83 @@
 		\end{tabular}
 		\caption{The Kolmogorov-Smirnov $D$-Statistic for all pairs of distributions. Bold font indicates the null hypothesis is rejected at a significance level of 0.05, which implies discrepancy in distributions.}
 	\end{table}
-	\hl{The table above} presents the Kolmogorov-Smirnov $D$-Statistic for distributions of every pairs of days. At a significance level of 0.05, we can see that Monday follows a distribution significantly different from distributions other days follow. Because the dataset does not contain weekend data, the return on Monday is always computed using the difference between log prices on Monday and the previous Friday (Thursday if Friday is not a trading day and so on). Therefore, returns associated with Mondays pick the weekend effect. In fact, the distribution of returns on Monday (over weekend) is the only one with negative mean among distributions of all five days.
+	\textbf{The table above} presents the Kolmogorov-Smirnov $D$-Statistic for distributions of every pairs of days. At a significance level of 0.05, we can see that Mondays follow a distribution significantly different from distributions of other weekdays follow. Because the dataset does not contain weekend data, returns on Mondays is always computed using the difference between log prices on Monday and the previous Friday (Thursday if Friday is not a trading day and so on). Therefore, returns associated with Mondays pick the weekend effect. In fact, the distribution of returns on Mondays (over weekends) is the only one with negative mean among distributions of all five days.
 
 	\subsection{News and Sentiment Datasets}
-	\paragraph{} The event sentiment dataset from RavenPack News Analytics (RPNA) tracks and analyzes all information of companies, organizations, countries, commodities, and currencies from Dow Jones Newswires, Wall Street Journal, Barron’s and MarketWatch ranges from January 1, 2000, to September 30, 2019. RavenPack records the exact date and time (measured using Coordinated Universal Time, UTC)  when each news is published. Because WTI crude oils are traded New York Mercantile Exchange, the UTC time is converted to Eastern Standard Time before further processing. Moreover, RPNA categorizes each event following the RavenPack taxonomy (figure: Ravenpack Event Taxonomy), which assigns a sequence of attributes describing each piece of news. In addition, for each event entry, using an algorithm combines results from surveying financial experts and pattern matching, RPNA assigns an Event Sentiment Score (ESS) between 0 and 100 to each event, measuring the short-term positive (100) and negative (0) financial or economic impact of this particular event. Refer to Appendix I for a complete list of attributes includes in this dataset.
+	\todo{Need revision: how to describe the dataset efficiently.}
+	\paragraph{} The event sentiment dataset from RavenPack News Analytics (RPNA) tracks and analyzes all information of companies, organizations, countries, commodities, and currencies from four major sources: Dow Jones Newswires, Wall Street Journal, Barron’s and MarketWatch.
+	\par The dataset covers events from January 1, 2000, to September 30, 2019. RavenPack records the exact date and coordinated universal time (UTC) when each news is published.
+%	Because WTI crude oils are traded New York Mercantile Exchange, the UTC time is converted to Eastern Standard Time before further processing.
+	\par For each piece of news, the dataset links it to a unique entity name attribute. To filter out noise data less relevant to crude oil returns, this paper selects the subset of news with crude oil topic. There are 106, 960 entries from the original dataset left, lead to 15 events per day on average. In the figure below, panel A presents a distribution of ESS for all news related to crude oil in the time span of 20 years and panel B shows all distributions of events within each year.
 
-	\par Focusing our attention on events about crude oil only, there are 106, 960 entries from the raw dataset left (around 15 events per day). In the figure below, panel A presents a distribution of ESS for all news related to crude oil in the time span of 20 years and panel B shows all distributions of events within each year.
+	\par Moreover, the dataset categorizes each event following the RavenPack taxonomy.
+	\begin{figure}[H]
+		\centering
+		\small
+		\begin{enumerate}[(i)]
+			\item topic;
+			\item group;
+			\item type;
+			\item sub-type;
+			\item property;
+			\item category: fine details.
+		\end{enumerate}
+		\caption{Ravenpack taxonomy \todo{Add examples of each level.} \todo{Add definitions of each level.}}
+	\end{figure}
+	\par To proxy the potential economic impact upon news arrival and afterwards, Ravenpack assigns each piece of news an Event Sentiment Score (ESS) between 0 and 100 using an algorithm combines results from surveying financial experts and pattern matching. An ESS of 100 indicates extreme positive short-term positive financial or economic impact. In contrast, a 0 ESS score indicates extreme negative impact. And a ESS of 50 indicates exact neutral news. From this point, scores are normalized by subtracting 50, so that the sign of normalized ESS matches the nature of news, and a zero score represents a neutral news. \textbf{The histogram below} plots the distribution of normalized ESS for all news about crude oil. It turns out that only a small portion of news is purely neutral (i.e., with zero ESS)
+	\todo{(Probably move this part to the 'classification' section.)}
+	\begin{figure}[H]
+		\centering
+		\small
+		\includegraphics[width=\linewidth]{figures/event_classification/hist_ess_all.png}
+		\caption{Distribution of Event Sentiment Scores of all 106,960 news items.}
+	\end{figure}
 
+	\par It is worth mentioning that ESS measures the potential impact on the topic of this news. For example, a civil unrest in a middle east country is often considered as news forerun negative economic impact, especially for the country itself.
+	However, such news is in general associated with positive ESS scores because the expected negative supply shocks carried by these news are typically positively correlated crude oil prices and returns. \textbf{Tables below} present a list of categories frequently associated with positive and negatives news. From these two table we can see that the majority of themes of positive news would impact crude oil prices and returns positively.
+	\begin{table}[H]
+		\centering
+		\small
+		\begin{tabular}{l|c}
+			\toprule
+			Category & Number of positive news \\
+			\midrule
+			commodity-price-gain & 22,893 \\
+			commodity-futures-gain & 11,648 \\
+			supply-decrease-commodity & 5,845 \\
+			imports-up & 2,705 \\
+			commodity-buy-target & 1,171 \\
+			demand-increase-commodity & 1,070 \\
+			exports-down & 1,020 \\
+			other 28 categories & 3,014 \\
+			\midrule
+			all positive news & 49,366 \\
+			\bottomrule
+		\end{tabular}
+		\caption{Most frequent categories of positive news. Only categories with frequency greater than 1,000 are shown in this table.}
+	\end{table}
+
+	\begin{table}[H]
+		\centering
+		\small
+		\begin{tabular}{l|c}
+			\toprule
+			Category & Number of negative news \\
+			\midrule
+			commodity-price-loss & 26,475 \\
+			commodity-futures-loss & 12,818 \\
+			supply-increase-commodity & 6,629 \\
+			imports-down & 2,017 \\
+			exports-up & 1308 \\
+			resource-discovery-commodity & 1,179 \\
+			technical-view-bearish & 1,172 \\
+			other 24 categories & 2,517 \\
+			\midrule
+			all negative news & 54,115 \\
+			\bottomrule
+		\end{tabular}
+		\caption{Most frequent categories of positive news. Only categories with frequency greater than 1,000 are shown in this table.}
+	\end{table}
 
 	\subsection{Classifying News Type}
 	

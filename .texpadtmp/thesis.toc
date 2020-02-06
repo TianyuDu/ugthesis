@@ -2,22 +2,22 @@
 \contentsline {section}{\numberline {1}Introduction}{3}{section.1}% 
 \contentsline {section}{\numberline {2}Data}{3}{section.2}% 
 \contentsline {paragraph}{}{3}{section*.2}% 
-\contentsline {subsection}{\numberline {2.1}The West Texas Intermediate (WTI) Crude Oil Dataset}{3}{subsection.2.1}% 
-\contentsline {paragraph}{}{3}{section*.3}% 
-\contentsline {subsection}{\numberline {2.2}Missing Data in Crude Oil Dataset}{7}{subsection.2.2}% 
-\contentsline {paragraph}{}{7}{section*.4}% 
-\contentsline {subsection}{\numberline {2.3}Day of the Week Effect in Crude Oil Dataset}{8}{subsection.2.3}% 
-\contentsline {subsubsection}{\numberline {2.3.1}Difference in Returns across the Week}{8}{subsubsection.2.3.1}% 
-\contentsline {paragraph}{}{8}{section*.5}% 
-\contentsline {subsubsection}{\numberline {2.3.2}Kolmogorov-Smirnov test for Distributional Similarities}{10}{subsubsection.2.3.2}% 
-\contentsline {subsection}{\numberline {2.4}News and Sentiment Datasets}{11}{subsection.2.4}% 
-\contentsline {paragraph}{}{11}{section*.6}% 
-\contentsline {subsection}{\numberline {2.5}Classifying News Type}{13}{subsection.2.5}% 
-\contentsline {subsection}{\numberline {2.6}Case Studies of Events}{13}{subsection.2.6}% 
-\contentsline {subsubsection}{\numberline {2.6.1}Positive Spike on November 30, 2016}{13}{subsubsection.2.6.1}% 
-\contentsline {subsubsection}{\numberline {2.6.2}Negative Spike on December 6, 2018}{14}{subsubsection.2.6.2}% 
-\contentsline {subsubsection}{\numberline {2.6.3}Positive Spike on June. 12 - 13, 2019}{15}{subsubsection.2.6.3}% 
-\contentsline {section}{\numberline {3}Models}{15}{section.3}% 
-\contentsline {section}{\numberline {4}Experiments}{15}{section.4}% 
-\contentsline {section}{References}{15}{section*.7}% 
-\contentsline {section}{\numberline {5}Appendix: Supplementary Summary Statistics for Datasets}{16}{section.5}% 
+\contentsline {subsection}{\numberline {2.1}The West Texas Intermediate (WTI) Crude Oil Dataset}{4}{subsection.2.1}% 
+\contentsline {subsection}{\numberline {2.2}Summary Statistics of Crude Oil Dataset}{4}{subsection.2.2}% 
+\contentsline {subsection}{\numberline {2.3}Missing Data in Crude Oil Dataset}{7}{subsection.2.3}% 
+\contentsline {paragraph}{}{7}{section*.3}% 
+\contentsline {subsection}{\numberline {2.4}Day of the Week Effect in Crude Oil Dataset}{8}{subsection.2.4}% 
+\contentsline {subsubsection}{\numberline {2.4.1}Difference in Returns across the Week}{8}{subsubsection.2.4.1}% 
+\contentsline {paragraph}{}{8}{section*.4}% 
+\contentsline {subsubsection}{\numberline {2.4.2}Kolmogorov-Smirnov test for Distributional Similarities}{10}{subsubsection.2.4.2}% 
+\contentsline {subsection}{\numberline {2.5}News and Sentiment Datasets}{11}{subsection.2.5}% 
+\contentsline {paragraph}{}{12}{section*.5}% 
+\contentsline {subsection}{\numberline {2.6}Classifying News Type}{15}{subsection.2.6}% 
+\contentsline {subsection}{\numberline {2.7}Case Studies of Events}{15}{subsection.2.7}% 
+\contentsline {subsubsection}{\numberline {2.7.1}Positive Spike on November 30, 2016}{15}{subsubsection.2.7.1}% 
+\contentsline {subsubsection}{\numberline {2.7.2}Negative Spike on December 6, 2018}{16}{subsubsection.2.7.2}% 
+\contentsline {subsubsection}{\numberline {2.7.3}Positive Spike on June. 12 - 13, 2019}{17}{subsubsection.2.7.3}% 
+\contentsline {section}{\numberline {3}Models}{17}{section.3}% 
+\contentsline {section}{\numberline {4}Experiments}{17}{section.4}% 
+\contentsline {section}{References}{17}{section*.6}% 
+\contentsline {section}{\numberline {5}Appendix: Supplementary Summary Statistics for Datasets}{18}{section.5}% 
