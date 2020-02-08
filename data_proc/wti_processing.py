@@ -45,6 +45,8 @@ def compute_returns(
         arima_order=(1, 0, 1),
         verbose=True
     )
+    print(f"Length of filled return series: {len(returns_filled)}")
+    print(f"Percentage Missing in filled returns: {np.mean(returns_filled.isna()) * 100: 0.3f} %.")
     return returns, returns_filled
 
 
