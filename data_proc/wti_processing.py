@@ -2,8 +2,11 @@
 Jan. 31, 2019
 Processing utilities for crude oil price dataset.
 """
+import sys
+sys.path.append("../")
+
 from datetime import datetime
-from typing import Dict, Union
+from typing import Dict, Union, Set
 
 import numpy as np
 import pandas as pd
@@ -36,17 +39,17 @@ def compute_returns(
     returns = returns.asfreq("B")
     returns = pd.DataFrame(returns)
     print(f"Length of return series: {len(returns)}")
-    print(f"Percentage Missing in returns: {np.mean(returns.isna()) * 100: 0.3f} %.")
+    print(f"Percentage Missing in returns: {float(np.mean(returns.isna()) * 100): 0.3f} %.")
     print("Missing value information")
     z = np.logical_not(returns.isnull().values)
     print(returns[z].index.day_name().value_counts())
     returns_filled = utils.arima_interpolate(
         raw=returns,
-        arima_order=(1, 0, 1),
+        arima_order=(5, 0, 1),
         verbose=True
     )
     print(f"Length of filled return series: {len(returns_filled)}")
-    print(f"Percentage Missing in filled returns: {np.mean(returns_filled.isna()) * 100: 0.3f} %.")
+    print(f"Percentage Missing in filled returns: {float(np.mean(returns_filled.isna()) * 100): 0.3f} %.")
     return returns, returns_filled
 
 
