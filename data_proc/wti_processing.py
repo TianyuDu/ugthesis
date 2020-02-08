@@ -11,6 +11,42 @@ import pandas as pd
 # import matplotlib.pyplot as plt
 # plt.style.use("grayscale")
 
+import interpolate.interpolate_utils as utils
+
+
+def compute_returns(
+    df: pd.DataFrame,
+) -> Set[pd.DataFrame]:
+    """
+    Compute returns from the raw dataset.
+    Returns are computed using the difference between log
+    closing prices between consecutive trading days.
+
+    Args:
+        df: dataset for crude oil price.
+    Return:
+        returns: returns with missing values.
+        returns
+    """
+    # Drop na to calculate difference between prices on two consecutive trading days.
+    filtered = df["DCOILWTICO"].dropna()
+    returns = np.log(filtered).diff()
+    returns = returns.rename("RETURN")
+    # Change to business day frequency.
+    returns = returns.asfreq("B")
+    returns = pd.DataFrame(returns)
+    print(f"Length of return series: {len(returns)}")
+    print(f"Percentage Missing in returns: {np.mean(returns.isna()) * 100: 0.3f} %.")
+    print("Missing value information")
+    z = np.logical_not(returns.isnull().values)
+    print(returns[z].index.day_name().value_counts())
+    returns_filled = utils.arima_interpolate(
+        raw=returns,
+        arima_order=(1, 0, 1),
+        verbose=True
+    )
+    return returns, returns_filled
+
 
 def compute_time_lags(
     df: pd.DataFrame,
