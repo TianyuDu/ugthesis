@@ -5,11 +5,15 @@ import argparse
 from datetime import datetime
 
 import matplotlib.pyplot as plt
+import matplotlib.dates as dates
+
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import statsmodels.api as sm
 from scipy.stats import norm
+from scipy.stats import moment
+
 
 plt.style.use("grayscale")
 
@@ -28,6 +32,7 @@ def plot_overview(
 
     fig, ax = plt.subplots(figsize=(9, 3))
     ax.plot(df, label="Price")
+    print(f"Price ranges from {df.index[0]} to {df.index[-1]}")
     plt.xlabel("Date")
     plt.ylabel("WTI Crude Oil Price")
     plt.legend(loc="upper right")
@@ -42,6 +47,7 @@ def plot_overview(
 
     fig, ax = plt.subplots(figsize=(9, 3))
     ax.plot(returns, label="return")
+    print(f"Return ranges from {returns.index[0]} to {returns.index[-1]}")
     plt.xlabel("Date")
     plt.ylabel("Returns")
     plt.legend(loc="upper right")
