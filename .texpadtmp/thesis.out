@@ -1,18 +1,18 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.2}{Data}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{The\040West\040Texas\040Intermediate\040\(WTI\)\040Crude\040Oil\040Dataset}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{Summary\040Statistics\040of\040Crude\040Oil\040Dataset}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{Missing\040Data\040in\040Crude\040Oil\040Dataset}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.4}{Day\040of\040the\040Week\040Effect\040in\040Crude\040Oil\040Dataset}{section.2}% 6
-\BOOKMARK [3][-]{subsubsection.2.4.1}{Difference\040in\040Returns\040across\040the\040Week}{subsection.2.4}% 7
-\BOOKMARK [3][-]{subsubsection.2.4.2}{Kolmogorov-Smirnov\040test\040for\040Distributional\040Similarities}{subsection.2.4}% 8
-\BOOKMARK [2][-]{subsection.2.5}{News\040and\040Sentiment\040Datasets}{section.2}% 9
-\BOOKMARK [2][-]{subsection.2.6}{Classifying\040News\040Type}{section.2}% 10
-\BOOKMARK [2][-]{subsection.2.7}{Case\040Studies\040of\040Events}{section.2}% 11
-\BOOKMARK [3][-]{subsubsection.2.7.1}{Positive\040Spike\040on\040November\04030,\0402016}{subsection.2.7}% 12
-\BOOKMARK [3][-]{subsubsection.2.7.2}{Negative\040Spike\040on\040December\0406,\0402018}{subsection.2.7}% 13
-\BOOKMARK [3][-]{subsubsection.2.7.3}{Positive\040Spike\040on\040June.\04012\040-\04013,\0402019}{subsection.2.7}% 14
+\BOOKMARK [2][-]{subsection.2.1}{The West Texas Intermediate \(WTI\) Crude Oil Dataset}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Summary Statistics of Crude Oil Dataset}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Missing Data in Crude Oil Dataset}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{Day of the Week Effect in Crude Oil Dataset}{section.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.4.1}{Difference in Returns across the Week}{subsection.2.4}% 7
+\BOOKMARK [3][-]{subsubsection.2.4.2}{Kolmogorov-Smirnov test for Distributional Similarities}{subsection.2.4}% 8
+\BOOKMARK [2][-]{subsection.2.5}{News and Sentiment Datasets}{section.2}% 9
+\BOOKMARK [2][-]{subsection.2.6}{Classifying News Type}{section.2}% 10
+\BOOKMARK [2][-]{subsection.2.7}{Case Studies of Events}{section.2}% 11
+\BOOKMARK [3][-]{subsubsection.2.7.1}{Positive Spike on November 30, 2016}{subsection.2.7}% 12
+\BOOKMARK [3][-]{subsubsection.2.7.2}{Negative Spike on December 6, 2018}{subsection.2.7}% 13
+\BOOKMARK [3][-]{subsubsection.2.7.3}{Positive Spike on June. 12 - 13, 2019}{subsection.2.7}% 14
 \BOOKMARK [1][-]{section.3}{Models}{}% 15
 \BOOKMARK [1][-]{section.4}{Experiments}{}% 16
 \BOOKMARK [1][-]{section*.6}{References}{}% 17
-\BOOKMARK [1][-]{section.5}{Appendix:\040Supplementary\040Summary\040Statistics\040for\040Datasets}{}% 18
+\BOOKMARK [1][-]{section.5}{Appendix: Supplementary Summary Statistics for Datasets}{}% 18

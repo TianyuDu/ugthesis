@@ -14,9 +14,9 @@
 \usepackage{booktabs}
 
 % Set font.
-\usepackage{fontspec}
+%\usepackage{fontspec}
  
-\setmainfont{Times New Roman}
+%\setmainfont{Times New Roman}
 %\usepackage{mathptmx}
 %\usepackage[MnSymbol]{mathspec}
 %\setallmainfonts{Times New Roman}
@@ -260,10 +260,8 @@
 	\textbf{The table above} presents the Kolmogorov-Smirnov $D$-Statistic for distributions of every pairs of days. At a significance level of 0.05, we can see that Mondays follow a distribution significantly different from distributions of other weekdays follow. Because the dataset does not contain weekend data, returns on Mondays is always computed using the difference between log prices on Monday and the previous Friday (Thursday if Friday is not a trading day and so on). Therefore, returns associated with Mondays pick the weekend effect. In fact, the distribution of returns on Mondays (over weekends) is the only one with negative mean among distributions of all five days.
 
 	\subsection{News and Sentiment Datasets}
-	\todo{Need revision: how to describe the dataset efficiently.}
 	\paragraph{} The event sentiment dataset from RavenPack News Analytics (RPNA) tracks and analyzes all information of companies, organizations, countries, commodities, and currencies from four major sources: Dow Jones Newswires, Wall Street Journal, Barron’s and MarketWatch.
-	\par The dataset covers events from January 1, 2000, to September 30, 2019. RavenPack records the exact date and coordinated universal time (UTC) when each news is published.
-%	Because WTI crude oils are traded New York Mercantile Exchange, the UTC time is converted to Eastern Standard Time before further processing.
+	\par The dataset covers events from January 1, 2000, to September 30, 2019. RavenPack records the exact date and coordinated universal time (UTC) when each news is published.s
 	\par For each piece of news, the dataset links it to a unique entity name attribute. To filter out noise data less relevant to crude oil returns, this paper selects the subset of news with crude oil topic. There are 106, 960 entries from the original dataset left, lead to 15 events per day on average. In the figure below, panel A presents a distribution of ESS for all news related to crude oil in the time span of 20 years and panel B shows all distributions of events within each year.
 
 	\par Moreover, the dataset categorizes each event following the RavenPack taxonomy.
@@ -333,6 +331,70 @@
 			\bottomrule
 		\end{tabular}
 		\caption{Most frequent categories of positive news. Only categories with frequency greater than 1,000 are shown in this table.}
+	\end{table}
+	
+	\begin{table}[H]
+		\centering
+		\small
+		\caption{Summary Statistics for Daily News Arrival by Years}
+		\begin{tabular}{l|c|c|c|c|c|c|c}
+		\toprule
+		Year & Mean & Median & Std. & Min & Max & $3^{rd}$ Moment & $4^{th}$ Moment \\
+		\midrule
+2000 & 10.990 & 10.000 & 7.883 & 1.000 & 48.000 & 624.140 & 20580.847\\
+2001 & 14.929 & 14.000 & 9.225 & 1.000 & 51.000 & 489.795 & 25704.202\\
+2002 & 4.807 & 4.000 & 3.452 & 1.000 & 19.000 & 60.569 & 801.811\\
+2003 & 6.519 & 4.000 & 6.241 & 1.000 & 39.000 & 478.654 & 12369.937\\
+2004 & 24.608 & 23.000 & 16.612 & 1.000 & 84.000 & 3190.837 & 261755.365\\
+2005 & 20.921 & 21.000 & 12.480 & 1.000 & 57.000 & 668.782 & 71292.410\\
+2006 & 21.375 & 21.000 & 13.224 & 1.000 & 58.000 & 311.175 & 72550.280\\
+2007 & 19.695 & 18.000 & 12.724 & 1.000 & 66.000 & 1080.233 & 80582.446\\
+2008 & 22.264 & 23.000 & 14.481 & 1.000 & 66.000 & 773.619 & 114575.879\\
+2009 & 16.642 & 16.000 & 10.145 & 1.000 & 48.000 & 229.465 & 26102.072\\
+2010 & 17.373 & 18.000 & 10.704 & 1.000 & 52.000 & 223.408 & 32208.647\\
+2011 & 22.252 & 23.000 & 12.838 & 1.000 & 65.000 & 346.488 & 76634.229\\
+2012 & 22.679 & 23.000 & 13.582 & 1.000 & 65.000 & 327.492 & 89356.087\\
+2013 & 17.048 & 17.000 & 10.419 & 1.000 & 57.000 & 405.999 & 35381.337\\
+2014 & 16.193 & 13.000 & 13.162 & 1.000 & 69.000 & 3434.647 & 167509.547\\
+2015 & 22.334 & 20.000 & 14.945 & 1.000 & 80.000 & 2368.778 & 171467.903\\
+2016 & 24.361 & 22.000 & 16.265 & 1.000 & 101.000 & 3602.310 & 285093.246\\
+2017 & 15.428 & 14.000 & 10.105 & 1.000 & 58.000 & 815.307 & 43032.009\\
+2018 & 15.692 & 15.000 & 10.870 & 1.000 & 93.000 & 1976.611 & 145822.537\\
+2019 & 15.157 & 14.000 & 9.584 & 1.000 & 65.000 & 968.021 & 47684.600\\
+		\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\begin{table}[H]
+		\centering
+		\small
+		\caption{Average Numbers of News on Each Day}
+		\begin{tabular}{l|c|c|c|c|c|c|c}
+			\toprule
+			Year & Monday &Tuesday &Wednesday &Thursday &Friday &Saturday &Sunday \\ 
+			\midrule
+2000 & 11.157 & 14.135 & 13.077 & 11.885 & 9.769 & 1.643 & 1.500 \\
+2001 & 12.547 & 17.569 & 21.327 & 15.058 & 14.078 & 1.000 & 1.200 \\
+2002 & 5.771 & 5.019 & 5.224 & 3.980 & 5.469 & 1.200 & 1.600 \\
+2003 & 7.080 & 6.529 & 9.942 & 6.863 & 5.490 & 1.200 & 1.136 \\
+2004 & 24.058 & 28.981 & 39.250 & 28.660 & 22.302 & 2.182 & 2.240 \\
+2005 & 21.462 & 21.846 & 33.596 & 24.654 & 19.000 & 1.765 & 2.259 \\
+2006 & 22.981 & 24.885 & 35.904 & 24.846 & 19.731 & 1.346 & 2.161 \\
+2007 & 19.792 & 21.385 & 33.577 & 23.846 & 16.769 & 1.941 & 2.212 \\
+2008 & 24.788 & 26.415 & 36.415 & 26.269 & 25.250 & 2.207 & 3.065 \\
+2009 & 16.058 & 21.346 & 29.192 & 16.925 & 15.538 & 1.688 & 2.366 \\
+2010 & 16.327 & 23.058 & 28.654 & 20.596 & 17.135 & 2.261 & 2.932 \\
+2011 & 23.769 & 28.577 & 32.904 & 25.750 & 19.942 & 2.053 & 3.441 \\
+2012 & 22.340 & 26.654 & 36.423 & 26.981 & 25.118 & 3.783 & 2.756 \\
+2013 & 16.673 & 19.642 & 28.588 & 19.038 & 15.846 & 2.500 & 2.366 \\
+2014 & 15.510 & 18.846 & 25.113 & 16.923 & 15.529 & 2.167 & 2.467 \\
+2015 & 23.019 & 27.135 & 35.558 & 23.189 & 19.843 & 2.091 & 2.957 \\
+2016 & 23.333 & 29.192 & 38.462 & 24.808 & 23.077 & 2.190 & 2.105 \\
+2017 & 14.220 & 16.788 & 25.192 & 16.077 & 14.039 & 1.696 & 1.667 \\
+2018 & 13.654 & 19.059 & 24.712 & 18.635 & 15.235 & 2.586 & 2.143 \\
+2019 & 11.263 & 15.872 & 24.600 & 15.026 & 13.795 & 1.923 & 1.500 \\
+		\bottomrule
+		\end{tabular}
 	\end{table}
 
 	\subsection{Classifying News Type}
