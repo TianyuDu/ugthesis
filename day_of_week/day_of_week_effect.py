@@ -51,12 +51,13 @@ def Kolmogorov_Smirnov_test(
                 alternative="two-sided",
                 mode="exact"
             )
-            results.append(f"{stats:0.3f}({pval: 0.3f})")
+            results.append(f"{stats:0.3f}({pval:0.3f}) &")
         print(fmt.format(d1[:3], *results))
 
 
 def day_effect(
     df: pd.DataFrame,
+    df_returns: pd.DataFrame,
     path: Union[str, None],
 ) -> Tuple[dict]:
     """
@@ -68,7 +69,7 @@ def day_effect(
     days = ["Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday", "Sunday"]
 
-    df_returns = compute_return(df)
+    df_returns["DAY"] = df_returns.index.day_name()
 
     prices, returns = dict(), dict()
     for day in days:
@@ -110,7 +111,7 @@ def day_effect(
                 returns[day], bins=40, label="return", alpha=0.5
             )
             plt.title(f"{day} (N={len(returns[day])})")
-            ax.set_xlim([-0.2, 0.2])
+            ax.set_xlim([-20.0, 20.0])
             plt.legend()
             if path is None:
                 plt.show()
@@ -181,7 +182,13 @@ if __name__ == "__main__":
         index_col=0
     )
 
-    prices, returns = day_effect(df, path=path)
+    df_returns = pd.read_csv(
+        "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/returns_norm.csv",
+        date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
+        index_col=0
+    )
+
+    prices, returns = day_effect(df, df_returns, path=path)
     print("Summary Statistics for Prices")
     summary_stats(prices)
     print("\n")
@@ -193,3 +200,5 @@ if __name__ == "__main__":
     print("\n")
     print("Kolmogorov Smirnov test on Returns")
     Kolmogorov_Smirnov_test(returns)
+    print(sum(len(v) for v in returns.values()))
+    print(len(df_returns))
