@@ -18,7 +18,7 @@ def calculate_returns(
     returns = pd.DataFrame(returns)
     # normalize return using delta values.
     delta = df["DELTA"][returns.index]
-    returns = pd.DataFrame(returns["RETURN"] / delta)
+    returns = pd.DataFrame(returns["RETURN"] / delta * 100)  # Change to percentage returns.
     returns.columns = ["RETURN"]
     return returns
 
