@@ -18,12 +18,19 @@ def calculate_returns(
     returns = pd.DataFrame(returns)
     # normalize return using delta values.
     delta = df["DELTA"][returns.index]
-    return returns["RETURN"] / delta
+    returns = pd.DataFrame(returns["RETURN"] / delta)
+    returns.columns = ["RETURN"]
+    return returns
 
 
 if __name__ == "__main__":
+    DATA_DIR = "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use"
     df = pd.read_csv(
-        "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/DCOILWTICO_with_delta.csv",
+        DATA_DIR + "/DCOILWTICO_with_delta.csv",
         date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
         index_col=0
     )
+
+    returns = calculate_returns(df)
+    print("Save returns to: " + DATA_DIR + "/returns_norm.csv")
+    returns.to_csv(DATA_DIR + "/returns_norm.csv")
