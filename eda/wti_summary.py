@@ -49,7 +49,7 @@ def plot_overview(
     ax.plot(returns, label="return")
     print(f"Return ranges from {returns.index[0]} to {returns.index[-1]}")
     plt.xlabel("Date")
-    plt.ylabel("Returns")
+    plt.ylabel("Percentage Returns")
     plt.legend(loc="upper right")
     ax.axvspan(rece2k1_bgn, rece2k1_end, alpha=0.3)
     ax.axvspan(rece2k8_bgn, rece2k8_end, alpha=0.3)
@@ -77,11 +77,12 @@ def summary(
         std = np.std(values)
         _min, _max = np.min(values), np.max(values)
         acfs = sm.tsa.acf(values, fft=False)
-        # Report
-        print(f"{year} & {N} & {mean:0.3f} & {median:0.3f} & {std:0.3f} & {_min:0.3f} & {_max:0.3f} & {acfs[1]:0.3f} & {acfs[3]:0.3f} & {acfs[5]:0.3f} \\\\")
+        moment_3 = moment(values, 3)
+        moment_4 = moment(values, 4)
+        print(f"{year} & {N} & {mean:0.5f} & {median:0.5f} & {std:0.5f} & {_min:0.5f} & {_max:0.5f} & {moment_3:0.5f} & {moment_4:0.5f} \\\\")
 
     print("======== Year Distribution ========")
-    print("Year & Num. Obs. & Mean & Median & Std. & Min & Max & ACF(1) & ACF(3) & ACF(5) \\\\")
+    print("Year & Obs. & Mean & Median & Std. & Min & Max & 3rd Moment & 4th Moment \\\\")
     for y in YEARS:
         year_index = df.index.strftime("%Y")
         mask = year_index == str(y)
@@ -136,13 +137,14 @@ def plot_return_hist(
 
 def main(
     df: pd.DataFrame,
+    returns: pd.DataFrame,
     path: str
 ) -> None:
     print("Processing dataset...")
     print(f"Raw dataset length: {len(df)}")
     filtered = df["DCOILWTICO"].dropna()
     print(f"Valid dataset length: {len(filtered)}")
-    returns = np.log(filtered).diff().dropna().rename("RETURN")
+    # returns = np.log(filtered).diff().dropna().rename("RETURN")
     print(f"Return dataset length: {len(returns)}")
 
     print("======== Summary Statistics for Prices ========")
@@ -176,4 +178,11 @@ if __name__ == "__main__":
         date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
         index_col=0
     )
-    main(df, path=path)
+
+    df_returns = pd.read_csv(
+        "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/returns_norm.csv",
+        date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
+        index_col=0
+    ).dropna()
+
+    main(df, df_returns, path=path)
