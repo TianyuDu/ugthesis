@@ -6,7 +6,7 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage{xcolor}
+%\usepackage{xcolor}
 \usepackage{chngcntr}
 \usepackage{centernot}
 \usepackage{datetime}
@@ -41,6 +41,7 @@
 
 \author{Tianyu Du \footnote{\texttt{tianyu.du@mail.utoronto.ca}}}
 
+
 \begin{document}
 	\maketitle
 	\tableofcontents
@@ -48,129 +49,154 @@
 	\section{Introduction}
 	
 	\section{Data}
+	\lipsum[11]\info{This can help me in chapter seven!}
 	\paragraph{}In order to identify the predictive power of sentiment data on crude oil returns, this study involves three major datasets, a the daily spot price of crude oil at the West Texas Intermediate (WTI) from which returns are computed, ii) a news sentiment dataset from Ravenpack News Analytics (RPNA), and iii) other macroeconomic indicators proxying the overall economic background.
 
 	\subsection{The West Texas Intermediate (WTI) Crude Oil Dataset}
-%	\paragraph{}West Texas Intermediate market spot price (coded as DCOILWTICO in the st. Louis Federal Reserve Economic Data) has been the most commonly used price for crude oil in current literature. The dataset retrieved from the Federal Reserve Bank of St. Louis is measured on a daily level and spans from January 1986 up to the present day (citation: data series). Because of the limited availability of the RavenPack dataset, this paper focuses only on crude oil prices after January 1, 2000. Analysis of the crude oil market (citation: 40-year paper) shows the spot price is higuly responsive to news and other macroeconomic shocks, which is exactly the tricky part of forecasting financial time series. If the proposed forecasting pipeline performs well on the crude dataset, such a pipeline is conceivably promising on other datasets as well.
+	\paragraph{}West Texas Intermediate (WTI) is a class of light and sweet crude oil that serves as a benchmark for crude oil prices in the past few decades. Cushing, Oklahoma, where the Cushing oil field locates, has been the delivery point for commodities behind crude oil contracts traded at New York Mercantile Exchange (NYMEX). U.S. Energy Information Administration (EIA) provides a daily time series of spot prices of WTI crude oil delivered from Cushing. This time series can serve as a benchmark of measuring activities in the global crude oil market. 
 	
-%	\par Almost all financial time series suffers from missing data problem, so is the crude oil dataset. Much existing research studying stock market datasets simply drop missing values. Instead, this paper uses an autoregressive integrated moving average (ARIMA) model to interpolate and fill missing data, so that the time gap between two consecutive observations is exactly one trading day. 
-
-	\subsection{Summary Statistics of Crude Oil Dataset}
-	\begin{figure}[H]
-		\small
-		\centering
-		\includegraphics[width=\linewidth]{figures/wti_summary/prices.png}
-		\includegraphics[width=\linewidth]{figures/wti_summary/returns.png}
-		\caption{Crude oil prices and returns between January 1, 2000 and September 30, 2019. Shaded areas indicate U.S. recessions.}
-	\end{figure}
-
-	\par From the \textbf{the table below} we can see that the mean returns for crude oil are around zero year by year. During periods of recessions (March 2001 to November 2001 and December 2007 to June 2009), the data exhibited negative mean returns as well as relatively high standard deviations.
+	\par Because of the limited availability of the RavenPack dataset, this paper focuses only on crude oil prices after January 1, 2000. Analysis of the crude oil market \cite{kilian2016}. shows the spot price is highly responsive to news and other macroeconomic shocks, which is exactly the tricky part of forecasting financial time series. If the proposed forecasting algorithm performs well on the crude oil dataset, such an algorithm is conceivably promising on other datasets as well.
+	
+	\subsection{Crude Oil Returns}
+	\paragraph{}One side goal of this paper is to identify to what extend machine learning techniques improves existing time series models. Moreover, this paper aims to examine whether machine learning techniques can better extract information from sentiment dataset.
+	
+	The augmented Dickey-Fuller test on the raw price series gives a $p$-value of $0.26$, which suggests the movement of crude oil prices exhibits significant non-stationarity.
+	This non-stationarity confines classical time series models on this dataset, and makes the above-mentioned comparison between new and classical techniques infeasible.
+	 Besides, an accurate prediction of returns is more related to profitability in practice. Therefore, this paper focuses on forecasting returns of crude oil instead of raw prices.
+	
+	\par The closing spot prices of crude oils are available at a daily frequency for weekdays only.
+	Besides weekends, observations are missing on certain weekdays when the exchange market is closed.
+	In subsequent sections, this article refers to these days with valid price data as \emph{trading days}.
+	
+	\par \textbf{The table below} reports dates that are most frequently associated with a missing data over the span of 20 years.
+	The set of days with missing data is consistent over these years: the market is always closed on January 1, July 4 (Independence Day) and December 25 (Christmas).
+	Because the entire dataset ranges from January 3, 2000 to October 31, 2019, missing data problems on December 25 are only reported 19 times in the table.
+	The Thanksgiving holiday varies year by year. In particular, the group of dates in late November are responsible for missing data on Thanksgiving holidays. 
 	\begin{table}[H]
 		\small
 		\centering
-		\begin{tabular}{l|c c c c c c c c c}
+		\caption{Top Days with Missing Data}
+		\begin{tabular}{l|c c}
 			\toprule
-			Year & Num. Obs. & Mean & Median & Std. & Min & Max & ACF(1) & ACF(3) & ACF(5) \\
+Date & Counts (all) & Counts (excl. weekends) \\
 			\midrule
-			2000 & 249 & 0.000 & 0.004 & 0.029 & -0.127 & 0.083 & 0.012 & -0.007 & 0.126 \\
-			2001 & 250 & -0.001 & -0.001 & 0.029 & -0.171 & 0.101 & 0.024 & -0.005 & -0.037 \\
-			2002 & 250 & 0.002 & 0.002 & 0.021 & -0.062 & 0.060 & -0.030 & -0.008 & -0.014 \\
-			2003 & 250 & 0.000 & 0.002 & 0.028 & -0.152 & 0.124 & -0.133 & 0.096 & -0.097 \\
-			2004 & 249 & 0.001 & 0.003 & 0.023 & -0.076 & 0.059 & -0.074 & 0.019 & -0.036 \\
-			2005 & 251 & 0.001 & 0.002 & 0.022 & -0.124 & 0.084 & -0.085 & -0.083 & -0.109 \\
-			2006 & 249 & -0.000 & 0.001 & 0.018 & -0.049 & 0.062 & 0.002 & 0.008 & -0.030 \\
-			2007 & 252 & 0.002 & 0.001 & 0.019 & -0.047 & 0.055 & -0.103 & 0.000 & 0.069 \\
-			2008 & 253 & -0.003 & -0.001 & 0.039 & -0.128 & 0.164 & 0.008 & 0.165 & -0.259 \\
-			2009 & 252 & 0.002 & 0.002 & 0.034 & -0.127 & 0.133 & -0.034 & 0.096 & -0.022 \\
-			2010 & 252 & 0.001 & 0.000 & 0.019 & -0.052 & 0.099 & 0.051 & -0.071 & 0.057 \\
-			2011 & 252 & 0.000 & 0.001 & 0.022 & -0.085 & 0.086 & 0.027 & -0.003 & -0.087 \\
-			2012 & 252 & -0.000 & 0.001 & 0.016 & -0.048 & 0.090 & -0.154 & 0.034 & 0.120 \\
-			2013 & 252 & 0.000 & 0.001 & 0.011 & -0.035 & 0.032 & 0.045 & -0.073 & -0.153 \\
-			2014 & 252 & -0.002 & -0.001 & 0.016 & -0.111 & 0.049 & -0.209 & 0.054 & -0.042 \\
-			2015 & 252 & -0.001 & -0.004 & 0.029 & -0.091 & 0.098 & -0.113 & -0.106 & -0.021 \\
-			2016 & 252 & 0.001 & 0.000 & 0.031 & -0.080 & 0.113 & 0.006 & -0.040 & 0.078 \\
-			2017 & 250 & 0.000 & 0.003 & 0.016 & -0.056 & 0.033 & -0.017 & -0.017 & 0.076 \\
-			2018 & 249 & -0.001 & 0.001 & 0.020 & -0.077 & 0.073 & -0.103 & -0.056 & 0.011 \\
-			2019 & 187 & 0.001 & 0.001 & 0.023 & -0.087 & 0.142 & -0.090 & -0.039 & 0.123 \\
-			\midrule
-			Total & 4955 & 0.000 & 0.001 & 0.024 & -0.171 & 0.164 & -0.035 & 0.021 & -0.024 \\
+July 4 & 20 & 16 \\
+January 1 & 20 & 14 \\
+December 25 & 19 & 14 \\
+July 3 & 10 & 5 \\
+November 23 & 10 & 5 \\
+November 24 & 10 & 4\\
+November 25 & 10 & 3\\
+November 22 & 9 & 4 \\
+November 26 & 9 & 3 \\
 			\bottomrule
 		\end{tabular}
-		\caption{Summary Statistics for Crude Oil Returns in each Year. Note that this dataset only include nine months of 2019.}
 	\end{table}
 	
-	\begin{figure}[H]
-		\small
-		\centering
-		\includegraphics[width=0.45\linewidth]{figures/wti_summary/prices_acf.png}
-		\includegraphics[width=0.45\linewidth]{figures/wti_summary/prices_pacf.png}
-		\caption{ACF and PACF for Crude Oil Prices (January 2000 to September 2019)}
-	\end{figure}
+	\par There are only ten weekdays with missing data problem each year on average (3.75\% of the entire dataset). The insignificant percentage of missing data allows us to drop those dates without hurting the generalizability of models and experiments in subsequent sections.
 
-	\begin{figure}[H]
-		\small
-		\centering
-		\includegraphics[width=0.45\linewidth]{figures/wti_summary/returns_acf.png}
-		\includegraphics[width=0.45\linewidth]{figures/wti_summary/returns_pacf.png}
-		\caption{ACF and PACF for Crude Oil Returns (January 2000 to September 2019)}
-	\end{figure}
-
-	\begin{figure}[H]
-		\centering
-		\includegraphics{figures/wti_summary/return_hist.png}
-		\caption{Distribution of Crude Oil Returns (January 2000 to September 2019). The KDE line stands for the kernel density estimation for the empirical distribution. The 'Gaussian Fit' line corresponds to the density function of $\mc{N}(\hat{\mu}_\tx{sample}, \hat{\sigma}_\tx{sample})$.}
-	\end{figure}
-
-	\subsection{Missing Data in Crude Oil Dataset}
-%	\paragraph{}  Given the focus of this paper is on forecasting crude oil returns, 
-
-	\paragraph{} This paper calculates crude oil returns on one particular day $t$ by taking the difference in logged prices at $t$ and the previous trading day:
+	\par On one particular trading day $t$, let $\Delta$ denotes the gap between date $t$ and the previous trading day, so that $t - \Delta$ is the last trading day before day $t$. 
+	Within a short time period such as the gap between two trading days, this paper assumes crude oil prices exhibits an exponential growth with constant daily growth rate of $r_t$.
+	So that the following relationship quantifies the relationship between $p_{t-\Delta}$ and $p_t$:
 	\begin{align}
-		r_t &:= \ln(p_t) - \ln(p_{t - \Delta})
+		p_t &= e^{r_t \Delta} p_{t-\Delta}
 	\end{align}
-	where $t - \Delta$ is the last trading day before day $t$. Different gaps between consecutive trading days, $\Delta$, have salient influence on actual realized returns. Therefore, missing data issue is crucial for this paper.
-	\par As mentioned before, the time gap between two observed prices are not equal. For instance, the return on a Monday can be computed by taking difference between the log close price on Monday and the previous Friday, if available. In this case, $\Delta = 3$. If the previous Friday was a holiday without valid price data, $r_t$ will be $\ln(p_\tx{Mon}) - \ln(p_{\tx{Prev Thu}})$, and $\Delta = 4$. According to \textbf{the table below}, 33 days are in this case.
+	
+	\par This paper calculates crude oil returns on one particular day $t$ by taking the difference in logged prices at $t$ and the previous trading day and dividing it by the length of duration, $\Delta$:
+	\begin{align}
+		r_t &= \frac{\ln(p_t) - \ln(p_{t - \Delta})}{\Delta}
+	\end{align}
+	
+	\par Equivalently, $r_t$ measures the daily return over the $\Delta$ day period. Because returns are closed to zero in most time, in order to avoid decimal issues, this paper converts all $r_t$'s into percentage points.
+	
+	\par As mentioned before, the time gap between two observed prices are not uniform.
+	For instance, the return on a Monday can be computed by taking difference between the log close price on Monday and the previous Friday, if available. In this case, $\Delta = 3$. If the previous Friday was a holiday without valid price data, $r_t$ will be $\ln(p_\tx{Mon}) - \ln(p_{\tx{Prev Thu}})$, and $\Delta = 4$.
+
 	\begin{table}[H]
 		\centering
 		\small
+		\caption{Distribution of $\Delta$ by Weekdays}
 		\begin{tabular}{l|c c c c c c c}
 			\toprule
 			Day of the week & Num. Days. & Num. Trading Days & $\Delta$=1 & 2 & 3 & 4 & 5 \\
 			\midrule
-			Monday & 1031 & 927 & 0 & 0 & 883 & 33 & 11 \\
-			Tuesday & 1030 & 1018 & 921 & 0 & 0 & 97 & 0 \\
-			Wednesday & 1030 & 1022 & 1011 & 5 & 0 & 0 & 6 \\
-			Thursday & 1030 & 1002 & 994 & 8 & 0 & 0 & 0 \\
-			Friday & 1030 & 986 & 969 & 17 & 0 & 0 & 0 \\
-			Saturday & 1030 & 0 & 0 & 0 & 0 & 0 & 0 \\
-			Sunday & 1030 & 0 & 0 & 0 & 0 & 0 & 0 \\
-			\midrule
-			Total & 7211 & 4955 & 3895 & 30 & 883 & 130 & 17 \\
+Monday & 1,034 & 931 & 0 & 0 & 887 & 33 & 11 \\
+Tuesday & 1,035 & 1,023 & 926 & 0 & 0 & 97 & 0 \\
+Wednesday & 1,035 & 1,027 & 1,016 & 5 & 0 & 0 & 6 \\
+Thursday & 1,035 & 1,007 & 999 & 8 & 0 & 0 & 0 \\
+Friday & 1,034 & 990 & 973 & 17 & 0 & 0 & 0 \\
+Saturday & 1,035 & 0 & 0 & 0 & 0 & 0 & 0 \\
+Sunday & 1,035 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\midrule
+Total & 7,243 & 4,978 & 3,914 & 30 & 887 & 130 & 17 \\
 			\bottomrule
 		\end{tabular}
-		\caption{The values of $\Delta$ used to calculate returns. This table only include trading days, but the first day with price observation in this dataset was dropped because it did not have a previous trading day, so return on this day cannot by computed using our definition.}
+%		\caption{The values of $\Delta$ used to calculate returns. This table only include trading days, but the first day with price observation (Monday, January 3, 2000) in this dataset was dropped because it did not have a previous trading day, so return on this day cannot by computed using our definition.}
 	\end{table}
-	\par As mentioned before, the oil price dataset does not have any prices over weekends. \textbf{The table below} reports dates that are most frequently associated with a missing data over the span of 20 years. The pool of days with missing data is pretty consistent overtime, the market is always closed on January 1, July 4 (Independence Day) and December 25 (Christmas). The group of dates in late November are responsible for missing data on Thanksgiving holiday.
+
+	\par \textbf{The table above} summaries the distribution of $\Delta$ values. The $\Delta$ values for Mondays are at least 3 because weekend data are always unavailable. One extreme coincident case is that data are missing on both Monday and Tuesday, so that the $\Delta$ value for the coming Wednesday would be 5. This happened in 6 weeks in total.
+	The previous assumption of constant return are only likely to be true within a short time window, and in this kind of rare scenarios, the assumption becomes less convincing.
+	
+	\par The movement of crude oil returns in the past two decades has exhibited volatile patterns. \textbf{The figure below} plots the pattern of returns, in which shaded areas indicate U.S. recessions (March 2001 to November 2001 and December 2007 to June 2009). \todo{cite data}
+	\todo{Add more descriptions on the chronology.}
+	\begin{figure}[H]
+		\centering
+		\small
+		\caption{Crude Oil Returns}
+		\includegraphics[width=\linewidth]{figures/wti_summary/returns.png}
+	\end{figure}
+	
+	\par \textbf{The table of summary statistics below} suggests the mean return within each year are nearly zero. During periods of recessions, the average returns are below -2\%, the series becomes significantly more volatile as well. Given the high kurtosis between 2008 and 2009, one are more likely to encounter extreme returns, both positive and negative, during recession periods.
 	\begin{table}[H]
 		\small
 		\centering
-		\begin{tabular}{l|c c}
+		\caption{Summary Statistics for Crude Oil Returns (Percentages)}
+		\begin{tabular}{l|c c c c c c c c}
 			\toprule
-			Date & Counts (all) & Counts (excl. weekends) \\
+Year & Obs. & Mean & Median & Std. & Min & Max & $3^{rd}$ Moment & $4^{th}$ Moment \\
 			\midrule
-			July 4 & 20 & 16 \\
-			January 1 & 20 & 14 \\
-			December 25 & 19 & 14 \\
-			July 3 & 10 & 5 \\
-			November 23 & 10 & 5 \\
-			November 24 & 10 & 4\\
-			November 25 & 10 & 3\\
-			November 22 & 9 & 4 \\
-			November 26 & 9 & 3 \\
+2000 & 249 & 0.03433 & 0.20148 & 2.61996 & -12.74152 & 8.26343 & -16.57663 & 304.18069 \\
+2001 & 250 & -0.02409 & -0.04434 & 2.54058 & -11.48581 & 10.05107 & -1.05664 & 256.34141 \\
+2002 & 250 & 0.15535 & 0.15221 & 1.70283 & -5.86460 & 5.43272 & -1.10096 & 30.47303 \\
+2003 & 250 & 0.07861 & 0.13203 & 2.57315 & -15.19090 & 12.44253 & -15.23783 & 451.62566 \\
+2004 & 249 & 0.08918 & 0.11605 & 2.08792 & -7.60501 & 5.70121 & -3.46945 & 76.28297 \\
+2005 & 251 & 0.05257 & 0.11019 & 1.96717 & -12.39009 & 5.02715 & -7.95491 & 132.38058 \\
+2006 & 249 & -0.00539 & 0.12995 & 1.58949 & -4.45214 & 6.15402 & 0.54160 & 25.74049 \\
+2007 & 252 & 0.23400 & 0.09798 & 1.69800 & -4.66915 & 5.51381 & 0.67096 & 30.42035 \\
+2008 & 253 & -0.29945 & -0.07920 & 3.34992 & -12.82672 & 13.54551 & -0.62036 & 705.61292 \\
+2009 & 252 & 0.26537 & 0.19157 & 2.92040 & -12.74310 & 13.29544 & 7.30616 & 528.06699 \\
+2010 & 252 & -0.02077 & 0.03198 & 1.74554 & -5.18874 & 9.89802 & 2.09087 & 63.31449 \\
+2011 & 252 & 0.00583 & 0.10994 & 1.94170 & -8.53498 & 5.18170 & -5.06359 & 74.96618 \\
+2012 & 252 & -0.04164 & 0.03600 & 1.51078 & -4.76060 & 9.00091 & 1.89035 & 44.44938 \\
+2013 & 252 & 0.01455 & 0.04489 & 1.06690 & -3.46951 & 3.20999 & 0.06673 & 4.76023 \\
+2014 & 252 & -0.16510 & -0.05343 & 1.36052 & -5.98638 & 4.91592 & -1.93871 & 21.11776 \\
+2015 & 252 & -0.03610 & -0.25616 & 2.63361 & -9.05140 & 9.81397 & 4.40762 & 204.56338 \\
+2016 & 252 & 0.20931 & 0.00000 & 2.79698 & -7.95603 & 11.28922 & 15.41866 & 313.23980 \\
+2017 & 250 & 0.06564 & 0.17286 & 1.40987 & -5.56187 & 3.32016 & -2.44842 & 20.04256 \\
+2018 & 249 & -0.10076 & 0.07393 & 1.81925 & -7.67683 & 7.33414 & -3.86867 & 69.95139 \\
+2019 & 210 & 0.04359 & 0.10073 & 1.93931 & -8.72444 & 5.67862 & -4.83203 & 83.04972 \\
+			\midrule
+Total & 4978 & 0.02754 & 0.06307 & 2.15250 & -15.19090 & 13.54551 & -1.61083 & 174.47526 \\
 			\bottomrule
 		\end{tabular}
-		\caption{Dates most frequently associates with missing data. Data on January 1, July 4, and December 25 are missing ever year. Because the entire dataset ranges from January 3, 2000 to September 30, 2019, missing data problems on December 25 are only reported 19 times.}
 	\end{table}
+
+	\begin{figure}[H]
+		\small
+		\centering
+		\caption{ACF and PACF for Crude Oil Returns}
+		\includegraphics[width=0.45\linewidth]{figures/wti_summary/returns_acf.png}
+		\includegraphics[width=0.45\linewidth]{figures/wti_summary/returns_pacf.png}
+	\end{figure}
+	
+	\par For both autocorrelation function (ACF) and partial autocorrelation function (PACF), only a few lags are statistically significant, which suggests the impotency  of linear models on this problem.
+	\todo{Stopped here}
+	\begin{figure}[H]
+		\centering
+		\small
+		\caption{Distribution of Crude Oil Returns}
+		\includegraphics{figures/wti_summary/return_hist.png}
+	\end{figure}
  
 	\subsection{Day of the Week Effect in Crude Oil Dataset}
 	\subsubsection{Difference in Returns across the Week}
@@ -190,24 +216,24 @@
 	\end{figure}
 
 	\par The \textbf{two tables} below provide summary statistics for prices and returns on each day. It turns out that Monday is the only weekday with a mean return significantly less than zero.
-	\begin{table}[H]
-		\small
-		\centering
-		\begin{tabular}{l|c c c c}
-			\toprule
-			Day of the week & Num. Obs. & Mean & Std. & $3^{rd}$ Moment \\
-			\midrule
-			Monday & 927 & 62.072 & 26.493 & 7081.163 \\
-			Tuesday & 1019 & 61.828 & 26.317 & 6895.638 \\
-			Wednesday & 1022 & 61.810 & 26.398 & 7049.810 \\
-			Thursday & 1002 & 62.005 & 26.431 & 6955.555 \\
-			Friday & 986 & 62.079 & 26.247 & 6676.566 \\
-			\midrule
-			Total & 4956 & & & \\
-			\bottomrule
-		\end{tabular}
-		\caption{Summary statistics of crude oil prices on each day of week}
-	\end{table}
+%	\begin{table}[H]
+%		\small
+%		\centering
+%		\begin{tabular}{l|c c c c}
+%			\toprule
+%			Day of the week & Num. Obs. & Mean & Std. & $3^{rd}$ Moment \\
+%			\midrule
+%Monday & 931 & -0.001 & 0.008 & -0.0000001 \\
+%Tuesday & 1,023 & -0.000 & 0.021 & -0.0000033 \\
+%Wednesday & 1,027 & -0.000 & 0.027 & -0.0000061 \\
+%Thursday & 1,007 & 0.001 & 0.024 & -0.0000005 \\
+%Friday & 990 & 0.002 & 0.022 & 0.0000013 \\
+%			\midrule
+%			Total & 4,978 & & & \\
+%			\bottomrule
+%		\end{tabular}
+%		\caption{Summary statistics of crude oil prices on each day of week}
+%	\end{table}
 
 	\begin{table}[H]
 		\small
@@ -246,16 +272,16 @@
 		\centering
 		\begin{tabular}{l|c|c|c|c|c}
 			\toprule
-			$D$-Statistic ($P$-Value)& Monday & Tuesday & Wednesday & Thursday & Friday \\
+			$D$-Statistic ($P$-Value) & Monday & Tuesday & Wednesday & Thursday & Friday \\
 			\midrule
-			Monday    & 0.000 (1.000) & \textbf{0.061 (0.048)} & \textbf{0.065 (0.030)} & \textbf{0.092 (0.001)} & \textbf{0.092 (0.001)} \\
-			Tuesday   &               & 0.000 (1.000) & \textbf{0.044 (0.260)} & 0.036 (0.505) & 0.044 (0.264) \\
-			Wednesday &               &               & 0.000 (1.000) & 0.053 (0.114) & \textbf{0.073 (0.009)} \\
-			Thursday  &               &               &               & 0.000 (1.000) & 0.025 (0.900) \\
-			Friday    &               &               &               &               & 0.000 (1.000) \\
+Monday & 0.000(1.000) & \textbf{0.193(0.000)} &  \textbf{0.243(0.000)} &  \textbf{0.189(0.000)} &  \textbf{0.180(0.000)} \\
+Tuesday & &  0.000(1.000) &  0.064(0.030) &  0.064(0.030) &  0.071(0.010) \\
+Wednesday & & &  0.000(1.000) &  0.058(0.062) &  0.084(0.001) \\
+Thursday & & & &  0.000(1.000) &  0.030(0.729) \\
+Friday & & & & &  0.000(1.000) \\
 			\bottomrule
 		\end{tabular}
-		\caption{The Kolmogorov-Smirnov $D$-Statistic for all pairs of distributions. Bold font indicates the null hypothesis is rejected at a significance level of 0.05, which implies discrepancy in distributions.}
+		\caption{The Kolmogorov-Smirnov $D$-Statistic for all pairs of distributions. Bold font indicates the null hypothesis is rejected at a significance level of 0.01, which implies discrepancy in distributions.}
 	\end{table}
 	\textbf{The table above} presents the Kolmogorov-Smirnov $D$-Statistic for distributions of every pairs of days. At a significance level of 0.05, we can see that Mondays follow a distribution significantly different from distributions of other weekdays follow. Because the dataset does not contain weekend data, returns on Mondays is always computed using the difference between log prices on Monday and the previous Friday (Thursday if Friday is not a trading day and so on). Therefore, returns associated with Mondays pick the weekend effect. In fact, the distribution of returns on Mondays (over weekends) is the only one with negative mean among distributions of all five days.
 
@@ -276,8 +302,9 @@
 			\item property;
 			\item category: fine details.
 		\end{enumerate}
-		\caption{Ravenpack taxonomy \todo{Add examples of each level.} \todo{Add definitions of each level.}}
+		\caption{Ravenpack taxonomy}
 	\end{figure}
+	\todo{Add examples of each level.} \todo{Add definitions of each level.}
 	\par To proxy the potential economic impact upon news arrival and afterwards, Ravenpack assigns each piece of news an Event Sentiment Score (ESS) between 0 and 100 using an algorithm combines results from surveying financial experts and pattern matching. An ESS of 100 indicates extreme positive short-term positive financial or economic impact. In contrast, a 0 ESS score indicates extreme negative impact. And a ESS of 50 indicates exact neutral news. From this point, scores are normalized by subtracting 50, so that the sign of normalized ESS matches the nature of news, and a zero score represents a neutral news. \textbf{The histogram below} plots the distribution of normalized ESS for all news about crude oil. It turns out that only a small portion of news is purely neutral (i.e., with zero ESS)
 	\todo{(Probably move this part to the 'classification' section.)}
 	\begin{figure}[H]
@@ -337,7 +364,7 @@
 		\centering
 		\small
 		\caption{Summary Statistics for Daily News Arrival by Years}
-		\begin{tabular}{l|c|c|c|c|c|c|c}
+		\begin{tabular}{l | c c c c c c c}
 		\toprule
 		Year & Mean & Median & Std. & Min & Max & $3^{rd}$ Moment & $4^{th}$ Moment \\
 		\midrule
@@ -369,7 +396,7 @@
 		\centering
 		\small
 		\caption{Average Numbers of News on Each Day}
-		\begin{tabular}{l|c|c|c|c|c|c|c}
+		\begin{tabular}{l|c c c c c c c}
 			\toprule
 			Year & Monday &Tuesday &Wednesday &Thursday &Friday &Saturday &Sunday \\ 
 			\midrule
@@ -432,60 +459,31 @@
 	
 	\bibliography{thesis.bib}
 
-	\section{Appendix: Supplementary Summary Statistics for Datasets}
-	\begin{table}[H]
-		\small
-		\centering
-		\begin{tabular}{l|c c c c c c c c c}
-			\toprule
-			Year & Num. Obs. & Mean & Median & Std. & Min & Max & ACF(1) & ACF(3) & ACF(5) \\
-			\midrule
-			2000 & 250 & 30.379 & 30.270 & 2.966 & 23.910 & 37.220 & 0.946 & 0.838 & 0.740 \\
-			2001 & 250 & 25.983 & 27.185 & 3.560 & 17.500 & 32.210 & 0.973 & 0.924 & 0.880 \\
-			2002 & 250 & 26.185 & 26.700 & 3.208 & 18.020 & 32.680 & 0.976 & 0.925 & 0.870 \\
-			2003 & 250 & 31.075 & 30.770 & 2.624 & 25.250 & 37.960 & 0.943 & 0.864 & 0.764 \\
-			2004 & 249 & 41.506 & 40.700 & 5.775 & 32.490 & 56.370 & 0.982 & 0.949 & 0.915 \\
-			2005 & 251 & 56.637 & 57.330 & 6.252 & 42.160 & 69.910 & 0.969 & 0.917 & 0.876 \\
-			2006 & 249 & 66.055 & 65.650 & 5.586 & 55.900 & 77.050 & 0.975 & 0.929 & 0.893 \\
-			2007 & 252 & 72.341 & 69.735 & 12.853 & 50.510 & 99.160 & 0.986 & 0.956 & 0.924 \\
-			2008 & 253 & 99.672 & 104.830 & 28.563 & 30.280 & 145.310 & 0.986 & 0.958 & 0.926 \\
-			2009 & 252 & 61.950 & 67.025 & 13.361 & 34.030 & 81.030 & 0.985 & 0.959 & 0.928 \\
-			2010 & 252 & 79.476 & 79.735 & 5.242 & 64.780 & 91.480 & 0.953 & 0.853 & 0.759 \\
-			2011 & 252 & 94.881 & 95.790 & 8.063 & 75.400 & 113.390 & 0.968 & 0.900 & 0.828 \\
-			2012 & 252 & 94.053 & 92.605 & 7.713 & 77.720 & 109.390 & 0.979 & 0.946 & 0.914 \\
-			2013 & 252 & 97.983 & 96.325 & 5.451 & 86.650 & 110.620 & 0.977 & 0.927 & 0.881 \\
-			2014 & 252 & 93.172 & 97.850 & 13.519 & 53.450 & 107.950 & 0.978 & 0.936 & 0.895 \\
-			2015 & 252 & 48.657 & 47.870 & 6.814 & 34.550 & 61.360 & 0.972 & 0.928 & 0.888 \\
-			2016 & 252 & 43.294 & 45.080 & 6.727 & 26.190 & 54.010 & 0.978 & 0.932 & 0.893 \\
-			2017 & 250 & 50.800 & 50.385 & 3.914 & 42.480 & 60.460 & 0.968 & 0.905 & 0.846 \\
-			2018 & 249 & 65.227 & 66.380 & 6.517 & 44.480 & 77.410 & 0.961 & 0.888 & 0.812 \\
-			2019 & 187 & 57.037 & 56.580 & 3.986 & 46.310 & 66.240 & 0.924 & 0.811 & 0.732 \\
-			\midrule
-			Total & 4956 & 61.956 & 58.915 & 26.376 & 17.500 & 145.310 & 0.998 & 0.995 & 0.992 \\
-			\bottomrule
-		\end{tabular}
-		\caption{Summary Statistics for Crude Oil Prices. Note that this dataset only include nine months of 2019.}
-	\end{table}
-	
-	\begin{figure}[H]
-		\centering
-		\small
-		\includegraphics[width=\linewidth]{figures/case_studies/20161130_45d.png}
-		\caption{}
-	\end{figure}
-	\begin{figure}[H]
-		\centering
-		\small
-		\includegraphics[width=\linewidth]{figures/case_studies/20181206_45d.png}
-		\caption{}
-	\end{figure}
-	\begin{figure}[H]
-		\centering
-		\small
-		\includegraphics[width=\linewidth]{figures/case_studies/20190612_45d.png}
-		\caption{}
-	\end{figure}
+%	\section{Appendix: Supplementary Summary Statistics for Datasets}
+%	
+%	\begin{figure}[H]
+%		\centering
+%		\small
+%		\includegraphics[width=\linewidth]{figures/case_studies/20161130_45d.png}
+%		\caption{}
+%	\end{figure}
+%	\begin{figure}[H]
+%		\centering
+%		\small
+%		\includegraphics[width=\linewidth]{figures/case_studies/20181206_45d.png}
+%		\caption{}
+%	\end{figure}
+%	\begin{figure}[H]
+%		\centering
+%		\small
+%		\includegraphics[width=\linewidth]{figures/case_studies/20190612_45d.png}
+%		\caption{}
+%	\end{figure}
+
+
 \end{document}
+
+
 
 
 

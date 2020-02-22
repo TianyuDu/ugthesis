@@ -1,6 +1,35 @@
 \begin{thebibliography}{}
 
 \bibitem [\protect \citeauthoryear {%
+Baumeister%
+\ \BBA {} Kilian%
+}{%
+Baumeister%
+\ \BBA {} Kilian%
+}{%
+{\protect \APACyear {2016}}%
+}]{%
+kilian2016}
+\APACinsertmetastar {%
+kilian2016}%
+\begin{APACrefauthors}%
+Baumeister, C.%
+\BCBT {}\ \BBA {} Kilian, L.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2016}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{Forty Years of Oil Price Fluctuations: Why the Price of
+  Oil May Still Surprise Us}} {{Forty Years of Oil Price Fluctuations: Why the
+  Price of Oil May Still Surprise Us}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of Economic Perspectives}{30}{1}{139--160}.
+\newblock
+\begin{APACrefDOI} \doi{10.1257/jep.30.1.139} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Gibbons%
 \ \BBA {} Hess%
 }{%

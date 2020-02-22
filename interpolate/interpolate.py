@@ -16,7 +16,7 @@ def main(
     ts_dir: str,
     save_dir: str,
     figure_dir: str,
-    arima_order: Tuple[int] = (7, 2, 0),
+    arima_order: Tuple[int] = (1, 0, 1),
     start = datetime(2000, 1, 1),
     end = datetime(2019, 9, 30),
     verbose: bool = True

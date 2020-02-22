@@ -46,7 +46,7 @@ def plot_overview(
     plt.close()
 
     fig, ax = plt.subplots(figsize=(9, 3))
-    ax.plot(returns, label="return")
+    ax.plot(returns, label="percentage return", linewidth=0.3)
     print(f"Return ranges from {returns.index[0]} to {returns.index[-1]}")
     plt.xlabel("Date")
     plt.ylabel("Percentage Returns")
@@ -105,15 +105,15 @@ def acf_pacf(
         DataFrame for returns.
     """
     plt.close()
-    sm.tsa.graphics.plot_acf(df)
+    sm.tsa.graphics.plot_acf(df, zero=False)
     plt.savefig(path + "prices_acf.png", dpi=300, bbox_inches="tight")
-    sm.tsa.graphics.plot_pacf(df)
+    sm.tsa.graphics.plot_pacf(df, zero=False)
     plt.savefig(path + "prices_pacf.png", dpi=300, bbox_inches="tight")
 
     plt.close()
-    sm.tsa.graphics.plot_acf(returns)
+    sm.tsa.graphics.plot_acf(returns, zero=False)
     plt.savefig(path + "returns_acf.png", dpi=300, bbox_inches="tight")
-    sm.tsa.graphics.plot_pacf(returns)
+    sm.tsa.graphics.plot_pacf(returns, zero=False)
     plt.savefig(path + "returns_pacf.png", dpi=300, bbox_inches="tight")
 
 
@@ -126,9 +126,10 @@ def plot_return_hist(
         returns.values,
         # bins=80,
         fit=norm,
-        fit_kws={"lw": 1, "label": "Gaussian Fit"},
+        fit_kws={
+            "lw": 1, "label": "Fitted Gaussian $\mathcal{N}(\hat{\mu}_{sample}, \hat{\sigma}^2_{sample})$"},
         kde=True,
-        kde_kws={"lw": 1, "label": "KDE", "linestyle": "--"},
+        kde_kws={"lw": 1, "label": "Kernel Density Estimation", "linestyle": "--"},
         label=f"Returns (N={len(returns.values)})"
     )
     plt.legend()
@@ -173,12 +174,16 @@ if __name__ == "__main__":
     path = args.path
     if not path.endswith("/"):
         path += "/"
+    print("Loading price data from:")
+    print("/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/DCOILWTICO.csv")
     df = pd.read_csv(
         "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/DCOILWTICO.csv",
         date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
         index_col=0
     )
 
+    print("Loading return data from:")
+    print("/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/returns_norm.csv")
     df_returns = pd.read_csv(
         "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/returns_norm.csv",
         date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),

@@ -151,4 +151,9 @@ if __name__ == "__main__":
         df.asfreq("D"),
         append_to_original=True
     )
+
+    df_delta.to_csv(
+        "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/DCOILWTICO_with_delta.csv"
+    )
+
     main(df_delta)
