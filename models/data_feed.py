@@ -80,6 +80,13 @@ def split_train_test(
         pass
 
 
+def _flatten(ds) -> Tuple[np.ndarray]:
+    """
+    Converts dataset (list of tuples) to arrays.
+    """
+    rasie NotImplementedError
+
+
 def regression_feed() -> List[np.ndarray]:
     """
     Feed training and testing sets to the model evaluation method.
