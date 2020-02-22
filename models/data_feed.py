@@ -51,9 +51,20 @@ def fix_failed(X: pd.DataFrame, y: pd.DataFrame, req_len: int) -> Tuple[pd.DataF
     if np.any(y.isnull()):
         # When the target is missing, this tuple cannot be fixed.
         return (None, None)
-    fixed_X = X.interpolate(method="linear", aixs=0)
+
     if X.shape[0] != req_len:
         return (None, None)
+
+    fixed_X = X.interpolate(
+        method="nearest",
+        aixs=0,
+    )
+
+    fixed_X.fillna(
+        method="bfill",
+        inplace=True
+    )
+
     return (fixed_X, y)
 
 
@@ -70,4 +81,16 @@ def regression_feed() -> List[np.ndarray]:
     )
     ds_passed = list(zip(feature_list, label_list))
     ds_failed = list(zip(failed_feature_list, failed_label_list))
-    
+
+    scope = max(len(x) for x in feature_list)
+    print(f"Scope of features (num. of days): {scope}")
+
+    ds_fixed = list(
+        fix_failed(X, y, req_len=scope)
+        for X, y in ds_failed
+    )
+
+    dd = list(filter(
+        lambda z: z[0] is not None and z[0] is not None,
+        ds_fixed
+    ))
