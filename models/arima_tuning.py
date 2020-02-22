@@ -21,7 +21,7 @@ df = pd.read_csv(
     index_col=0
 )
 
-p = q = range(30)
+p = q = range(5)
 d = range(2)
 pdq_config = list(itertools.product(p, d, q))
 seasonal_pdq_config = [
