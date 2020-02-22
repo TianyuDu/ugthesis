@@ -2,10 +2,12 @@
 This file contains all operation methods on time series data.
 """
 
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Optional
 
 import numpy as np
 import pandas as pd
+
+from datetime import datetime, timedelta
 
 from tqdm import tqdm
 
@@ -205,6 +207,44 @@ def create_inout_sequences(
     assert fea_seq.shape == (L - lags, lags, num_attr)
     assert lab_seq.shape == (L - lags, rg, num_attr)
     return fea_seq, lab_seq
+
+
+def gen_dataset_calendarday(
+    df: pd.DataFrame,
+    target_col: str,
+    lag_days: int,
+    forecast_range: int = 1,
+    verify: Option[callable] = None
+) -> (np.ndarray, np.ndarray):
+    """
+    Generates dataset (X, y) such that
+        X[t]: all information between t - lag_days and t - 1.
+        y[t]: target at day t.
+    Unlike above methods generating X by taking previous '#lags'
+    valid observations, this function generates X that
+    covers information within a time period with fixed length
+    in terms of calendar days.
+    NOTE: lag_days is calendar day not business day.
+    """
+    feature_list, label_list = [], []
+    L, num_attr = df.shape
+    print(f"Raw series length: {L} with {num_attr} features.")
+    print(f"Extracting information from {target_col}")
+
+    delta = timedelta(lag_days)
+    for i, t in enumerate(df.index):
+        start = t - timedelta(days=lag_days)
+        end = t - timedelta(days=1)
+        forecast = t + timedelta(days=forecast_range - 1)
+
+        # this subset operator is inclusive on both sides.
+        X = df[start: end]
+        y = df[t: forecast]
+        if verify is None or verify(X, y):
+            # Add to data collection only if verified.
+            feature_list.append(X)
+            label_list.append(y)
+    return feature_list, label_list
 
 
 def clean_nan(
