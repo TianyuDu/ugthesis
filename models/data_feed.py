@@ -24,6 +24,9 @@ DF = pd.read_csv(
     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
     index_col=0
 )
+# Any tuple of X, y with y.date >= BOUNDARY will be classified as
+# a testing case.
+TRAINING_BOUNDARY = datetime(2019, 1, 1)
 # ============== End ==============
 
 
@@ -41,8 +44,17 @@ def all_valid_verification(X: pd.DataFrame, y: pd.DataFrame) -> bool:
     return True
 
 
-def fix_failed(X: pd.DataFrame, y: pd.DataFrame) -> Tuple[pd.DataFrame]:
-    pass
+def fix_failed(X: pd.DataFrame, y: pd.DataFrame, req_len: int) -> Tuple[pd.DataFrame]:
+    """
+    Fix training samples with missing data.
+    """
+    if np.any(y.isnull()):
+        # When the target is missing, this tuple cannot be fixed.
+        return (None, None)
+    fixed_X = X.interpolate(method="linear", aixs=0)
+    if X.shape[0] != req_len:
+        return (None, None)
+    return (fixed_X, y)
 
 
 def regression_feed() -> List[np.ndarray]:
