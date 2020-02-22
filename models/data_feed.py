@@ -90,7 +90,12 @@ def regression_feed() -> List[np.ndarray]:
         for X, y in ds_failed
     )
 
-    dd = list(filter(
+    ds_fixed = list(filter(
         lambda z: z[0] is not None and z[0] is not None,
         ds_fixed
     ))
+
+    ds_total = ds_passed + ds_fixed
+
+    # Sort according to target's timestamp.
+    ds_total.sort(key=lambda x: x[1].index)
