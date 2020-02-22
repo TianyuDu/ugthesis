@@ -84,7 +84,7 @@ def _flatten(ds) -> Tuple[np.ndarray]:
     """
     Converts dataset (list of tuples) to arrays.
     """
-    rasie NotImplementedError
+    raise NotImplementedError
 
 
 def regression_feed() -> List[np.ndarray]:
