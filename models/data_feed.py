@@ -68,6 +68,18 @@ def fix_failed(X: pd.DataFrame, y: pd.DataFrame, req_len: int) -> Tuple[pd.DataF
     return (fixed_X, y)
 
 
+def split_train_test(
+    ds: List[Tuple[pd.DataFrame]]
+) -> List[List[Tuple[pd.DataFrame]]]:
+    """
+    Splits dataset according to TRAINING_BOUNDARY.
+    Returns two dataset.
+    """
+    raise NotImplementedError
+    for X, y in ds:
+        pass
+
+
 def regression_feed() -> List[np.ndarray]:
     """
     Feed training and testing sets to the model evaluation method.
