@@ -247,6 +247,14 @@ def gen_dataset_calendarday(
     return feature_list, label_list
 
 
+def all_valid_verification(X: pd.DataFrame, y: pd.DataFrame) -> bool:
+    """
+    A verification method requires all entries in both feature set and label set to be non-null.
+    """
+    if np.any(X.isnull()) or np.any(y.isnull()):
+        return False
+
+
 def clean_nan(
     X: pd.DataFrame,
     y: pd.DataFrame
