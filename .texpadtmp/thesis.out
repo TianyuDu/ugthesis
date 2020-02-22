@@ -1,0 +1,16 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Data}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{The West Texas Intermediate \(WTI\) Crude Oil Dataset}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Crude Oil Returns}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Day of the Week Effect in Crude Oil Dataset}{section.2}% 5
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Difference in Returns across the Week}{subsection.2.3}% 6
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Kolmogorov-Smirnov test for Distributional Similarities}{subsection.2.3}% 7
+\BOOKMARK [2][-]{subsection.2.4}{News and Sentiment Datasets}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.5}{Classifying News Type}{section.2}% 9
+\BOOKMARK [2][-]{subsection.2.6}{Case Studies of Events}{section.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.6.1}{Positive Spike on November 30, 2016}{subsection.2.6}% 11
+\BOOKMARK [3][-]{subsubsection.2.6.2}{Negative Spike on December 6, 2018}{subsection.2.6}% 12
+\BOOKMARK [3][-]{subsubsection.2.6.3}{Positive Spike on June. 12 - 13, 2019}{subsection.2.6}% 13
+\BOOKMARK [1][-]{section.3}{Models}{}% 14
+\BOOKMARK [1][-]{section.4}{Experiments}{}% 15
+\BOOKMARK [1][-]{section*.14}{References}{}% 16
