@@ -12,7 +12,7 @@ import statsmodels.api as sm
 from tqdm import tqdm
 
 
-MASTER_DIR = "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis"
+MASTER_DIR = "./"
 LOG_FILE = "./arima_results.csv"
 
 df = pd.read_csv(
