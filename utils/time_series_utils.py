@@ -214,7 +214,7 @@ def gen_dataset_calendarday(
     target_col: str,
     lag_days: int,
     forecast_range: int = 1,
-    verify: Option[callable] = None
+    verify: Optional[callable] = None
 ) -> (np.ndarray, np.ndarray):
     """
     Generates dataset (X, y) such that
@@ -227,12 +227,15 @@ def gen_dataset_calendarday(
     NOTE: lag_days is calendar day not business day.
     """
     feature_list, label_list = [], []
+    failed_feature_list, failed_label_list = [], []
     L, num_attr = df.shape
     print(f"Raw series length: {L} with {num_attr} features.")
     print(f"Extracting information from {target_col}")
 
     delta = timedelta(lag_days)
+    counter, out_of_range, failed = 0, 0, 0
     for i, t in enumerate(df.index):
+        counter += 1
         start = t - timedelta(days=lag_days)
         end = t - timedelta(days=1)
         forecast = t + timedelta(days=forecast_range - 1)
@@ -240,19 +243,38 @@ def gen_dataset_calendarday(
         # this subset operator is inclusive on both sides.
         X = df[start: end]
         y = df[t: forecast]
+        # try:
+        #     X = df[start: end]
+        #     y = df[t: forecast]
+        # except KeyError:
+        #     out_of_range += 1
+        #     continue
         if verify is None or verify(X, y):
             # Add to data collection only if verified.
             feature_list.append(X)
             label_list.append(y)
-    return feature_list, label_list
+        else:
+            failed += 1
+            failed_feature_list.append(X)
+            failed_label_list.append(y)
+    print(f"Total data points: {counter}, out of range error: {out_of_range}, failed to verify: {failed}.")
+    print(f"Maximum feature scope (days): {max(len(d) for d in feature_list)}")
+    print(f"Minimum feature scope (days): {min(len(d) for d in feature_list)}")
+    return feature_list, label_list, failed_feature_list, failed_label_list
 
 
 def all_valid_verification(X: pd.DataFrame, y: pd.DataFrame) -> bool:
     """
     A verification method requires all entries in both feature set and label set to be non-null.
+    This function depends on specific case.
     """
-    if np.any(X.isnull()) or np.any(y.isnull()):
+    if np.any(X.isnull()):
         return False
+    elif np.any(y.isnull()):
+        return False
+    elif len(X) == 0:
+        return False
+    return True
 
 
 def clean_nan(
