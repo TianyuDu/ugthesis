@@ -84,6 +84,7 @@ def _flatten(ds) -> Tuple[np.ndarray]:
     """
     Converts dataset (list of tuples) to arrays.
     """
+    X, y = ds
     raise NotImplementedError
 
 
