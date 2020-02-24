@@ -77,12 +77,12 @@ def summary(
         std = np.std(values)
         _min, _max = np.min(values), np.max(values)
         acfs = sm.tsa.acf(values, fft=False)
-        moment_3 = moment(values, 3)
-        moment_4 = moment(values, 4)
+        moment_3 = moment(values, 3) / (std ** 3)
+        moment_4 = moment(values, 4) / (std ** 4) - 3
         print(f"{year} & {N} & {mean:0.5f} & {median:0.5f} & {std:0.5f} & {_min:0.5f} & {_max:0.5f} & {moment_3:0.5f} & {moment_4:0.5f} \\\\")
 
     print("======== Year Distribution ========")
-    print("Year & Obs. & Mean & Median & Std. & Min & Max & 3rd Moment & 4th Moment \\\\")
+    print("Year & Obs. & Mean & Median & Std. & Min & Max & Normalized Skewness & Excess Kurtosis \\\\")
     for y in YEARS:
         year_index = df.index.strftime("%Y")
         mask = year_index == str(y)
