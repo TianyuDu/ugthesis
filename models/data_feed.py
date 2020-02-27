@@ -137,6 +137,7 @@ def regression_feed() -> List[np.ndarray]:
     ds_total = ds_passed + ds_fixed
     print(f"Total number of training pairs (X, y) generated: {len(ds_total)}")
     # Sort according to target's timestamp.
+    # TODO: split dataset
     ds_total.sort(key=lambda x: x[1].index)
     X_arr, y_arr = collect_array(ds_total)
     return (X_arr, y_arr)
