@@ -88,6 +88,16 @@ def _flatten(ds) -> Tuple[np.ndarray]:
     raise NotImplementedError
 
 
+def present_days(ds) -> Tuple[np.ndarray]:
+    """
+    Insert weekdays of dates of X and y in the dataset.
+    """
+    X, y = ds[0].copy(), ds[1].copy()
+    X.insert(loc=0, column="DAY", value=X.index.day_name())
+    y.insert(loc=0, column="DAY", value=y.index.day_name())
+    return X, y
+
+
 def regression_feed() -> List[np.ndarray]:
     """
     Feed training and testing sets to the model evaluation method.
