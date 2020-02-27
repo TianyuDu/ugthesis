@@ -159,11 +159,13 @@ def regression_feed() -> List[np.ndarray]:
     ))
 
     ds_total = ds_passed + ds_fixed
+    ds_total.sort(key=lambda x: x[1].index)
     print(f"Total number of training pairs (X, y) generated: {len(ds_total)}")
     # Sort according to target's timestamp.
     train_set, test_set = split_train_test(ds_total)
     check_ds(train_set)
     check_ds(test_set)
-    ds_total.sort(key=lambda x: x[1].index)
-    X_arr, y_arr = collect_array(ds_total)
-    return (X_arr, y_arr)
+    X_train, y_train = convert_to_array(train_set)
+    X_test, y_test = convert_to_array(test_set)
+    print(f"X_train @ {X_train.shape}\ny_train @ {y_train.shape}\nX_test @ {X_test.shape}\ny_test @ {y_test.shape}")
+    return (X_train, y_train, X_test, y_test)
