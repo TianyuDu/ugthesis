@@ -80,17 +80,22 @@ def split_train_test(
         pass
 
 
-def flatten(ds) -> Tuple[np.ndarray]:
+def collect_array(ds) -> Tuple[np.ndarray]:
     """
     Converts dataset (list of tuples) to arrays.
     """
-    X, y = ds
-    raise NotImplementedError
+    X_lst = [z[0].values for z in ds]
+    y_lst = [z[1].values for z in ds]
+    X = np.stack(X_lst)
+    y = np.stack(y_lst)
+    raise (X, y)
 
 
 def insert_days(ds) -> Tuple[np.ndarray]:
     """
     Insert weekdays of dates of X and y in the dataset.
+    Note that this method is for reference and debugging
+    purpose only.
     """
     X, y = ds[0].copy(), ds[1].copy()
     X.insert(loc=0, column="DAY", value=X.index.day_name())
@@ -131,3 +136,5 @@ def regression_feed() -> List[np.ndarray]:
     print(f"Total number of training pairs (X, y) generated: {len(ds_total)}")
     # Sort according to target's timestamp.
     ds_total.sort(key=lambda x: x[1].index)
+    X_arr, y_arr = collect_array(ds_total)
+    return (X_arr, y_arr)
