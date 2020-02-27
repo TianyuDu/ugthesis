@@ -80,7 +80,7 @@ def split_train_test(
         pass
 
 
-def _flatten(ds) -> Tuple[np.ndarray]:
+def flatten(ds) -> Tuple[np.ndarray]:
     """
     Converts dataset (list of tuples) to arrays.
     """
@@ -88,14 +88,14 @@ def _flatten(ds) -> Tuple[np.ndarray]:
     raise NotImplementedError
 
 
-def present_days(ds) -> Tuple[np.ndarray]:
+def insert_days(ds) -> Tuple[np.ndarray]:
     """
     Insert weekdays of dates of X and y in the dataset.
     """
     X, y = ds[0].copy(), ds[1].copy()
     X.insert(loc=0, column="DAY", value=X.index.day_name())
     y.insert(loc=0, column="DAY", value=y.index.day_name())
-    return X, y
+    return (X, y)
 
 
 def regression_feed() -> List[np.ndarray]:
@@ -110,7 +110,9 @@ def regression_feed() -> List[np.ndarray]:
         verify=all_valid_verification
     )
     ds_passed = list(zip(feature_list, label_list))
+    print(f"Number of observations passed: {len(ds_passed)}")
     ds_failed = list(zip(failed_feature_list, failed_label_list))
+    print(f"Number of observations failed: {len(ds_failed)}")
 
     scope = max(len(x) for x in feature_list)
     print(f"Scope of features (num. of days): {scope}")
@@ -126,6 +128,6 @@ def regression_feed() -> List[np.ndarray]:
     ))
 
     ds_total = ds_passed + ds_fixed
-
+    print(f"Total number of training pairs (X, y) generated: {len(ds_total)}")
     # Sort according to target's timestamp.
     ds_total.sort(key=lambda x: x[1].index)
