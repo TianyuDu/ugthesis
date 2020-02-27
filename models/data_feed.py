@@ -65,6 +65,11 @@ def fix_failed(X: pd.DataFrame, y: pd.DataFrame, req_len: int) -> Tuple[pd.DataF
         inplace=True
     )
 
+    fixed_X.fillna(
+        method="ffill",
+        inplace=True
+    )
+
     return (fixed_X, y)
 
 
