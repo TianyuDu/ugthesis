@@ -83,6 +83,8 @@ def check_ds(ds: List[List[Tuple[pd.DataFrame]]]) -> None:
         target_date = y.index[0]
         last_feature_date = X.index[-1]
         assert target_date > last_feature_date
+        assert not np.any(X.isnull())
+        assert not np.any(y.isnull())
 
 
 def split_train_test(
