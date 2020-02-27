@@ -99,7 +99,7 @@ def split_train_test(
     return train_set, test_set
 
 
-def collect_array(ds) -> Tuple[np.ndarray]:
+def convert_to_array(ds) -> Tuple[np.ndarray]:
     """
     Converts dataset (list of tuples) to arrays.
     """
