@@ -107,7 +107,7 @@ def convert_to_array(ds) -> Tuple[np.ndarray]:
     y_lst = [z[1].values for z in ds]
     X = np.stack(X_lst)
     y = np.stack(y_lst)
-    raise (X, y)
+    return (X, y)
 
 
 def insert_days(ds) -> Tuple[np.ndarray]:
