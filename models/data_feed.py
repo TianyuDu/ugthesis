@@ -68,16 +68,24 @@ def fix_failed(X: pd.DataFrame, y: pd.DataFrame, req_len: int) -> Tuple[pd.DataF
     return (fixed_X, y)
 
 
-def check_ds(ds) -> None:
-    raise NotImplementedError
+def check_ds(ds: List[List[Tuple[pd.DataFrame]]]) -> None:
+    """
+    An sanity check on the dataset.
+    """
+    # Check scope size.
+    assert min(len(pair[0]) for pair in ds) == max(len(pair[0]) for pair in ds)
+    for X, y in ds:
+        target_date = y.index[0]
+        last_feature_date = X.index[-1]
+        assert target_date > last_feature_date
 
 
 def split_train_test(
     ds: List[Tuple[pd.DataFrame]]
-) -> List[List[Tuple[pd.DataFrame]]]:
+) -> Tuple[List[Tuple[pd.DataFrame]]]:
     """
     Splits dataset according to TRAINING_BOUNDARY.
-    Returns two dataset.
+    Returns two datasets.
     """
     train_set, test_set = [], []
     for X, y in ds:
@@ -148,8 +156,9 @@ def regression_feed() -> List[np.ndarray]:
     ds_total = ds_passed + ds_fixed
     print(f"Total number of training pairs (X, y) generated: {len(ds_total)}")
     # Sort according to target's timestamp.
-    # TODO: split dataset
-    # TODO: check dataset
+    train_set, test_set = split_train_test(ds_total)
+    check_ds(train_set)
+    check_ds(test_set)
     ds_total.sort(key=lambda x: x[1].index)
     X_arr, y_arr = collect_array(ds_total)
     return (X_arr, y_arr)
