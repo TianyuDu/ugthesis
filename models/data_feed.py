@@ -107,6 +107,8 @@ def regression_feed() -> List[np.ndarray]:
     """
     Feed training and testing sets to the model evaluation method.
     Note that validation set will be extracted from the training set.
+    Returns:
+        (X_train, y_train, X_test, y_test)
     """
     feature_list, label_list, failed_feature_list, failed_label_list = gen_dataset_calendarday(
         DF,
