@@ -19,15 +19,31 @@ from utils.time_series_utils import gen_dataset_calendarday
 MASTER_DIR = "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis"
 TARGET_COL = "RETURN"
 LAG_DAYS = 28
-DF = pd.read_csv(
+DF_RETURNS = pd.read_csv(
     MASTER_DIR + "/data/ready_to_use/returns_norm.csv",
     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
     index_col=0
 )
+DF_NEWS = pd.read_csv(
+    MASTER_DIR + "/data/ready_to_use/rpna_radius_0.3.csv",
+    date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
+    index_col=0
+)
+
 # Any tuple of X, y with y.date >= BOUNDARY will be classified as
 # a testing case.
 TRAINING_BOUNDARY = datetime(2019, 1, 1)
 # ============== End ==============
+
+
+def align_datasets(
+    main_df: pd.DataFrame,
+    side_df: List[pd.DataFrame]
+) -> pd.DataFrame:
+    """
+    Align multiple datasets, and merge them together.
+    """
+    raise NotImplementedError
 
 
 def all_valid_verification(X: pd.DataFrame, y: pd.DataFrame) -> bool:
