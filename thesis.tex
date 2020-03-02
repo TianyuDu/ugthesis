@@ -315,10 +315,11 @@ Friday & & & & &  0.000(1.000) \\
 	\end{figure}
 
 	\par It is worth mentioning that ESS measures the potential impact on the topic of this news. For example, a civil unrest in a middle east country is often considered as news forerun negative economic impact, especially for the country itself.
-	However, such news is in general associated with positive ESS scores because the expected negative supply shocks carried by these news are typically positively correlated crude oil prices and returns. \textbf{Tables below} present a list of categories frequently associated with positive and negatives news. From these two table we can see that the majority of themes of positive news would impact crude oil prices and returns positively.
+	However, such news is in general associated with positive ESS scores because the expected negative supply shocks carried by these news are typically positively correlated crude oil prices and returns. \textbf{Tables below} present a list of categories frequently associated with positive and negatives news. From these two table we can see that the majority of themes of positive news would impact crude oil prices and returns positively. These tables only include categories with more than 1,000 observations, the appendix contains complete versions of these two tables.
 	\begin{table}[H]
 		\centering
 		\small
+		\caption{Most Frequent Categories of Positive News}
 		\begin{tabular}{l|c}
 			\toprule
 			Category & Number of positive news \\
@@ -335,12 +336,12 @@ Friday & & & & &  0.000(1.000) \\
 			all positive news & 49,366 \\
 			\bottomrule
 		\end{tabular}
-		\caption{Most frequent categories of positive news. Only categories with frequency greater than 1,000 are shown in this table.}
 	\end{table}
 
 	\begin{table}[H]
 		\centering
 		\small
+		\caption{Most Frequent Categories of Negative News}
 		\begin{tabular}{l|c}
 			\toprule
 			Category & Number of negative news \\
@@ -357,7 +358,6 @@ Friday & & & & &  0.000(1.000) \\
 			all negative news & 54,115 \\
 			\bottomrule
 		\end{tabular}
-		\caption{Most frequent categories of positive news. Only categories with frequency greater than 1,000 are shown in this table.}
 	\end{table}
 	
 	\begin{table}[H]
@@ -425,6 +425,17 @@ Friday & & & & &  0.000(1.000) \\
 	\end{table}
 
 	\subsection{Classifying News Type}
+	\paragraph{}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth]{figures/event_classification/ESS_composition.png}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth]{figures/event_classification/WESS_composition.png}
+	\end{figure}
+
 	
 	\subsection{Case Studies of Events}
 	\subsubsection{Positive Spike on November 30, 2016}
@@ -450,37 +461,218 @@ Friday & & & & &  0.000(1.000) \\
 		\includegraphics[width=\linewidth]{figures/case_studies/20190612_10d.png}
 		\caption{}
 	\end{figure}
+	
 	\section{Models}
+	\subsection{Relevant Works}
+	\subsection{Linear Models}
+	\subsection{Support Vector Regression}
+	\subsection{Convolution Neural Network}
+	\subsection{Recurrent Neural Network}
 	
 	\section{Experiments}
+	\subsection{$k$-Fold Validation}
 
 	% Bib
 	\bibliographystyle{apacite}
 	
 	\bibliography{thesis.bib}
 
-%	\section{Appendix: Supplementary Summary Statistics for Datasets}
-%	
-%	\begin{figure}[H]
-%		\centering
-%		\small
-%		\includegraphics[width=\linewidth]{figures/case_studies/20161130_45d.png}
-%		\caption{}
-%	\end{figure}
-%	\begin{figure}[H]
-%		\centering
-%		\small
-%		\includegraphics[width=\linewidth]{figures/case_studies/20181206_45d.png}
-%		\caption{}
-%	\end{figure}
-%	\begin{figure}[H]
-%		\centering
-%		\small
-%		\includegraphics[width=\linewidth]{figures/case_studies/20190612_45d.png}
-%		\caption{}
-%	\end{figure}
+	\section{Appendix: Supplementary Summary Statistics for Datasets}
+	
+	\begin{figure}[H]
+		\centering
+		\small
+		\includegraphics[width=\linewidth]{figures/case_studies/20161130_45d.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[H]
+		\centering
+		\small
+		\includegraphics[width=\linewidth]{figures/case_studies/20181206_45d.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[H]
+		\centering
+		\small
+		\includegraphics[width=\linewidth]{figures/case_studies/20190612_45d.png}
+		\caption{}
+	\end{figure}
 
+	\begin{table}[H]
+		\centering
+		\small
+		\caption{All Categories of Positive News}
+		\begin{tabular}{l|c}
+			\toprule
+			Category & Number of Positive news \\
+			\midrule
+commodity-price-gain&22,893\\
+commodity-futures-gain&11,648\\
+supply-decrease-commodity&5,845\\
+imports-up&2,705\\
+commodity-buy-target&1,171\\
+demand-increase-commodity&1,070\\
+exports-down&1,020\\
+spill-commodity&787\\
+commodity-offer-target&429\\
+demand-guidance-increase-commodity&375\\
+price-target-upgrade&332\\
+exports-guidance-down&217\\
+technical-view-bullish&193\\
+supply-guidance-decrease-commodity&186\\
+imports-guidance-up&122\\
+relative-strength-index-oversold&85\\
+embargo&80\\
+piracy&57\\
+pipeline-bombing-attack&32\\
+force-majeure-commodity&26\\
+tanker-accident-commodity&17\\
+export-tax-guidance-decrease&11\\
+pipeline-accident-commodity&11\\
+platform-accident-commodity&11\\
+import-tax-guidance-decrease&8\\
+drilling-suspended-commodity&8\\
+facility-close-output&6\\
+import-tax-decrease&6\\
+hijacking-target-commodity&4\\
+export-tax-decrease&3\\
+market-guidance-up-commodity&2\\
+refinery-accident-commodity&2\\
+facility-accident-commodity&2\\
+technical-price-level-support-bullish&1\\
+pipeline-bombing-threat&1\\
+	\bottomrule
+	\end{tabular}
+	\end{table}
 
+	\begin{table}[H]
+		\centering
+		\small
+		\caption{All Categories of Negative News}
+		\begin{tabular}{l|c}
+			\toprule
+			Category & Number of negative news \\
+			\midrule
+commodity-price-loss&26,475\\
+commodity-futures-loss&12,818\\
+supply-increase-commodity&6,629\\
+imports-down&2,017\\
+exports-up&1,308\\
+resource-discovery-commodity&1,179\\
+technical-view-bearish&1,172\\
+demand-decrease-commodity&650\\
+demand-guidance-decrease-commodity&341\\
+commodity-sell-target&303\\
+supply-guidance-increase-commodity&268\\
+price-target-downgrade&261\\
+exports-guidance-up&208\\
+technical-price-level-resistance-bearish&150\\
+force-majeure-lifted-commodity&85\\
+imports-guidance-down&75\\
+export-tax-increase&29\\
+drilling-commodity&27\\
+export-tax-guidance-increase&24\\
+facility-upgrade-output&21\\
+import-tax-increase&18\\
+relative-strength-index-overbought&16\\
+embargo-lifted&12\\
+import-tax-guidance-increase&9\\
+facility-open-output&5\\
+facility-accident-contained-commodity&4\\
+import-tax&3\\
+export-tax&3\\
+facility-sale-output&3\\
+hijacking-released-commodity&1\\
+tax-break-ended&1\\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\begin{table}[H]
+		\small
+		\centering
+		\caption{Filtering using Event Sentiment Score}
+		\begin{tabular}{c|c c c}
+\toprule
+Neu Range & Num Negative & Num Neutral & Num Positive \\
+\midrule
+$[0,0]$ & 50.59\% (100.00\%) & 3.25\% (100.00\%) & 46.15\% (100.00\%) \\
+$[-1,1]$ & 50.57\% (99.96\%) & 3.29\% (101.24\%) & 46.13\% (99.96\%) \\
+$[-2,2]$ & 50.55\% (99.91\%) & 3.33\% (102.33\%) & 46.12\% (99.93\%) \\
+$[-3,3]$ & 50.52\% (99.85\%) & 3.39\% (104.08\%) & 46.09\% (99.87\%) \\
+$[-4,4]$ & 50.51\% (99.83\%) & 3.82\% (117.33\%) & 45.68\% (98.96\%) \\
+$[-5,5]$ & 50.20\% (99.23\%) & 5.24\% (161.14\%) & 44.55\% (96.54\%) \\
+$[-6,6]$ & 50.04\% (98.91\%) & 5.42\% (166.77\%) & 44.54\% (96.49\%) \\
+$[-7,7]$ & 50.01\% (98.85\%) & 5.47\% (168.07\%) & 44.52\% (96.46\%) \\
+$[-8,8]$ & 49.99\% (98.81\%) & 5.51\% (169.27\%) & 44.50\% (96.42\%) \\
+$[-9,9]$ & 48.88\% (96.62\%) & 6.82\% (209.80\%) & 44.29\% (95.97\%) \\
+$[-10,10]$ & 48.84\% (96.53\%) & 6.91\% (212.45\%) & 44.25\% (95.88\%) \\
+$[-11,11]$ & 48.82\% (96.49\%) & 6.97\% (214.20\%) & 44.21\% (95.80\%) \\
+$[-12,12]$ & 48.78\% (96.41\%) & 7.86\% (241.51\%) & 43.37\% (93.96\%) \\
+$[-13,13]$ & 48.74\% (96.33\%) & 7.92\% (243.55\%) & 43.34\% (93.90\%) \\
+$[-14,14]$ & 48.72\% (96.29\%) & 7.96\% (244.64\%) & 43.33\% (93.87\%) \\
+$[-15,15]$ & 11.93\% (23.58\%) & 44.76\% (1376.20\%) & 43.31\% (93.83\%) \\
+$[-16,16]$ & 11.88\% (23.49\%) & 44.83\% (1378.41\%) & 43.28\% (93.78\%) \\
+$[-17,17]$ & 11.85\% (23.42\%) & 44.89\% (1379.97\%) & 43.27\% (93.74\%) \\
+$[-18,18]$ & 11.82\% (23.37\%) & 77.24\% (2374.59\%) & 10.94\% (23.71\%) \\
+$[-19,19]$ & 11.80\% (23.33\%) & 77.27\% (2375.51\%) & 10.93\% (23.68\%) \\
+$[-20,20]$ & 11.73\% (23.18\%) & 77.41\% (2379.79\%) & 10.87\% (23.55\%) \\
+$[-21,21]$ & 11.42\% (22.57\%) & 77.82\% (2392.47\%) & 10.76\% (23.32\%) \\
+$[-22,22]$ & 5.69\% (11.25\%) & 83.65\% (2571.83\%) & 10.66\% (23.09\%) \\
+$[-23,23]$ & 5.57\% (11.00\%) & 83.86\% (2578.38\%) & 10.57\% (22.90\%) \\
+$[-24,24]$ & 5.53\% (10.94\%) & 89.23\% (2743.37\%) & 5.24\% (11.34\%) \\
+$[-25,25]$ & 5.41\% (10.70\%) & 89.43\% (2749.47\%) & 5.16\% (11.17\%) \\
+$[-26,26]$ & 5.37\% (10.62\%) & 89.52\% (2752.20\%) & 5.11\% (11.07\%) \\
+$[-27,27]$ & 5.32\% (10.51\%) & 89.65\% (2756.25\%) & 5.03\% (10.91\%) \\
+$[-28,28]$ & 4.23\% (8.37\%) & 91.79\% (2822.05\%) & 3.98\% (8.62\%) \\
+$[-29,29]$ & 4.21\% (8.33\%) & 91.86\% (2824.12\%) & 3.93\% (8.51\%) \\
+$[-30,30]$ & 4.18\% (8.27\%) & 91.90\% (2825.38\%) & 3.92\% (8.49\%) \\
+\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\begin{table}[H]
+		\small
+		\centering
+		\caption{Filtering using Weighted Event Sentiment Score}
+		\begin{tabular}{c|c c c}
+\toprule
+Neu Range & Num Negative & Num Neutral & Num Positive \\
+\midrule
+$[0,0]$ & 46.54\% (100.00\%) & 9.06\% (100.00\%) & 44.40\% (100.00\%) \\
+$[-1,1]$ & 39.25\% (84.33\%) & 20.32\% (224.32\%) & 40.43\% (91.06\%) \\
+$[-2,2]$ & 33.69\% (72.40\%) & 29.93\% (330.42\%) & 36.37\% (81.92\%) \\
+$[-3,3]$ & 31.12\% (66.87\%) & 34.62\% (382.22\%) & 34.25\% (77.14\%) \\
+$[-4,4]$ & 28.35\% (60.92\%) & 40.08\% (442.46\%) & 31.57\% (71.10\%) \\
+$[-5,5]$ & 25.24\% (54.24\%) & 46.49\% (513.20\%) & 28.27\% (63.66\%) \\
+$[-6,6]$ & 24.92\% (53.54\%) & 49.89\% (550.79\%) & 25.19\% (56.73\%) \\
+$[-7,7]$ & 21.78\% (46.79\%) & 53.19\% (587.19\%) & 25.03\% (56.38\%) \\
+$[-8,8]$ & 21.42\% (46.04\%) & 57.06\% (629.93\%) & 21.51\% (48.45\%) \\
+$[-9,9]$ & 18.09\% (38.87\%) & 60.76\% (670.80\%) & 21.15\% (47.62\%) \\
+$[-10,10]$ & 17.51\% (37.64\%) & 61.39\% (677.67\%) & 21.10\% (47.52\%) \\
+$[-11,11]$ & 17.46\% (37.53\%) & 65.26\% (720.44\%) & 17.28\% (38.91\%) \\
+$[-12,12]$ & 14.07\% (30.23\%) & 69.17\% (763.62\%) & 16.76\% (37.75\%) \\
+$[-13,13]$ & 13.25\% (28.47\%) & 70.03\% (773.05\%) & 16.72\% (37.66\%) \\
+$[-14,14]$ & 13.15\% (28.25\%) & 74.32\% (820.49\%) & 12.53\% (28.22\%) \\
+$[-15,15]$ & 9.83\% (21.13\%) & 77.68\% (857.58\%) & 12.48\% (28.11\%) \\
+$[-16,16]$ & 9.66\% (20.76\%) & 77.96\% (860.57\%) & 12.38\% (27.88\%) \\
+$[-17,17]$ & 8.29\% (17.82\%) & 79.37\% (876.19\%) & 12.34\% (27.79\%) \\
+$[-18,18]$ & 8.18\% (17.57\%) & 84.22\% (929.75\%) & 7.60\% (17.12\%) \\
+$[-19,19]$ & 8.06\% (17.31\%) & 84.49\% (932.75\%) & 7.45\% (16.78\%) \\
+$[-20,20]$ & 7.98\% (17.15\%) & 84.63\% (934.20\%) & 7.39\% (16.65\%) \\
+$[-21,21]$ & 7.51\% (16.14\%) & 85.37\% (942.46\%) & 7.12\% (16.03\%) \\
+$[-22,22]$ & 4.77\% (10.24\%) & 88.20\% (973.67\%) & 7.03\% (15.84\%) \\
+$[-23,23]$ & 4.66\% (10.01\%) & 88.42\% (976.11\%) & 6.92\% (15.58\%) \\
+$[-24,24]$ & 4.48\% (9.63\%) & 91.35\% (1008.46\%) & 4.17\% (9.39\%) \\
+$[-25,25]$ & 4.22\% (9.06\%) & 91.95\% (1015.06\%) & 3.83\% (8.63\%) \\
+$[-26,26]$ & 4.16\% (8.95\%) & 92.06\% (1016.33\%) & 3.77\% (8.50\%) \\
+$[-27,27]$ & 4.09\% (8.79\%) & 92.24\% (1018.25\%) & 3.67\% (8.27\%) \\
+$[-28,28]$ & 3.28\% (7.04\%) & 93.86\% (1036.13\%) & 2.86\% (6.45\%) \\
+$[-29,29]$ & 2.95\% (6.34\%) & 94.23\% (1040.22\%) & 2.82\% (6.35\%) \\
+$[-30,30]$ & 2.92\% (6.27\%) & 94.31\% (1041.09\%) & 2.77\% (6.25\%) \\
+\bottomrule
+		\end{tabular}
+	\end{table}
 \end{document}
 
 

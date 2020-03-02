@@ -4,36 +4,10 @@ replications/src/logs/
 replications/src/__pycache__/
 */__pycache__/
 replications/src/__pycache__/Experiment.cpython-37.pyc
-embedding/lib_data/
-embedding/.ipynb_checkpoints/embedding_utils-checkpoint.ipynb
-embedding/.ipynb_checkpoints/embedding_utils-checkpoint.ipynb
-embedding/emb_data/
-embedding/emb_data/glove.6B/glove.6B.50d.txt
-embedding/emb_data/glove.6B/glove.6B.300d.txt
-embedding/emb_data/glove.6B/glove.6B.200d.txt
-embedding/emb_data/glove.6B/glove.6B.100d.txt
-embedding/emb_data/glove.6B/6B.50_words.pkl
-embedding/emb_data/glove.6B/6B.50_idx.pkl
-embedding/emb_data/glove.6B/6B.50.dat/meta/storage 2
-embedding/emb_data/glove.6B/6B.50.dat/meta/storage
-embedding/emb_data/glove.6B/6B.50.dat/meta/sizes 2
-embedding/emb_data/glove.6B/6B.50.dat/meta/sizes
-embedding/emb_data/glove.6B/6B.50.dat/__attrs__ 2
-embedding/emb_data/glove.6B/6B.50.dat/__attrs__
-embedding/emb_data/glove.6B.zip
-embedding/.ipynb_checkpoints/embedding_utils-checkpoint.ipynb
-embedding/emb_data/glove.6B/6B.50.dat/meta/sizes 3
-embedding/emb_data/glove.6B/6B.50.dat/meta/storage 3
-embedding/.ipynb_checkpoints/embedding_utils-checkpoint.ipynb
 
-./data/
-data/ravenpack/equ_dj_oct_2019.csv
-data/ravenpack/*.csv
-data/ravenpack/*.zip
-eda/.ipynb_checkpoints/rpna_crude_oil_eda-checkpoint.ipynb
-eda/.ipynb_checkpoints/rpna_crude_oil_eda-checkpoint.ipynb
+embedding/
+data/
+writeup/
+.texpadtemp/
 
-./data/**
-.texpadtmp/thesis.aux
-.texpadtmp/thesis.log
-.texpadtmp/thesis.synctex.gz
+.DS_Store

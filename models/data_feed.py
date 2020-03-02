@@ -43,7 +43,7 @@ def align_datasets(
     """
     Align multiple datasets, and merge them together.
     """
-    raise NotImplementedError
+    index = main_df.index
 
 
 def all_valid_verification(X: pd.DataFrame, y: pd.DataFrame) -> bool:

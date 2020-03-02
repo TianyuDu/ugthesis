@@ -12,5 +12,12 @@
 \BOOKMARK [3][-]{subsubsection.2.6.2}{Negative Spike on December 6, 2018}{subsection.2.6}% 12
 \BOOKMARK [3][-]{subsubsection.2.6.3}{Positive Spike on June. 12 - 13, 2019}{subsection.2.6}% 13
 \BOOKMARK [1][-]{section.3}{Models}{}% 14
-\BOOKMARK [1][-]{section.4}{Experiments}{}% 15
-\BOOKMARK [1][-]{section*.14}{References}{}% 16
+\BOOKMARK [2][-]{subsection.3.1}{Relevant Works}{section.3}% 15
+\BOOKMARK [2][-]{subsection.3.2}{Linear Models}{section.3}% 16
+\BOOKMARK [2][-]{subsection.3.3}{Support Vector Regression}{section.3}% 17
+\BOOKMARK [2][-]{subsection.3.4}{Convolution Neural Network}{section.3}% 18
+\BOOKMARK [2][-]{subsection.3.5}{Recurrent Neural Network}{section.3}% 19
+\BOOKMARK [1][-]{section.4}{Experiments}{}% 20
+\BOOKMARK [2][-]{subsection.4.1}{k-Fold Validation}{section.4}% 21
+\BOOKMARK [1][-]{section*.15}{References}{}% 22
+\BOOKMARK [1][-]{section.5}{Appendix: Supplementary Summary Statistics for Datasets}{}% 23

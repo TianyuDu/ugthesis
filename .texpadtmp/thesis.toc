@@ -12,11 +12,19 @@
 \contentsline {subsubsection}{\numberline {2.3.2}Kolmogorov-Smirnov test for Distributional Similarities}{10}{subsubsection.2.3.2}% 
 \contentsline {subsection}{\numberline {2.4}News and Sentiment Datasets}{11}{subsection.2.4}% 
 \contentsline {paragraph}{}{11}{section*.10}% 
-\contentsline {subsection}{\numberline {2.5}Classifying News Type}{16}{subsection.2.5}% 
-\contentsline {subsection}{\numberline {2.6}Case Studies of Events}{16}{subsection.2.6}% 
-\contentsline {subsubsection}{\numberline {2.6.1}Positive Spike on November 30, 2016}{16}{subsubsection.2.6.1}% 
-\contentsline {subsubsection}{\numberline {2.6.2}Negative Spike on December 6, 2018}{17}{subsubsection.2.6.2}% 
-\contentsline {subsubsection}{\numberline {2.6.3}Positive Spike on June. 12 - 13, 2019}{18}{subsubsection.2.6.3}% 
-\contentsline {section}{\numberline {3}Models}{18}{section.3}% 
-\contentsline {section}{\numberline {4}Experiments}{18}{section.4}% 
-\contentsline {section}{References}{18}{section*.14}% 
+\contentsline {subsection}{\numberline {2.5}Classifying News Type}{15}{subsection.2.5}% 
+\contentsline {paragraph}{}{16}{section*.14}% 
+\contentsline {subsection}{\numberline {2.6}Case Studies of Events}{17}{subsection.2.6}% 
+\contentsline {subsubsection}{\numberline {2.6.1}Positive Spike on November 30, 2016}{17}{subsubsection.2.6.1}% 
+\contentsline {subsubsection}{\numberline {2.6.2}Negative Spike on December 6, 2018}{18}{subsubsection.2.6.2}% 
+\contentsline {subsubsection}{\numberline {2.6.3}Positive Spike on June. 12 - 13, 2019}{19}{subsubsection.2.6.3}% 
+\contentsline {section}{\numberline {3}Models}{20}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}Relevant Works}{20}{subsection.3.1}% 
+\contentsline {subsection}{\numberline {3.2}Linear Models}{20}{subsection.3.2}% 
+\contentsline {subsection}{\numberline {3.3}Support Vector Regression}{20}{subsection.3.3}% 
+\contentsline {subsection}{\numberline {3.4}Convolution Neural Network}{20}{subsection.3.4}% 
+\contentsline {subsection}{\numberline {3.5}Recurrent Neural Network}{20}{subsection.3.5}% 
+\contentsline {section}{\numberline {4}Experiments}{20}{section.4}% 
+\contentsline {subsection}{\numberline {4.1}$k$-Fold Validation}{20}{subsection.4.1}% 
+\contentsline {section}{References}{20}{section*.15}% 
+\contentsline {section}{\numberline {5}Appendix: Supplementary Summary Statistics for Datasets}{21}{section.5}% 
