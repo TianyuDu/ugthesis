@@ -157,19 +157,29 @@ def insert_days(ds) -> Tuple[np.ndarray]:
     return (X, y)
 
 
-def regression_feed() -> List[np.ndarray]:
+def regression_feed(
+    include: "str" = "master"
+) -> List[np.ndarray]:
     """
     Feed training and testing sets to the model evaluation method.
     Note that validation set will be extracted from the training set.
     Returns:
         (X_train, y_train, X_test, y_test)
     """
-    feature_list, label_list, failed_feature_list, failed_label_list = gen_dataset_calendarday(
-        DF_MASTER,
-        TARGET_COL,
-        LAG_DAYS,
-        verify=all_valid_verification
-    )
+    if include == "master":
+        feature_list, label_list, failed_feature_list, failed_label_list = gen_dataset_calendarday(
+            DF_MASTER,
+            TARGET_COL,
+            LAG_DAYS,
+            verify=all_valid_verification
+        )
+    elif include == "return":
+        feature_list, label_list, failed_feature_list, failed_label_list = gen_dataset_calendarday(
+            DF_RETURNS,
+            TARGET_COL,
+            LAG_DAYS,
+            verify=all_valid_verification
+        )
     ds_passed = list(zip(feature_list, label_list))
     print(f"Number of observations passed: {len(ds_passed)}")
     ds_failed = list(zip(failed_feature_list, failed_label_list))

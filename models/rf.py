@@ -25,8 +25,10 @@ def construct_model(
 
 
 def main(result_path: str):
-    n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
-    max_features = ['auto', 'sqrt']
+    # n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
+    n_estimators = [2000]
+    # max_features = ['auto', 'sqrt']
+    max_features = ["auto"]
     # Maximum number of levels in tree
     max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
     max_depth.append(None)
@@ -35,20 +37,20 @@ def main(result_path: str):
     # Minimum number of samples required at each leaf node
     min_samples_leaf = [1, 2, 4]
     # Method of selecting samples for training each tree
-    bootstrap = [True, False]
+    bootstrap = [True]
 
     # ==== Smaller Profile For Testing Purpose====
-    n_estimators = [10]
-    max_features = ['auto', 'sqrt']
-    # Maximum number of levels in tree
-    max_depth = [10]
-    max_depth.append(None)
-    # Minimum number of samples required to split a node
-    min_samples_split = [10]
-    # Minimum number of samples required at each leaf node
-    min_samples_leaf = [1]
-    # Method of selecting samples for training each tree
-    bootstrap = [True]
+    # n_estimators = [10]
+    # max_features = ['auto', 'sqrt']
+    # # Maximum number of levels in tree
+    # max_depth = [10]
+    # max_depth.append(None)
+    # # Minimum number of samples required to split a node
+    # min_samples_split = [10]
+    # # Minimum number of samples required at each leaf node
+    # min_samples_leaf = [1]
+    # # Method of selecting samples for training each tree
+    # bootstrap = [True]
 
     # ================================================
 
@@ -66,7 +68,7 @@ def main(result_path: str):
     rf_random = RandomizedSearchCV(
         estimator=model,
         param_distributions=random_grid,
-        n_iter=100,
+        n_iter=10,
         scoring={
             'neg_mean_squared_error': 'neg_mean_squared_error',
             'acc': make_scorer(directional_accuracy)
