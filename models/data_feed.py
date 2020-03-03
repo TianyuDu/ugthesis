@@ -26,7 +26,7 @@ DF_RETURNS = pd.read_csv(
     index_col=0
 )
 DF_NEWS = pd.read_csv(
-    MASTER_DIR + "/data/ready_to_use/rpna_r0_wess.csv",
+    MASTER_DIR + "/data/ready_to_use/rpna_r0_ess.csv",
     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
     index_col=0
 )
