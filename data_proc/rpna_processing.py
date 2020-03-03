@@ -95,6 +95,31 @@ def _check_equal(df1, df2) -> None:
         f"Percentage same: {np.mean(np.sum(a1 == a2, axis=1) == num_fea)* 100: 0.2f} % ")
 
 
+def split_ess_wess(
+    df_combined: pd.DataFrame
+) -> pd.DataFrame:
+    """
+    Extracts two datasets from the combined datasets.
+    One is using ESS criterion and the other is using WESS criterion.
+    """
+    ESS_features = [
+        'ESS_MEAN', 'ESS_TOTAL', 'NUM_EVENTS',
+        'NUM_POSITIVE_ESS', 'NUM_NEGATIVE_ESS',
+        'NUM_NEUTRAL_ESS'
+    ]
+
+    WESS_features = [
+        'WESS_MEAN', 'WESS_TOTAL', 'NUM_EVENTS',
+        'NUM_POSITIVE_WESS', 'NUM_NEGATIVE_WESS',
+        'NUM_NEUTRAL_WESS'
+    ]
+
+    df_ESS = df_combined[ESS_features]
+    df_WESS = df_combined[WESS_features]
+
+    return df_ESS, df_WESS
+
+
 def main(
     raw: pd.DataFrame,
     threshold: Tuple[float]
