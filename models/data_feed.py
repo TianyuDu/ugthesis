@@ -16,7 +16,8 @@ from sklearn import model_selection
 from utils.time_series_utils import gen_dataset_calendarday
 
 # ============ Configs ============
-MASTER_DIR = "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis"
+# MASTER_DIR = "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis"
+MASTER_DIR = "../"
 TARGET_COL = "RETURN"
 LAG_DAYS = 28
 DF_RETURNS = pd.read_csv(
