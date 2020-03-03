@@ -252,11 +252,11 @@ def gen_dataset_calendarday(
         if verify is None or verify(X, y):
             # Add to data collection only if verified.
             feature_list.append(X)
-            label_list.append(y)
+            label_list.append(y[target_col])
         else:
             failed += 1
             failed_feature_list.append(X)
-            failed_label_list.append(y)
+            failed_label_list.append(y[target_col])
     print(f"Total data points: {counter}, out of range error: {out_of_range}, failed to verify: {failed}.")
     print(f"Maximum feature scope (days): {max(len(d) for d in feature_list)}")
     print(f"Minimum feature scope (days): {min(len(d) for d in feature_list)}")
