@@ -18,7 +18,7 @@ def convert_timestamp_wti(
     """
     fmt = "%Y-%m-%d %H:%M:%S.%f"
     dates_utc = pd.to_datetime(df[utc_col], format=fmt)
-    dates_wti = dates_utc.dt.tz_localize("UTC").dt.tz_convert("US/Central")
+    dates_wti = dates_utc.dt.tz_localize("UTC").dt.tz_convert("US/Eastern")
     df.insert(loc=0, column="TIMESTAMP_WTI", value=dates_wti)
     return df
 
@@ -144,6 +144,7 @@ def main(
     # Count numbers of positive, negative, and neutral news based on two criteria.
     ess_count = separate_count(df, attr_col="ESS", threshold=threshold)
     wess_count = separate_count(df, attr_col="WESS", threshold=threshold)
+    print("Check the counts using two criterions:")
     _check_equal(ess_count, wess_count)
 
     assert np.all(daily_ess.index == daily_weighted_ess.index)
@@ -164,7 +165,9 @@ def main(
         warnings.warn(
             f"Dates with missing values: {num_missing}"
         )
-    return df_daily
+
+    df_ESS, df_WESS = split_ess_wess(df_daily)
+    return df_daily, df_ESS, df_WESS
 
 
 if __name__ == "__main__":
@@ -178,6 +181,7 @@ if __name__ == "__main__":
     src_file = "../data/ravenpack/crude_oil_all.csv"
     print(f"Read raw dataset from {src_file}")
     df = pd.read_csv(src_file)
+
     if (args.radius is not None) and (args.lower is not None and args.upper is not None):
         raise ValueError("Cannot set both radius and lower/upper bound.")
     if args.radius is not None:
@@ -186,10 +190,19 @@ if __name__ == "__main__":
         threshold = (args.lower, args.upper)
     else:
         threshold = (-3, 3)
-    p = main(df, threshold=threshold)
-    p.info()
-    print(p.head())
+
+    df_combined, df_ESS, df_WESS = main(df, threshold=threshold)
+    print("df_ESS summary:")
+    df_ESS.info()
+    print("df_WESS summary:")
+    df_WESS.info()
 
     if args.save_to is not None:
-        print(f"Write file to {args.save_to}")
-        p.to_csv(args.save_to)
+        print(f"Write file to {[
+            args.save_to + app
+            for app in ["_all.csv", "_ess.csv", "_wess.csv"]
+        ]}")
+        df_combined.to_csv(args.save_to + "_all.csv")
+        df_ESS.to_csv(args.save_to + "_ess.csv")
+        df_WESS.to_csv(args.save_to + "_wess.csv")
+
