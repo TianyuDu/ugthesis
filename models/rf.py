@@ -12,7 +12,7 @@ from training_utils import directional_accuracy
 
 from typing import Union
 
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.metrics import make_scorer
 
 import data_feed
@@ -41,17 +41,17 @@ def main(
     bootstrap = [True]
 
     # ==== Smaller Profile For Testing Purpose====
-    n_estimators = [10]
-    max_features = ['auto', 'sqrt']
-    # Maximum number of levels in tree
-    max_depth = [10]
-    max_depth.append(None)
-    # Minimum number of samples required to split a node
-    min_samples_split = [10]
-    # Minimum number of samples required at each leaf node
-    min_samples_leaf = [1]
-    # Method of selecting samples for training each tree
-    bootstrap = [True]
+    # n_estimators = [10]
+    # max_features = ['auto', 'sqrt']
+    # # Maximum number of levels in tree
+    # max_depth = [10]
+    # max_depth.append(None)
+    # # Minimum number of samples required to split a node
+    # min_samples_split = [10]
+    # # Minimum number of samples required at each leaf node
+    # min_samples_leaf = [1]
+    # # Method of selecting samples for training each tree
+    # bootstrap = [True]
 
     # ================================================
 
@@ -66,9 +66,10 @@ def main(
     }
 
     model = RandomForestRegressor()
-    grid_search = GridSearchCV(
+    grid_search = RandomizedSearchCV(
         estimator=model,
-        param_grid=grid,
+        n_iter=50,
+        param_distributions=grid,
         scoring={
             'neg_mean_squared_error': 'neg_mean_squared_error',
             'acc': make_scorer(directional_accuracy)
