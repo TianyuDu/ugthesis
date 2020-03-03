@@ -23,10 +23,6 @@ def _load_rpna(
     Loads RPNA dataset from disk.
     """
     print(f"Reading RPNA dataset from {src_file}")
-    """
-    Loads RPNA dataset from disk.
-    """
-    print(f"Reading RPNA dataset from {src_file}")
     df = pd.read_csv(
         src_file,
         index_col=0,
@@ -34,6 +30,9 @@ def _load_rpna(
         parse_dates=["DATE"],
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
     )
+    # Convert to freq=D, this may add nan data to weekends.
+    df_b = df.asfreq("B")
+    return df_b
 
 
 def _load_wti(src_file: str) -> pd.DataFrame:
