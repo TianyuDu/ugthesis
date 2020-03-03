@@ -16,29 +16,23 @@ import fred_macro_features
 import rpna_processing
 
 
-# HPTD: add docstrings.
-
-
 def _load_rpna(
-    src_file: str,
-    radius: float
+    src_file: str
 ) -> pd.DataFrame:
-    threshold = (-radius, radius)
-    print(f"Constructing news count with threshold = {threshold}")
-    df = pd.read_csv(src_file)
-    p = rpna_processing.main(df, threshold)
-    for y in ["ESS", "WESS"]:
-        print(f"News type composition using {y}.")
-        total = sum(
-            p[f"NUM_{x}_{y}"].sum()
-            for x in ["NEGATIVE", "NEUTRAL", "POSITIVE"]
-        )
-        for x in ["NEGATIVE", "NEUTRAL", "POSITIVE"]:
-            perc = p[f"NUM_{x}_{y}"].sum() / total
-            print(f"{x}: {perc * 100: 0.2f}%")
+    """
+    Loads RPNA dataset from disk.
+    """
+    print(f"Reading RPNA dataset from {src_file}")
+    df = pd.read_csv(
+        src_file,
+        index_col=0,
+        header=0,
+        parse_dates=["DATE"],
+        date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
+    )
     # Convert to freq=D, this may add nan data to weekends.
-    p = p.asfreq("B")
-    return p
+    df_b = df.asfreq("B")
+    return df_b
 
 
 def _load_wti(src_file: str) -> pd.DataFrame:
