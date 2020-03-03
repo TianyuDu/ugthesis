@@ -9,6 +9,5 @@ embedding/
 data/
 writeup/
 .texpadtemp/
-
+data/.DS_Store
 .DS_Store
-*/.DS_Store
