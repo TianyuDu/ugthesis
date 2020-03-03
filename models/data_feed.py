@@ -158,6 +158,26 @@ def insert_days(ds) -> Tuple[np.ndarray]:
     return (X, y)
 
 
+def day_filter(
+    ds: List[pd.DataFrame],
+    day: str
+) -> List[pd.DataFrame]:
+    """
+    Returns only samples with y.index matching
+    the provided day of week.
+    day should be in formats:
+    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
+    """
+    DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    assert day in DAYS, "Bad weekday format."
+    selected = list()
+    for X, y in ds:
+        t = y.index.day_name().item()
+        if t == day:
+            selected.append((X, y))
+    return selected
+
+
 def regression_feed(
     include: "str" = "master"
 ) -> List[np.ndarray]:
