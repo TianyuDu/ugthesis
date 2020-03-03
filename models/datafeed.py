@@ -25,7 +25,13 @@ DF_RETURNS = pd.read_csv(
     index_col=0
 )
 DF_NEWS = pd.read_csv(
-    MASTER_DIR + "/data/ready_to_use/rpna_radius_0.3.csv",
+    MASTER_DIR + "/data/ready_to_use/rpna_r0_wess.csv",
+    date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
+    index_col=0
+)
+
+DF_MASTER = pd.read_csv(
+    MASTER_DIR + "/data/ready_to_use/master.csv",
     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
     index_col=0
 )
@@ -64,6 +70,7 @@ def fix_failed(X: pd.DataFrame, y: pd.DataFrame, req_len: int) -> Tuple[pd.DataF
     """
     Fix training samples with missing data.
     """
+    # TODO: handle this.
     if np.any(y.isnull()):
         # When the target is missing, this tuple cannot be fixed.
         return (None, None)
@@ -153,7 +160,7 @@ def regression_feed() -> List[np.ndarray]:
         (X_train, y_train, X_test, y_test)
     """
     feature_list, label_list, failed_feature_list, failed_label_list = gen_dataset_calendarday(
-        DF,
+        DF_MASTER,
         TARGET_COL,
         LAG_DAYS,
         verify=all_valid_verification
