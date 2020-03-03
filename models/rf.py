@@ -7,8 +7,8 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 
-from grid_search_util import profile_generator, grid_search
-from training_utils import data_feed, training_pipeline, directional_accuracy
+
+from training_utils import directional_accuracy
 
 
 from sklearn.model_selection import RandomizedSearchCV
@@ -60,14 +60,7 @@ if __name__ == "__main__":
 
     DATA_PATH = "../sentiment_data/QA_LMD_data_all_returns.csv"
 
-    # grid_search(
-    #     scope=random_grid,
-    #     model_constructor=construct_model,
-    #     data=data_feed(DATA_PATH),
-    #     training_pipeline=training_pipeline,
-    #     log_dir="./rf_grid_result_cv5.csv"
-    # )
-    model = rf = RandomForestRegressor()
+    model = RandomForestRegressor()
     rf_random = RandomizedSearchCV(
         estimator=model, param_distributions=random_grid,
         n_iter=100,
