@@ -75,7 +75,7 @@ def main(
             'acc': make_scorer(directional_accuracy)
         },
         cv=3,
-        verbose=2,
+        verbose=10,
         n_jobs=-1,
         return_train_score=True,
         refit=False
