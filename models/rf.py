@@ -11,7 +11,7 @@ from sklearn.ensemble import RandomForestRegressor
 from training_utils import directional_accuracy
 
 
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import make_scorer
 
 import data_feed
@@ -26,16 +26,19 @@ def construct_model(
 
 def main(result_path: str):
     # n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
-    n_estimators = [2000]
+    n_estimators = [200]
     # max_features = ['auto', 'sqrt']
     max_features = ["auto"]
     # Maximum number of levels in tree
-    max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
+    # max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
+    max_depth = []
     max_depth.append(None)
     # Minimum number of samples required to split a node
-    min_samples_split = [2, 5, 10]
+    # min_samples_split = [2, 5, 10]
+    min_samples_split = [2]
     # Minimum number of samples required at each leaf node
-    min_samples_leaf = [1, 2, 4]
+    # min_samples_leaf = [1, 2, 4]
+    min_samples_leaf = [1]
     # Method of selecting samples for training each tree
     bootstrap = [True]
 
@@ -55,7 +58,7 @@ def main(result_path: str):
     # ================================================
 
     # Create the random grid
-    random_grid = {
+    grid = {
         'n_estimators': n_estimators,
         'max_features': max_features,
         'max_depth': max_depth,
@@ -65,15 +68,16 @@ def main(result_path: str):
     }
 
     model = RandomForestRegressor()
-    rf_random = RandomizedSearchCV(
+    grid_search = GridSearchCV(
         estimator=model,
-        param_distributions=random_grid,
-        n_iter=10,
+        param_grid=grid,
         scoring={
             'neg_mean_squared_error': 'neg_mean_squared_error',
             'acc': make_scorer(directional_accuracy)
         },
-        cv=5, verbose=2, random_state=42, n_jobs=-1,
+        cv=5,
+        verbose=2,
+        n_jobs=-1,
         return_train_score=True,
         refit=False
     )
@@ -88,10 +92,11 @@ def main(result_path: str):
     X_test = X_test.reshape(N_test, -1)
     y_test = y_test.reshape(N_test,)
 
-    rf_random.fit(X_train, y_train)
+    grid_search.fit(X_train, y_train)
     # print("======== Best Parameter ========")
-    # print(rf_random.best_params_)
-    pd.DataFrame.from_dict(rf_random.cv_results_).to_csv("../model_selection_results/rf_results.csv")
+    # print(grid_search.best_params_)
+    pd.DataFrame.from_dict(grid_search.cv_results_).to_csv(
+        "../model_selection_results/rf_results.csv")
 
 
 if __name__ == "__main__":

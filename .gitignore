@@ -6,7 +6,14 @@ replications/src/__pycache__/
 replications/src/__pycache__/Experiment.cpython-37.pyc
 
 embedding/
-data/
+data/bloomberg/
+data/economic_calendar/
+data/fred/
+data/kaggle/
+data/ravenpack/
+data/stock/
+data/stock_news/
+
 writeup/
 .texpadtemp/
 data/.DS_Store
