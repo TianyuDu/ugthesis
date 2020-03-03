@@ -202,4 +202,3 @@ if __name__ == "__main__":
         df_combined.to_csv(args.save_to + "_all.csv")
         df_ESS.to_csv(args.save_to + "_ess.csv")
         df_WESS.to_csv(args.save_to + "_wess.csv")
-
