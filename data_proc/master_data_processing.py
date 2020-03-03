@@ -30,8 +30,6 @@ def _load_rpna(
         parse_dates=["DATE"],
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
     )
-    # Convert to freq=D, this may add nan data to weekends.
-    rpna = rpna.asfreq("B")
     return rpna
 
 
@@ -43,7 +41,6 @@ def _load_wti(src_file: str) -> pd.DataFrame:
         parse_dates=["DATE"],
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
     )
-    oil_price = oil_price.asfreq("B")
     return oil_price
 
 
@@ -77,7 +74,6 @@ def _generate_lags(
     return merged
 
 
-
 def _check_df_equal(df1: pd.DataFrame, df2: pd.DataFrame) -> bool:
     out = list()
     for col in df1.columns:
@@ -102,45 +98,29 @@ def main(
     df_lst = list()
     if config["oil.include"]:
         # Load crude oil price.
-        df_oil_price = _load_wti(
-            src_file=config["oil.src"]
-        )
-        df_oil_price = df_oil_price.asfreq(config["index.master_freq"])
-
-        df_lst.append(
-            _generate_lags(
-                df_oil_price,
-                config["oil.lags"]
-            ))
+        df_returns = _load_wti(src_file=config["oil.src"])
+        df_returns = df_returns.asfreq(config["index.master_freq"])
+        df_lst.append(df_returns)
     else:
         warnings.warn("Oil dataset is NOT included.")
 
     if config["rpna.include"]:
         # Load RPNA dataset on crude oil.
-        df_rpna_oil = _load_rpna(
-            src_file=config["rpna.crude_oil.src"],
-            radius=config["rpna.radius"]
-        )
-
+        df_rpna_oil = _load_rpna(src_file=config["rpna.crude_oil.src"])
         df_rpna_oil = df_rpna_oil.asfreq(config["index.master_freq"])
-
-        df_rpna_oil.fillna(0.0, inplace=True)
-
-        df_lst.append(
-            _generate_lags(
-                df_rpna_oil,
-                config["rpna.lags"]
-            ))
+        df_lst.append(df_rpna_oil)
     else:
         warnings.warn("RPNA dataset is NOT included.")
 
     if config["fred.include"]:
+        raise NotImplementedError
         # Load macro variables from Fred.
         df_macro = _load_macro(
             src_file=config["fred.src"]
         )
         df_macro = df_macro.asfreq(config["index.master_freq"])
 
+        # TODO: fix this.
         # NOTE: macro variables are already lagged variables
         # which indicate measures in the previous measuring period (e.g., month).
         df_lst.append(df_macro)
@@ -153,8 +133,7 @@ def main(
         warnings.warn("FRED dataset is NOT included.")
 
     # Combine datasets
-    merged = pd.concat(df_lst, axis=1)
-    merged = merged[sorted(merged.columns)]
+    df_merged = pd.concat(df_lst, axis=1)
 
     # Select subset
     def parser(x):
@@ -165,22 +144,19 @@ def main(
         (config["index.start_date"], config["index.end_date"])
     )
 
-    def subset(x):
-        s = np.logical_and(
-            x.index >= start_date,
-            x.index <= end_date
-        )
+    def select_subset(x):
+        s = np.logical_and(x.index >= start_date, x.index <= end_date)
         return s
 
-    merged = merged[subset(merged)]
+    df_merged = df_merged[select_subset(df_merged)]
 
     # Format frequency and data type.
-    merged = merged.asfreq(config["index.master_freq"])
-    merged = merged.astype(np.float32)
+    df_merged = df_merged.asfreq(config["index.master_freq"])
+    df_merged = df_merged.astype(np.float32)
 
     # report summary
-    __report_na(merged)
-    return merged
+    __report_na(df_merged)
+    return df_merged
 
 
 # Testing utilities
@@ -210,6 +186,7 @@ def __validate_dataset(
     for t in sampled_idx:
         current = df.loc[t, :]
         return (t, current)
+    raise NotImplementedError
     # TODO: Stopped here.
 
 # t, current = __validate_dataset(df, config)
