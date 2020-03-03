@@ -10,6 +10,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 from training_utils import directional_accuracy
 
+from typing import Union
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import make_scorer
@@ -24,7 +25,9 @@ def construct_model(
     return model
 
 
-def main(result_path: str):
+def main(
+    result_path: Union[str, None] = None
+) -> None:
     n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
     max_features = ['auto', 'sqrt']
     # Maximum number of levels in tree
@@ -38,17 +41,17 @@ def main(result_path: str):
     bootstrap = [True]
 
     # ==== Smaller Profile For Testing Purpose====
-    # n_estimators = [10]
-    # max_features = ['auto', 'sqrt']
-    # # Maximum number of levels in tree
-    # max_depth = [10]
-    # max_depth.append(None)
-    # # Minimum number of samples required to split a node
-    # min_samples_split = [10]
-    # # Minimum number of samples required at each leaf node
-    # min_samples_leaf = [1]
-    # # Method of selecting samples for training each tree
-    # bootstrap = [True]
+    n_estimators = [10]
+    max_features = ['auto', 'sqrt']
+    # Maximum number of levels in tree
+    max_depth = [10]
+    max_depth.append(None)
+    # Minimum number of samples required to split a node
+    min_samples_split = [10]
+    # Minimum number of samples required at each leaf node
+    min_samples_leaf = [1]
+    # Method of selecting samples for training each tree
+    bootstrap = [True]
 
     # ================================================
 
@@ -90,8 +93,11 @@ def main(result_path: str):
     grid_search.fit(X_train, y_train)
     # print("======== Best Parameter ========")
     # print(grid_search.best_params_)
-    pd.DataFrame.from_dict(grid_search.cv_results_).to_csv(
-        "../model_selection_results/rf_results.csv")
+    if result_path is None:
+        pd.DataFrame.from_dict(grid_search.cv_results_).to_csv(
+            "../model_selection_results/rf_results.csv")
+    else:
+        pd.DataFrame.from_dict(grid_search.cv_results_).to_csv(result_path)
 
 
 if __name__ == "__main__":
