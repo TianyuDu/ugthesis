@@ -34,6 +34,9 @@ def _load_rpna(
     df_b = df.asfreq("B")
     return df_b
 
+    # Convert to freq=D, this may add nan data to weekends.
+    df_b = df.asfreq("B")
+    return df_b
 
 def _load_wti(src_file: str) -> pd.DataFrame:
     oil_price = pd.read_csv(
