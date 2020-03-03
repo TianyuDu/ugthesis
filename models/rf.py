@@ -25,20 +25,15 @@ def construct_model(
 
 
 def main(result_path: str):
-    # n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
-    n_estimators = [200]
-    # max_features = ['auto', 'sqrt']
-    max_features = ["auto"]
+    n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
+    max_features = ['auto', 'sqrt']
     # Maximum number of levels in tree
-    # max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
-    max_depth = []
+    max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
     max_depth.append(None)
     # Minimum number of samples required to split a node
-    # min_samples_split = [2, 5, 10]
-    min_samples_split = [2]
+    min_samples_split = [2, 5, 10]
     # Minimum number of samples required at each leaf node
-    # min_samples_leaf = [1, 2, 4]
-    min_samples_leaf = [1]
+    min_samples_leaf = [1, 2, 4]
     # Method of selecting samples for training each tree
     bootstrap = [True]
 
