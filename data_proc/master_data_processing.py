@@ -23,7 +23,7 @@ def _load_rpna(
     Loads RPNA dataset from disk.
     """
     print(f"Reading RPNA dataset from {src_file}")
-    df = pd.read_csv(
+    rpna = pd.read_csv(
         src_file,
         index_col=0,
         header=0,
@@ -31,12 +31,9 @@ def _load_rpna(
         date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
     )
     # Convert to freq=D, this may add nan data to weekends.
-    df_b = df.asfreq("B")
-    return df_b
+    rpna = rpna.asfreq("B")
+    return rpna
 
-    # Convert to freq=D, this may add nan data to weekends.
-    df_b = df.asfreq("B")
-    return df_b
 
 def _load_wti(src_file: str) -> pd.DataFrame:
     oil_price = pd.read_csv(
@@ -79,7 +76,6 @@ def _generate_lags(
     merged = merged[sorted(merged.columns)]
     return merged
 
-# df2 = _generate_lags(df, 3)
 
 
 def _check_df_equal(df1: pd.DataFrame, df2: pd.DataFrame) -> bool:
