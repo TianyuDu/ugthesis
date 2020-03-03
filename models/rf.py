@@ -68,18 +68,19 @@ def main(
     model = RandomForestRegressor()
     grid_search = RandomizedSearchCV(
         estimator=model,
-        n_iter=200,
+        n_iter=1000,
         param_distributions=grid,
         scoring={
             'neg_mean_squared_error': 'neg_mean_squared_error',
             'acc': make_scorer(directional_accuracy)
         },
-        cv=5,
-        verbose=2,
+        cv=3,
+        verbose=10,
         n_jobs=-1,
         return_train_score=True,
         refit=False
     )
+
     X_train, y_train, X_test, y_test = data_feed.regression_feed()
     # Flatten
     N_train, L, D = X_train.shape
