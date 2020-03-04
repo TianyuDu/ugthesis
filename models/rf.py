@@ -2,20 +2,16 @@
 Random Forest
 """
 import argparse
+from typing import Union
 
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
-
-
-from training_utils import directional_accuracy
-
-from typing import Union
-
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.metrics import make_scorer
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
 import data_feed
+from training_utils import directional_accuracy
 
 
 def construct_model(
@@ -105,7 +101,7 @@ def main(
     # print(grid_search.best_params_)
     if result_path is None:
         pd.DataFrame.from_dict(grid_search.cv_results_).to_csv(
-            "../model_selection_results/rf_results.csv")
+            "../model_selection_results/rf_cv_results.csv")
     else:
         pd.DataFrame.from_dict(grid_search.cv_results_).to_csv(result_path)
 
