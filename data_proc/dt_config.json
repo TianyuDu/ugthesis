@@ -7,7 +7,7 @@
     "oil.lags": 36,
     "rpna.include": true,
     "rpna.criterion": "WESS",
-    "rpna.crude_oil.src": "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/rpna_r0_wess.csv",
+    "rpna.crude_oil.src": "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/rpna_r0_ess.csv",
     "rpna.lags": 36,
     "rpna.radius": 0.5,
     "fred.include": false,

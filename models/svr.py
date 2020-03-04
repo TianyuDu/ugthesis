@@ -25,9 +25,10 @@ def main(result_path: str) -> None:
     # Create the random grid
     random_grid = {
         "kernel": ["rbf"],
-        "gamma": ["scale", "auto"],
-        "tol": [10**x for x in range(-10, 0)],
-        "epsilon": [10**x for x in range(-10, 0)]
+        "gamma": [10**x for x in range(-10, 2)],
+        "tol": [10**x for x in range(-10, 2)],
+        "epsilon": [10**x for x in range(-10, 2)],
+        "C": [10**x for x in range(-10, 2)]
     }
 
     model = SVR()
@@ -39,7 +40,7 @@ def main(result_path: str) -> None:
             'neg_mean_squared_error': 'neg_mean_squared_error',
             'acc': make_scorer(directional_accuracy)
         },
-        cv=5, verbose=2, random_state=42, n_jobs=-1,
+        cv=5, verbose=10, random_state=42, n_jobs=-1,
         return_train_score=True,
         refit=False
     )
@@ -47,7 +48,7 @@ def main(result_path: str) -> None:
     # Datafeed:
     # ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
     X_train, y_train, X_test, y_test = data_feed.regression_feed(
-        day=["Monday"]
+        day=None
     )
     print(f"X_train @ {X_train.shape}")
     print(f"y_train @ {y_train.shape}")
