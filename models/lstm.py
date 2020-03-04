@@ -19,8 +19,10 @@ from tqdm import tqdm
 sys.path.append("../")
 sys.path.append("./")
 
+import data_feed
 import utils.time_series_utils as ts_utils
 import utils.training_utils as train_utils
+from training_utils import directional_accuracy
 
 
 class StackedLstm(nn.Module):
@@ -91,9 +93,10 @@ def train(
     model_config: dict,
     epoch: int = 20,
     batch_size: int = 32,
-    lr: float = 0.001,
+    lr: float = 0.0001,
     train_size: float = 0.7,
-    shuffle: bool = False,
+    shuffle: bool = True,
+    task: Union["regression", "classification"] = "regression"
 ) -> (nn.Module, Tuple[np.ndarray]):
     """
     # TODO: docstring :P
@@ -108,9 +111,14 @@ def train(
         lambda z: torch.Tensor(z.astype(np.float32)),
         (X_train, X_val, y_train, y_val)
     )
+    # Flatten.
+    if task == "classification":
+        y_train = y_train.view(-1,).type(torch.long)
+        y_val = y_val.view(-1,).type(torch.long)
     # Construct model.
     model = StackedLstm(**model_config)
-    loss_function = nn.MSELoss()
+    # loss_function = nn.MSELoss()
+    loss_function = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     print(model)
     batch_index_lst = train_utils.batch_sampler(
@@ -121,23 +129,33 @@ def train(
     for e in range(epoch):
         for (low, high) in batch_index_lst:
             seq = X_train[low: high, :, :]
-            lab = y_train[low: high, :, :]
+            lab = y_train[low: high]
             lab = lab.reshape(-1, 1)
             optimizer.zero_grad()
             # Initialize hidden states and cell states.
             model.reset_hidden(batch_size=lab.shape[0])
             y_pred = model(seq)
-            batch_loss = loss_function(y_pred, lab)
+            batch_loss = loss_function(y_pred, lab.view(-1,))
             batch_loss.backward()
             optimizer.step()
+            train_acc = directional_accuracy(
+                lab.detach().numpy(),
+                y_pred.detach().numpy()
+            )
         # validation
-        if e % 5 == 1:
+        # if e % 5 == 1:
+        if True:
             with torch.no_grad():
                 model.reset_hidden(batch_size=y_val.shape[0])
                 val_pred = model(X_val)
                 y_val = y_val.reshape(-1, 1)
-                val_loss = loss_function(val_pred, y_val)
-            print(f"epoch: {e: 3} train loss: {batch_loss.item(): 10.8f} validation loss: {val_loss.item(): 10.8f}")
+                val_loss = loss_function(val_pred, y_val.view(-1,))
+                val_acc = directional_accuracy(
+                    y_val.detach().numpy(),
+                    val_pred.detach().numpy()
+                )
+            print(
+                f"epoch: {e: 3} train loss: {batch_loss.item(): 10.8f} (acc {train_acc * 100}%) validation loss: {val_loss.item(): 10.8f} (acc {val_acc * 100}%)")
     return model, (X_train, X_val, y_train, y_val)
 
 
@@ -155,32 +173,31 @@ def predict(
     # TODO: Stopped here
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--data_dir", type=str)
-    args = parser.parse_args()
-    print(f"Load dataset from: {args.data_dir}")
-    df = pd.read_csv(
-        args.data_dir,
-        index_col=0,
-        header=0,
-        parse_dates=["DATE"],
-        date_parser=lambda d: datetime.strptime(d, "%Y-%m-%d")
+def main():
+    X, y, X_test, y_test = data_feed.feed(
+        day=None,
+        task="classification"
     )
 
-    data_normalized, scaler = preprocessing(df)
-    X, y = ts_utils.create_inout_sequences(
-        input_data=data_normalized,
-        lags=365
+    model_config = dict(
+        input_size=X.shape[-1],
+        hidden_size=128,
+        output_size=2,
+        num_layers=2,
+        drop_prob=0.5
     )
-
-    model_config = dict(input_size=1,
-                        hidden_size=128,
-                        output_size=1,
-                        num_layers=2,
-                        drop_prob=0.5)
 
     train(
         X, y,
-        model_config=model_config
+        model_config=model_config,
+        epoch=20,
+        batch_size=32,
+        lr=0.0001,
+        train_size=0.7,
+        task="classification"
     )
+
+
+if __name__ == "__main__":
+    # main()
+    raise NotImplementedError

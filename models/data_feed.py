@@ -32,7 +32,7 @@ DF_RETURNS = pd.read_csv(
 # )
 
 DF_MASTER = pd.read_csv(
-    MASTER_DIR + "/data/ready_to_use/master.csv",
+    MASTER_DIR + "/data/ready_to_use/master_bothR0.csv",
     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
     index_col=0
 )
@@ -183,9 +183,10 @@ def day_filter(
     return X_sel, y_sel
 
 
-def regression_feed(
+def feed(
     include: str = "master",
-    day: Union[None, str, List[str]] = None
+    day: Union[None, str, List[str]] = None,
+    task: Union["regression", "classification"] = "regression"
 ) -> List[np.ndarray]:
     """
     Feed training and testing sets to the model evaluation method.
@@ -241,5 +242,19 @@ def regression_feed(
     # check_ds(test_set)
     X_train, y_train = convert_to_array(train_set)
     X_test, y_test = convert_to_array(test_set)
+    if task == "classification":
+        print("Convert labels to {0, 1} for classification purpose.")
+        y_train = convert_to_onehot(y_train)[:, 1].squeeze()
+        y_test = convert_to_onehot(y_test)[:, 1].squeeze()
     print(f"X_train @ {X_train.shape}\ny_train @ {y_train.shape}\nX_test @ {X_test.shape}\ny_test @ {y_test.shape}")
     return (X_train, y_train, X_test, y_test)
+
+
+def convert_to_onehot(y: np.ndarray) -> np.ndarray:
+    N = y.shape[0]
+    y = y.reshape(-1,)
+    onehot = np.zeros((N, 2))
+    onehot[:, 0] = (y < 0.0)
+    onehot[:, 1] = (y >= 0.0)
+    onehot = onehot.astype(np.int32)
+    return onehot
