@@ -8,7 +8,7 @@ sys.path.append("../")
 import numpy as np
 import pandas as pd
 
-from typing import List, Tuple
+from typing import List, Tuple, Union
 from datetime import datetime
 
 from sklearn import model_selection
@@ -19,14 +19,14 @@ from utils.time_series_utils import gen_dataset_calendarday
 # MASTER_DIR = "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis"
 MASTER_DIR = "../"
 TARGET_COL = "RETURN"
-LAG_DAYS = 28
+LAG_DAYS = 84
 DF_RETURNS = pd.read_csv(
     MASTER_DIR + "/data/ready_to_use/returns_norm.csv",
     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
     index_col=0
 )
 DF_NEWS = pd.read_csv(
-    MASTER_DIR + "/data/ready_to_use/rpna_r0_ess.csv",
+    MASTER_DIR + "/data/ready_to_use/rpna_r0_all.csv",
     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
     index_col=0
 )
@@ -158,8 +158,34 @@ def insert_days(ds) -> Tuple[np.ndarray]:
     return (X, y)
 
 
+def day_filter(
+    X_lst: List[pd.DataFrame],
+    y_lst: List[pd.DataFrame],
+    day: Union[str, List[str]]
+) -> Tuple[List[pd.DataFrame]]:
+    """
+    Returns only samples with y.index matching
+    the provided day of week.
+    day should be in formats:
+    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
+    """
+    X_sel, y_sel = [], []
+    for X, y in zip(X_lst, y_lst):
+        t = y.index.day_name().item()
+        if isinstance(day, list):
+            if t in day:
+                X_sel.append(X)
+                y_sel.append(y)
+        if isinstance(day, str):
+            if t == day:
+                X_sel.append(X)
+                y_sel.append(y)
+    return X_sel, y_sel
+
+
 def regression_feed(
-    include: "str" = "master"
+    include: str = "master",
+    day: Union[None, str, List[str]] = None
 ) -> List[np.ndarray]:
     """
     Feed training and testing sets to the model evaluation method.
@@ -181,6 +207,13 @@ def regression_feed(
             LAG_DAYS,
             verify=all_valid_verification
         )
+    # Subset only one particular weekday.
+    if day is not None:
+        feature_list, label_list = day_filter(feature_list, label_list, day)
+        failed_feature_list, failed_label_list = day_filter(
+            failed_feature_list, failed_label_list, day
+        )
+
     ds_passed = list(zip(feature_list, label_list))
     print(f"Number of observations passed: {len(ds_passed)}")
     ds_failed = list(zip(failed_feature_list, failed_label_list))

@@ -38,7 +38,7 @@ def main(
     # Minimum number of samples required at each leaf node
     min_samples_leaf = [1, 2, 4]
     # Method of selecting samples for training each tree
-    bootstrap = [True]
+    bootstrap = [True, False]
 
     # ==== Smaller Profile For Testing Purpose====
     # n_estimators = [10]
@@ -68,7 +68,7 @@ def main(
     model = RandomForestRegressor()
     grid_search = RandomizedSearchCV(
         estimator=model,
-        n_iter=1000,
+        n_iter=10,
         param_distributions=grid,
         scoring={
             'neg_mean_squared_error': 'neg_mean_squared_error',
@@ -81,7 +81,15 @@ def main(
         refit=False
     )
 
-    X_train, y_train, X_test, y_test = data_feed.regression_feed()
+    # Datafeed:
+    # ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    X_train, y_train, X_test, y_test = data_feed.regression_feed(
+        day=["Tuesday", "Wednesday", "Thursday", "Friday"]
+    )
+    print(f"X_train @ {X_train.shape}")
+    print(f"y_train @ {y_train.shape}")
+    print(f"X_test @ {X_test.shape}")
+    print(f"y_test @ {y_test.shape}")
     # Flatten
     N_train, L, D = X_train.shape
     N_test = X_test.shape[0]
