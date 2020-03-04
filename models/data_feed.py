@@ -19,14 +19,14 @@ from utils.time_series_utils import gen_dataset_calendarday
 # MASTER_DIR = "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis"
 MASTER_DIR = "../"
 TARGET_COL = "RETURN"
-LAG_DAYS = 28
+LAG_DAYS = 84
 DF_RETURNS = pd.read_csv(
     MASTER_DIR + "/data/ready_to_use/returns_norm.csv",
     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
     index_col=0
 )
 DF_NEWS = pd.read_csv(
-    MASTER_DIR + "/data/ready_to_use/rpna_r0_ess.csv",
+    MASTER_DIR + "/data/ready_to_use/rpna_r0_all.csv",
     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
     index_col=0
 )
