@@ -68,7 +68,7 @@ def main(
     model = RandomForestRegressor()
     grid_search = RandomizedSearchCV(
         estimator=model,
-        n_iter=10,
+        n_iter=50,
         param_distributions=grid,
         scoring={
             'neg_mean_squared_error': 'neg_mean_squared_error',
