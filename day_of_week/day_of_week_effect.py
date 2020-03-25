@@ -153,12 +153,12 @@ def summary_stats(
     for d in days:
         values = collection[d].dropna().values
         print(
-            "{}, {}, {:0.3f}, {:0.3f}, {:0.7f}".format(
+            "{} & {} & {:0.3f} & {:0.3f} & {:0.3f} \\\\".format(
                 d,
                 len(collection[d].dropna()),
                 np.mean(values),
                 np.std(values),
-                moment(values, moment=3)
+                moment(values, moment=3) / (np.std(values) ** 3)
             )
         )
 
@@ -200,5 +200,9 @@ if __name__ == "__main__":
     print("\n")
     print("Kolmogorov Smirnov test on Returns")
     Kolmogorov_Smirnov_test(returns)
+    _save_results(
+        returns,
+        path="/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/day_returns"
+    )
     print(sum(len(v) for v in returns.values()))
     print(len(df_returns))
