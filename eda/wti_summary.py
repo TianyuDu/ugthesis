@@ -164,6 +164,20 @@ def main(
     acf_pacf(filtered, returns, path=path)
 
 
+def random_fillna(raw: pd.DataFrame):
+    df = raw.copy()
+    col = df.columns[0]
+    df = df[col]
+
+    std = float(np.std(df))
+    mean = float(np.mean(df))
+    # gen = lambda x: std * np.random.randn() + mean
+    gen = lambda x: np.random.randn()
+    mask = df.isna()
+    df[mask] = df[mask].apply(gen)
+    return df
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -188,6 +202,7 @@ if __name__ == "__main__":
         "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/returns_norm.csv",
         date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
         index_col=0
-    ).dropna()
+    )
+    df_returns = df_returns.dropna()
 
     main(df, df_returns, path=path)
