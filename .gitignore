@@ -18,6 +18,7 @@ writeup/
 .texpadtemp/
 data/.DS_Store
 .DS_Store
+*.DS_Store
 .texpadtmp/thesis.aux
 .texpadtmp/thesis.log
 .texpadtmp/thesis.out
