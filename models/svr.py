@@ -47,8 +47,10 @@ def main(result_path: str) -> None:
 
     # Datafeed:
     # ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-    X_train, y_train, X_test, y_test = data_feed.regression_feed(
-        day=None
+    X_train, y_train, X_test, y_test = data_feed.feed(
+        include="master",
+        day=None,
+        task="regression"
     )
     print(f"X_train @ {X_train.shape}")
     print(f"y_train @ {y_train.shape}")

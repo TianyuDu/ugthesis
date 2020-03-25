@@ -1,30 +1,30 @@
 \babel@toc {english}{}
 \contentsline {section}{\numberline {1}Introduction}{3}{section.1}% 
 \contentsline {section}{\numberline {2}Data}{3}{section.2}% 
-\contentsline {paragraph}{}{3}{section*.3}% 
+\contentsline {paragraph}{}{3}{section*.2}% 
 \contentsline {subsection}{\numberline {2.1}The West Texas Intermediate (WTI) Crude Oil Dataset}{3}{subsection.2.1}% 
+\contentsline {paragraph}{}{3}{section*.3}% 
+\contentsline {subsection}{\numberline {2.2}Crude Oil Returns}{3}{subsection.2.2}% 
 \contentsline {paragraph}{}{3}{section*.4}% 
-\contentsline {subsection}{\numberline {2.2}Crude Oil Returns}{4}{subsection.2.2}% 
-\contentsline {paragraph}{}{4}{section*.5}% 
 \contentsline {subsection}{\numberline {2.3}Day of the Week Effect in Crude Oil Dataset}{8}{subsection.2.3}% 
 \contentsline {subsubsection}{\numberline {2.3.1}Difference in Returns across the Week}{8}{subsubsection.2.3.1}% 
-\contentsline {paragraph}{}{8}{section*.9}% 
+\contentsline {paragraph}{}{8}{section*.8}% 
 \contentsline {subsubsection}{\numberline {2.3.2}Kolmogorov-Smirnov test for Distributional Similarities}{10}{subsubsection.2.3.2}% 
 \contentsline {subsection}{\numberline {2.4}News and Sentiment Datasets}{11}{subsection.2.4}% 
-\contentsline {paragraph}{}{11}{section*.10}% 
-\contentsline {subsection}{\numberline {2.5}Classifying News Type}{15}{subsection.2.5}% 
-\contentsline {paragraph}{}{16}{section*.14}% 
+\contentsline {paragraph}{}{11}{section*.9}% 
+\contentsline {subsection}{\numberline {2.5}Classifying News Type}{14}{subsection.2.5}% 
+\contentsline {paragraph}{}{15}{figure.7}% 
 \contentsline {subsection}{\numberline {2.6}Case Studies of Events}{17}{subsection.2.6}% 
 \contentsline {subsubsection}{\numberline {2.6.1}Positive Spike on November 30, 2016}{17}{subsubsection.2.6.1}% 
 \contentsline {subsubsection}{\numberline {2.6.2}Negative Spike on December 6, 2018}{18}{subsubsection.2.6.2}% 
 \contentsline {subsubsection}{\numberline {2.6.3}Positive Spike on June. 12 - 13, 2019}{19}{subsubsection.2.6.3}% 
-\contentsline {section}{\numberline {3}Models}{20}{section.3}% 
-\contentsline {subsection}{\numberline {3.1}Relevant Works}{20}{subsection.3.1}% 
-\contentsline {subsection}{\numberline {3.2}Linear Models}{20}{subsection.3.2}% 
-\contentsline {subsection}{\numberline {3.3}Support Vector Regression}{20}{subsection.3.3}% 
-\contentsline {subsection}{\numberline {3.4}Convolution Neural Network}{20}{subsection.3.4}% 
-\contentsline {subsection}{\numberline {3.5}Recurrent Neural Network}{20}{subsection.3.5}% 
-\contentsline {section}{\numberline {4}Experiments}{20}{section.4}% 
-\contentsline {subsection}{\numberline {4.1}$k$-Fold Validation}{20}{subsection.4.1}% 
-\contentsline {section}{References}{20}{section*.15}% 
-\contentsline {section}{\numberline {5}Appendix: Supplementary Summary Statistics for Datasets}{21}{section.5}% 
+\contentsline {section}{\numberline {3}Models}{19}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}Relevant Works}{19}{subsection.3.1}% 
+\contentsline {subsection}{\numberline {3.2}Linear Models}{19}{subsection.3.2}% 
+\contentsline {subsection}{\numberline {3.3}Support Vector Regression}{19}{subsection.3.3}% 
+\contentsline {subsection}{\numberline {3.4}Convolution Neural Network}{19}{subsection.3.4}% 
+\contentsline {subsection}{\numberline {3.5}Recurrent Neural Network}{19}{subsection.3.5}% 
+\contentsline {section}{\numberline {4}Experiments}{19}{section.4}% 
+\contentsline {subsection}{\numberline {4.1}$k$-Fold Validation}{19}{subsection.4.1}% 
+\contentsline {section}{References}{19}{section*.14}% 
+\contentsline {section}{\numberline {5}Appendix: Supplementary Summary Statistics for Datasets}{20}{section.5}% 

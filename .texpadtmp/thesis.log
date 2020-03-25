@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.5.8)  28 FEB 2020 12:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.5.8)  5 MAR 2020 14:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -909,62 +909,61 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <7> not available
 \tf@toc=\write5
 \openout5 = `thesis.toc'.
 
- [2]
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 52.
- [3] [4] [5]
-<figures/wti_summary/returns.png, id=195, 560.3334pt x 211.5102pt>
+ [2] [3] [4] [5]
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 139.
+<figures/wti_summary/returns.png, id=194, 560.3334pt x 211.5102pt>
 File: figures/wti_summary/returns.png Graphic file (type png)
 <use figures/wti_summary/returns.png>
-Package pdftex.def Info: figures/wti_summary/returns.png  used on input line 146.
+Package pdftex.def Info: figures/wti_summary/returns.png  used on input line 145.
 (pdftex.def)             Requested size: 469.75502pt x 177.32524pt.
 
 
 LaTeX Warning: Marginpar on page 6 moved.
 
 [6 <./figures/wti_summary/returns.png>]
-<figures/wti_summary/returns_acf.png, id=206, 410.4936pt x 313.17pt>
+<figures/wti_summary/returns_acf.png, id=205, 410.4936pt x 313.17pt>
 File: figures/wti_summary/returns_acf.png Graphic file (type png)
 <use figures/wti_summary/returns_acf.png>
-Package pdftex.def Info: figures/wti_summary/returns_acf.png  used on input line 188.
+Package pdftex.def Info: figures/wti_summary/returns_acf.png  used on input line 187.
 (pdftex.def)             Requested size: 211.38832pt x 161.2724pt.
-<figures/wti_summary/returns_pacf.png, id=207, 410.4936pt x 313.17pt>
+<figures/wti_summary/returns_pacf.png, id=206, 410.4936pt x 313.17pt>
 File: figures/wti_summary/returns_pacf.png Graphic file (type png)
 <use figures/wti_summary/returns_pacf.png>
-Package pdftex.def Info: figures/wti_summary/returns_pacf.png  used on input line 189.
+Package pdftex.def Info: figures/wti_summary/returns_pacf.png  used on input line 188.
 (pdftex.def)             Requested size: 211.38832pt x 161.2724pt.
-<figures/wti_summary/return_hist.png, id=208, 402.303pt x 297.9933pt>
+<figures/wti_summary/return_hist.png, id=207, 402.303pt x 297.9933pt>
 File: figures/wti_summary/return_hist.png Graphic file (type png)
 <use figures/wti_summary/return_hist.png>
-Package pdftex.def Info: figures/wti_summary/return_hist.png  used on input line 198.
+Package pdftex.def Info: figures/wti_summary/return_hist.png  used on input line 197.
 (pdftex.def)             Requested size: 402.302pt x 297.99257pt.
  [7 <./figures/wti_summary/returns_acf.png> <./figures/wti_summary/returns_pacf.png>]
 <figures/day_of_week_effect/dist_returns_Monday.png, id=220, 405.4347pt x 313.17pt>
 File: figures/day_of_week_effect/dist_returns_Monday.png Graphic file (type png)
 <use figures/day_of_week_effect/dist_returns_Monday.png>
-Package pdftex.def Info: figures/day_of_week_effect/dist_returns_Monday.png  used on input line 210.
+Package pdftex.def Info: figures/day_of_week_effect/dist_returns_Monday.png  used on input line 209.
 (pdftex.def)             Requested size: 211.38832pt x 163.28418pt.
 <figures/day_of_week_effect/dist_returns_Tuesday.png, id=221, 405.4347pt x 313.17pt>
 File: figures/day_of_week_effect/dist_returns_Tuesday.png Graphic file (type png)
 <use figures/day_of_week_effect/dist_returns_Tuesday.png>
-Package pdftex.def Info: figures/day_of_week_effect/dist_returns_Tuesday.png  used on input line 211.
+Package pdftex.def Info: figures/day_of_week_effect/dist_returns_Tuesday.png  used on input line 210.
 (pdftex.def)             Requested size: 211.38832pt x 163.28418pt.
 <figures/day_of_week_effect/dist_returns_Wednesday.png, id=222, 405.4347pt x 313.17pt>
 File: figures/day_of_week_effect/dist_returns_Wednesday.png Graphic file (type png)
 <use figures/day_of_week_effect/dist_returns_Wednesday.png>
-Package pdftex.def Info: figures/day_of_week_effect/dist_returns_Wednesday.png  used on input line 212.
+Package pdftex.def Info: figures/day_of_week_effect/dist_returns_Wednesday.png  used on input line 211.
 (pdftex.def)             Requested size: 211.38832pt x 163.28418pt.
 <figures/day_of_week_effect/dist_returns_Thursday.png, id=223, 405.4347pt x 313.17pt>
 File: figures/day_of_week_effect/dist_returns_Thursday.png Graphic file (type png)
 <use figures/day_of_week_effect/dist_returns_Thursday.png>
-Package pdftex.def Info: figures/day_of_week_effect/dist_returns_Thursday.png  used on input line 213.
+Package pdftex.def Info: figures/day_of_week_effect/dist_returns_Thursday.png  used on input line 212.
 (pdftex.def)             Requested size: 211.38832pt x 163.28418pt.
 <figures/day_of_week_effect/dist_returns_Friday.png, id=224, 405.4347pt x 313.17pt>
 File: figures/day_of_week_effect/dist_returns_Friday.png Graphic file (type png)
 <use figures/day_of_week_effect/dist_returns_Friday.png>
-Package pdftex.def Info: figures/day_of_week_effect/dist_returns_Friday.png  used on input line 214.
+Package pdftex.def Info: figures/day_of_week_effect/dist_returns_Friday.png  used on input line 213.
 (pdftex.def)             Requested size: 211.38832pt x 163.28418pt.
  [8 <./figures/wti_summary/return_hist.png>] [9 <./figures/day_of_week_effect/dist_returns_Monday.png> <./figures/day_of_week_effect/dist_returns_Tuesday.png> <./figures/day_of_week_effect/dist_returns_Wednesday.png> <./figures/day_of_week_effect/dist_returns_Thursday.png> <./figures/day_of_week_effect/dist_returns_Friday.png>] [10]
-Overfull \hbox (33.03981pt too wide) in paragraph at lines 273--284
+Overfull \hbox (33.03981pt too wide) in paragraph at lines 272--283
  [][] 
  []
 
@@ -972,41 +971,41 @@ Overfull \hbox (33.03981pt too wide) in paragraph at lines 273--284
 
 LaTeX Warning: Marginpar on page 12 moved.
 
-<figures/event_classification/hist_ess_all.png, id=268, 570.933pt x 208.3785pt>
+<figures/event_classification/hist_ess_all.png, id=267, 570.933pt x 208.3785pt>
 File: figures/event_classification/hist_ess_all.png Graphic file (type png)
 <use figures/event_classification/hist_ess_all.png>
-Package pdftex.def Info: figures/event_classification/hist_ess_all.png  used on input line 313.
+Package pdftex.def Info: figures/event_classification/hist_ess_all.png  used on input line 312.
 (pdftex.def)             Requested size: 469.75502pt x 171.4565pt.
-[12] [13 <./figures/event_classification/hist_ess_all.png>] [14]
-<figures/event_classification/ESS_composition.png, id=297, 893.739pt x 367.6134pt>
+[12] [13 <./figures/event_classification/hist_ess_all.png>]
+<figures/event_classification/ESS_composition.png, id=290, 893.739pt x 367.6134pt>
 File: figures/event_classification/ESS_composition.png Graphic file (type png)
 <use figures/event_classification/ESS_composition.png>
-Package pdftex.def Info: figures/event_classification/ESS_composition.png  used on input line 431.
+Package pdftex.def Info: figures/event_classification/ESS_composition.png  used on input line 384.
 (pdftex.def)             Requested size: 469.75502pt x 193.21867pt.
-<figures/event_classification/WESS_composition.png, id=298, 893.739pt x 367.6134pt>
+<figures/event_classification/WESS_composition.png, id=291, 893.739pt x 367.6134pt>
 File: figures/event_classification/WESS_composition.png Graphic file (type png)
 <use figures/event_classification/WESS_composition.png>
-Package pdftex.def Info: figures/event_classification/WESS_composition.png  used on input line 436.
+Package pdftex.def Info: figures/event_classification/WESS_composition.png  used on input line 389.
 (pdftex.def)             Requested size: 469.75502pt x 193.21867pt.
- [15 <./figures/event_classification/ESS_composition.png>]
-<figures/case_studies/20161130_10d.png, id=305, 562.0197pt x 394.3533pt>
-File: figures/case_studies/20161130_10d.png Graphic file (type png)
-<use figures/case_studies/20161130_10d.png>
-Package pdftex.def Info: figures/case_studies/20161130_10d.png  used on input line 445.
-(pdftex.def)             Requested size: 469.75502pt x 329.62381pt.
- [16 <./figures/event_classification/WESS_composition.png>]
-<figures/case_studies/20181206_10d.png, id=312, 552.3837pt x 394.3533pt>
-File: figures/case_studies/20181206_10d.png Graphic file (type png)
-<use figures/case_studies/20181206_10d.png>
-Package pdftex.def Info: figures/case_studies/20181206_10d.png  used on input line 453.
-(pdftex.def)             Requested size: 469.75502pt x 335.36435pt.
- [17 <./figures/case_studies/20161130_10d.png>]
-<figures/case_studies/20190612_10d.png, id=319, 570.2103pt x 394.3533pt>
+ [14 <./figures/event_classification/ESS_composition.png>]
+<figures/case_studies/20190612_10d.png, id=298, 570.2103pt x 394.3533pt>
 File: figures/case_studies/20190612_10d.png Graphic file (type png)
 <use figures/case_studies/20190612_10d.png>
-Package pdftex.def Info: figures/case_studies/20190612_10d.png  used on input line 461.
+Package pdftex.def Info: figures/case_studies/20190612_10d.png  used on input line 395.
 (pdftex.def)             Requested size: 469.75502pt x 324.88815pt.
- [18 <./figures/case_studies/20181206_10d.png>]
+ [15 <./figures/event_classification/WESS_composition.png> <./figures/case_studies/20190612_10d.png>]
+<figures/case_studies/20161130_10d.png, id=307, 562.0197pt x 394.3533pt>
+File: figures/case_studies/20161130_10d.png Graphic file (type png)
+<use figures/case_studies/20161130_10d.png>
+Package pdftex.def Info: figures/case_studies/20161130_10d.png  used on input line 451.
+(pdftex.def)             Requested size: 469.75502pt x 329.62381pt.
+ [16]
+<figures/case_studies/20181206_10d.png, id=314, 552.3837pt x 394.3533pt>
+File: figures/case_studies/20181206_10d.png Graphic file (type png)
+<use figures/case_studies/20181206_10d.png>
+Package pdftex.def Info: figures/case_studies/20181206_10d.png  used on input line 459.
+(pdftex.def)             Requested size: 469.75502pt x 335.36435pt.
+ [17 <./figures/case_studies/20161130_10d.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 473.
@@ -1015,24 +1014,24 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 473.
 
-(/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.bbl [19 <./figures/case_studies/20190612_10d.png>])
-<figures/case_studies/20161130_45d.png, id=334, 552.3837pt x 345.2097pt>
+(/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.bbl [18 <./figures/case_studies/20181206_10d.png>])
+<figures/case_studies/20161130_45d.png, id=327, 552.3837pt x 345.2097pt>
 File: figures/case_studies/20161130_45d.png Graphic file (type png)
 <use figures/case_studies/20161130_45d.png>
 Package pdftex.def Info: figures/case_studies/20161130_45d.png  used on input line 485.
 (pdftex.def)             Requested size: 469.75502pt x 293.57184pt.
-<figures/case_studies/20181206_45d.png, id=335, 552.3837pt x 345.2097pt>
+<figures/case_studies/20181206_45d.png, id=328, 552.3837pt x 345.2097pt>
 File: figures/case_studies/20181206_45d.png Graphic file (type png)
 <use figures/case_studies/20181206_45d.png>
 Package pdftex.def Info: figures/case_studies/20181206_45d.png  used on input line 491.
 (pdftex.def)             Requested size: 469.75502pt x 293.57184pt.
- [20]
-<figures/case_studies/20190612_45d.png, id=340, 552.3837pt x 345.2097pt>
+ [19]
+<figures/case_studies/20190612_45d.png, id=335, 552.3837pt x 345.2097pt>
 File: figures/case_studies/20190612_45d.png Graphic file (type png)
 <use figures/case_studies/20190612_45d.png>
 Package pdftex.def Info: figures/case_studies/20190612_45d.png  used on input line 497.
 (pdftex.def)             Requested size: 469.75502pt x 293.57184pt.
- [21 <./figures/case_studies/20161130_45d.png>] [22 <./figures/case_studies/20181206_45d.png>] [23 <./figures/case_studies/20190612_45d.png>] [24] [25] [26] [27]
+ [20 <./figures/case_studies/20161130_45d.png>] [21 <./figures/case_studies/20181206_45d.png>] [22 <./figures/case_studies/20190612_45d.png>] [23] [24] [25] [26]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 676.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 676.
  (/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.aux)
@@ -1043,20 +1042,20 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 676.
  ) 
 Here is how much of TeX's memory you used:
- 30164 strings out of 492616
- 567970 string characters out of 6129482
- 902761 words of memory out of 5000000
- 33510 multiletter control sequences out of 15000+600000
+ 30154 strings out of 492616
+ 567721 string characters out of 6129482
+ 744857 words of memory out of 5000000
+ 33502 multiletter control sequences out of 15000+600000
  546367 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 69i,13n,83p,1022b,975s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 69i,13n,83p,1022b,971s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
 </usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on /Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.pdf (27 pages, 2219923 bytes).
+Output written on /Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/.texpadtmp/thesis.pdf (26 pages, 2218319 bytes).
 PDF statistics:
- 462 PDF objects out of 1000 (max. 8388607)
- 359 compressed objects within 4 object streams
- 105 named destinations out of 1000 (max. 500000)
+ 457 PDF objects out of 1000 (max. 8388607)
+ 355 compressed objects within 4 object streams
+ 103 named destinations out of 1000 (max. 500000)
  383 words of extra memory for PDF output out of 10000 (max. 10000000)
 
