@@ -15,6 +15,7 @@ data/stock/
 data/stock_news/
 
 writeup/
+!writeup/main.pdf
 .texpadtemp/
 data/.DS_Store
 .DS_Store
