@@ -22,7 +22,8 @@ def align_dataset(
     start: str = "2000-01-01",
     end: str = "2019-09-30",
     keep_nan: bool = True,
-    output_freq: str = "D"
+    output_freq: str = "D",
+    verbose: bool = True
 ) -> pd.DataFrame:
     """
     Main method: Constructs macro indicators (independent variable) from fred dataset.
@@ -39,16 +40,20 @@ def align_dataset(
 
         output_freq {str} -- [the frequency of constructed dataset, default: daily (D),
             use the standard notation in datetime.]
+
+        verbose {bool} -- [whether to print all logs.]
     """
     if not src.endswith("/"):
         src += "/"
-    print(f"Reading data from {src}")
+    if verbose:
+        print(f"Reading data from {src}")
     parser = lambda x: datetime.strptime(x, "%Y-%m-%d")
     (start, end) = map(parser, (start, end))
 
     data_collection = list()
     for (name, freq) in FILE_FREQ.items():
-        print(f"Convert {name} to {freq} frequency.")
+        if verbose:
+            print(f"Convert {name} to {freq} frequency.")
         df = pd.read_csv(
             f"{src}{name}.txt",
             index_col=0,
@@ -59,7 +64,8 @@ def align_dataset(
         )
         df.replace(".", np.nan, inplace=True)
         # df = df.astype(np.float32)
-        print(f"Missing values for {name}: \n{np.mean(df.isna(), axis=0)}")
+        if verbose:
+            print(f"Missing values for {name}: \n{np.mean(df.isna(), axis=0)}")
         df = df.asfreq(freq)
         # Create the features in previous time step.
         prev_colns = ["Prev_" + c for c in df.columns]

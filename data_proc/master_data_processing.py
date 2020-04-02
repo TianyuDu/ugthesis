@@ -8,16 +8,16 @@ import sys
 import warnings
 from datetime import datetime, timedelta
 from pprint import pprint
-from typing import List, Union
+from typing import List, Tuple, Union
 
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 sys.path.append("../")
-
-import data_proc.fred_macro_features
-import data_proc.information_flow
-import data_proc.rpna_processing
+import data_proc.fred_macro_features as fred_macro_features
+import data_proc.information_flow as IF
+import data_proc.rpna_processing as rpna_processing
 from data_proc.rpna_processing import convert_timestamp_wti
 
 
@@ -81,8 +81,8 @@ def _load_wti(src_file: str) -> pd.DataFrame:
     return oil_price
 
 
-def _load_macro(src_file: str) -> pd.DataFrame:
-    macro_panel = fred_macro_features.align_dataset(src=src_file)
+def _load_macro(src_file: str, verbose: bool = True) -> pd.DataFrame:
+    macro_panel = fred_macro_features.align_dataset(src=src_file, verbose=verbose)
     return macro_panel
 
 
@@ -138,23 +138,25 @@ def generate_pairs(
         where X is the collection of predictors[t-k, ...,t-1]
         and y is the return at day t.
     """
+    DF_MACRO = _load_macro(src_file=config["fred.src"], verbose=False)
+
     dates = pd.bdate_range(config["index.start_date"], config["index.end_date"])
     dates = dates.intersection(DF_RETURNS.index)
     original_len = len(dates)
     # Subset returns.
     df_returns = DF_RETURNS.loc[dates]
-    X_lst, y_lst = list(), list()
+    X_lst, y_lst, t_lst = list(), list(), list()
 
     one_day = timedelta(days=1)
 
-    for t, r in zip(df_returns.index, df_returns["RETURN"].values):
+    for t, r in tqdm(zip(df_returns.index, df_returns["RETURN"].values)):
         fea_t = list()
         if np.isnan(r):
             # For nan returns, skip this.
             continue
         # look into summary table of RPNA.
         lags = timedelta(days=config["rpna.lags"])
-        rg = pd.date_range(t - lags, t - one_day)
+        rg = pd.date_range(t - lags, t - one_day).intersection(DF_NEWS.index)
         fea_rpna = DF_NEWS.loc[rg]
         fea_rpna.fillna(value=0.0, inplace=True)
         fea_t.append(fea_rpna.values.reshape(-1,))
@@ -163,7 +165,35 @@ def generate_pairs(
         # get the information flow.
         subset = (t - lags <= DF_RAW_NEWS["TIMESTAMP_WTI"]) & (DF_RAW_NEWS["TIMESTAMP_WTI"] <= t - one_day)
         if_t = DF_RAW_NEWS[subset]
-        if_features = information_flow.extract_IF(if_t)
+        if_fea = IF.extract_IF(if_t)
+        if_fea = np.array(list(if_fea.values())).astype(np.float32)
+        fea_t.append(if_fea)
+
+        # look into fred table
+        lags = timedelta(days=config["fred.lags"])
+        rg = pd.date_range(t - lags, t - one_day).intersection(DF_MACRO.index)
+        macro_vars = DF_MACRO.loc[rg]
+        macro_vars.fillna(value=0.0, inplace=True)
+        fea_t.append(macro_vars.values.reshape(-1,))
+
+        X_lst.append(np.concatenate(fea_t))
+        y_lst.append(r)
+        t_lst.append(t)
+
+    max_len = max(len(x) for x in X_lst)
+    # Filtered lists
+    print(f"Number of samples (X, y): {len(X)}")
+    X_f, y_f, t_f = list(), list(), list()
+    for x, y, t in zip(X_lst, y_lst, t_lst):
+        if len(x) == max_len:
+            X_f.append(x)
+            y_f.append(y)
+            t_f.append(t)
+    print(f"Number of samples left: {len(X_f)}")
+    X = np.array(X_f)
+    y = np.array(y_f)
+    t = np.array(t_f)
+    return X, y, t
 
 
 def main(
@@ -189,9 +219,7 @@ def main(
     if config["fred.include"]:
         raise NotImplementedError
         # Load macro variables from Fred.
-        df_macro = _load_macro(
-            src_file=config["fred.src"]
-        )
+        df_macro = _load_macro(src_file=config["fred.src"])
         df_macro = df_macro.asfreq(config["index.master_freq"])
 
         # TODO: fix this.
