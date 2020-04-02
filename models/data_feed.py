@@ -15,6 +15,8 @@ from sklearn import model_selection
 
 from utils.time_series_utils import gen_dataset_calendarday
 
+from data_proc.rpna_processing import convert_timestamp_wti
+
 # ============ Configs ============
 # MASTER_DIR = "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis"
 MASTER_DIR = "../"
@@ -25,6 +27,12 @@ DF_RETURNS = pd.read_csv(
     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
     index_col=0
 )
+
+# Read the raw news.
+DF_RAW_NEWS = convert_timestamp_wti(
+    pd.read_csv(MASTER_DIR + "/data/ravenpack/crude_oil_all.csv")
+)
+
 # DF_NEWS = pd.read_csv(
 #     MASTER_DIR + "/data/ready_to_use/rpna_r0_wess.csv",
 #     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),

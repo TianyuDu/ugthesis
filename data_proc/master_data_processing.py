@@ -4,16 +4,53 @@ Aggregate data processing utility, generate the ready to use dataset.
 import argparse
 import json
 import os
+import sys
 import warnings
-from datetime import datetime
+from datetime import datetime, timedelta
 from pprint import pprint
 from typing import List, Union
 
 import numpy as np
 import pandas as pd
 
-import fred_macro_features
-import rpna_processing
+sys.path.append("../")
+
+import data_proc.fred_macro_features
+import data_proc.information_flow
+import data_proc.rpna_processing
+from data_proc.rpna_processing import convert_timestamp_wti
+
+
+MASTER_DIR = "../"
+TARGET_COL = "RETURN"
+LAG_DAYS = 28
+DF_RETURNS = pd.read_csv(
+    MASTER_DIR + "/data/ready_to_use/returns_norm.csv",
+    date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
+    index_col=0
+)
+
+# Read the raw news.
+DF_RAW_NEWS = convert_timestamp_wti(
+    pd.read_csv(MASTER_DIR + "/data/ravenpack/crude_oil_all.csv")
+)
+DF_RAW_NEWS["TIMESTAMP_WTI"] = DF_RAW_NEWS["TIMESTAMP_WTI"].apply(
+    lambda x: x.strftime("%m/%d/%Y, %H:%M:%S")).astype("datetime64")
+
+
+DF_NEWS = pd.read_csv(
+    MASTER_DIR + "/data/ready_to_use/rpna_r0_wess.csv",
+    date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
+    index_col=0
+)
+
+DF_NEWS = DF_NEWS.asfreq("D")
+
+DF_MASTER = pd.read_csv(
+    MASTER_DIR + "/data/ready_to_use/master_bothR0.csv",
+    date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
+    index_col=0
+)
 
 
 def _load_rpna(
@@ -90,6 +127,43 @@ def _add_target(
 ) -> pd.DataFrame:
     # TODO: do this.
     raise NotImplementedError
+
+
+def generate_pairs(
+    config: dict
+) -> Tuple[List[pd.DataFrame]]:
+    """
+    Generates the (X, y) training pairs.
+    Returns: (X, y)
+        where X is the collection of predictors[t-k, ...,t-1]
+        and y is the return at day t.
+    """
+    dates = pd.bdate_range(config["index.start_date"], config["index.end_date"])
+    dates = dates.intersection(DF_RETURNS.index)
+    original_len = len(dates)
+    # Subset returns.
+    df_returns = DF_RETURNS.loc[dates]
+    X_lst, y_lst = list(), list()
+
+    one_day = timedelta(days=1)
+
+    for t, r in zip(df_returns.index, df_returns["RETURN"].values):
+        fea_t = list()
+        if np.isnan(r):
+            # For nan returns, skip this.
+            continue
+        # look into summary table of RPNA.
+        lags = timedelta(days=config["rpna.lags"])
+        rg = pd.date_range(t - lags, t - one_day)
+        fea_rpna = DF_NEWS.loc[rg]
+        fea_rpna.fillna(value=0.0, inplace=True)
+        fea_t.append(fea_rpna.values.reshape(-1,))
+
+        # look into raw RPNA news.
+        # get the information flow.
+        subset = (t - lags <= DF_RAW_NEWS["TIMESTAMP_WTI"]) & (DF_RAW_NEWS["TIMESTAMP_WTI"] <= t - one_day)
+        if_t = DF_RAW_NEWS[subset]
+        if_features = information_flow.extract_IF()
 
 
 def main(
