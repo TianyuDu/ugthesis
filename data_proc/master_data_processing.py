@@ -163,7 +163,7 @@ def generate_pairs(
         # get the information flow.
         subset = (t - lags <= DF_RAW_NEWS["TIMESTAMP_WTI"]) & (DF_RAW_NEWS["TIMESTAMP_WTI"] <= t - one_day)
         if_t = DF_RAW_NEWS[subset]
-        if_features = information_flow.extract_IF()
+        if_features = information_flow.extract_IF(if_t)
 
 
 def main(
