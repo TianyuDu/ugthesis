@@ -266,3 +266,14 @@ def convert_to_onehot(y: np.ndarray) -> np.ndarray:
     onehot[:, 1] = (y >= 0.0)
     onehot = onehot.astype(np.int32)
     return onehot
+
+
+def direct_feed(src: str) -> Tuple[np.ndarray]:
+    """
+    Feeds the X and y arrays directly.
+    Args:
+        src: a string indicating the location of pickle files.
+    """
+    X = np.load(src + "X.npy")
+    y = np.load(src + "y.npy")
+    return X, y
