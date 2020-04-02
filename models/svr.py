@@ -7,7 +7,7 @@ from typing import Union
 import numpy as np
 import pandas as pd
 from sklearn.metrics import make_scorer
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, train_test_split
 from sklearn.svm import SVR
 
 import data_feed
@@ -35,7 +35,7 @@ def main(result_path: str) -> None:
 
     grid_search = RandomizedSearchCV(
         estimator=model, param_distributions=random_grid,
-        n_iter=100,
+        n_iter=5,
         scoring={
             'neg_mean_squared_error': 'neg_mean_squared_error',
             'acc': make_scorer(directional_accuracy)
@@ -47,24 +47,27 @@ def main(result_path: str) -> None:
 
     # Datafeed:
     # ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-    X_train, y_train, X_test, y_test = data_feed.feed(
-        include="master",
-        day=None,
-        task="regression"
-    )
+    # X_train, y_train, X_test, y_test = data_feed.feed(
+    #     include="master",
+    #     day=None,
+    #     task="regression"
+    # )
+    X, y = data_feed.direct_feed("../data/ready_to_use/xyt/")
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
+
     print(f"X_train @ {X_train.shape}")
     print(f"y_train @ {y_train.shape}")
     print(f"X_test @ {X_test.shape}")
     print(f"y_test @ {y_test.shape}")
     # Flatten
-    N_train, L, D = X_train.shape
-    N_test = X_test.shape[0]
+    # N_train, L, D = X_train.shape
+    # N_test = X_test.shape[0]
 
-    X_train = X_train.reshape(N_train, -1)
-    y_train = y_train.reshape(N_train,)
+    # X_train = X_train.reshape(N_train, -1)
+    # y_train = y_train.reshape(N_train,)
 
-    X_test = X_test.reshape(N_test, -1)
-    y_test = y_test.reshape(N_test,)
+    # X_test = X_test.reshape(N_test, -1)
+    # y_test = y_test.reshape(N_test,)
 
     grid_search.fit(X_train, y_train)
     # print("======== Best Parameter ========")
