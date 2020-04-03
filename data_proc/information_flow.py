@@ -32,10 +32,18 @@ def extract_IF(
     for fea, val in (IF["WESS"] ** 2).describe().items():
         X["wess_squared_" + fea] = val
 
+    # Seperate positive and negative events.
+    POS = IF[IF["ESS"] > 0]
+    NEG = IF[IF["ESS"] < 0]
+    for label, info in zip(["pos_", "neg_"], [POS, NEG]):
+        X[label + "count"] = len(info)
+        X[label + "ess_mean"] = np.mean(info["ESS"])
+        X[label + "wess_mean"] = np.mean(info["WESS"])
+
     # For extreme events
     IF_POS = IF[IF["ESS"] > 18]
     IF_NEG = IF[IF["ESS"] < -15]
-    for label, info in zip(["pos_", "neg_"], [IF_POS, IF_NEG]):
+    for label, info in zip(["ex_pos_", "ex_neg_"], [IF_POS, IF_NEG]):
         X[label + "count"] = len(info)
         X[label + "ess_mean"] = np.mean(info["ESS"])
         X[label + "wess_mean"] = np.mean(info["WESS"])
