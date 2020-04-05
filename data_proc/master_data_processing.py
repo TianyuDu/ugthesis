@@ -8,7 +8,7 @@ import sys
 import warnings
 from datetime import datetime, timedelta
 from pprint import pprint
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Optional
 
 import numpy as np
 import pandas as pd
@@ -39,12 +39,13 @@ DF_RAW_NEWS["TIMESTAMP_WTI"] = DF_RAW_NEWS["TIMESTAMP_WTI"].apply(
 
 
 DF_NEWS = pd.read_csv(
-    MASTER_DIR + "/data/ready_to_use/rpna_r0_wess.csv",
+    MASTER_DIR + "/data/ready_to_use/rpna_r0_all.csv",
     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
     index_col=0
 )
 
 DF_NEWS = DF_NEWS.asfreq("D")
+DF_NEWS.fillna(value=0.0, inplace=True)
 
 DF_MASTER = pd.read_csv(
     MASTER_DIR + "/data/ready_to_use/master_bothR0.csv",
@@ -130,24 +131,33 @@ def _add_target(
 
 
 def generate_pairs(
-    config: dict
-) -> Tuple[List[pd.DataFrame]]:
+    config: dict,
+    save_to: Optional[str] = None
+) -> pd.DataFrame:
     """
-    Generates the (X, y) training pairs.
-    Returns: (X, y)
-        where X is the collection of predictors[t-k, ...,t-1]
-        and y is the return at day t.
+    Generates the (X, y) training pairs in a DataFrame
+    Returns:
+        df with feature columns and a TARGET column.
     """
     DF_MACRO = _load_macro(src_file=config["fred.src"], verbose=False)
+
+    # Create a filled returns, used to construct lagged values.
+    DF_RETURNS_FILLED = DF_RETURNS.copy()
+    DF_RETURNS_FILLED = DF_RETURNS_FILLED.asfreq("D")
+    DF_RETURNS_FILLED.ffill(inplace=True)
 
     dates = pd.bdate_range(config["index.start_date"], config["index.end_date"])
     dates = dates.intersection(DF_RETURNS.index)
     original_len = len(dates)
     # Subset returns.
     df_returns = DF_RETURNS.loc[dates]
-    X_lst, y_lst, t_lst = list(), list(), list()
+    # collect daily (X, y) pairs.
+    df_lst = list()
 
     one_day = timedelta(days=1)
+
+    # column names for lagged variables.
+    lagged_names = [f"r_lag_{x}" for x in range(1, config["oil.lags"] + 1)][::-1]
 
     for t, r in tqdm(zip(df_returns.index, df_returns["RETURN"].values)):
         fea_t = list()
@@ -169,31 +179,53 @@ def generate_pairs(
         if_fea = np.array(list(if_fea.values())).astype(np.float32)
         fea_t.append(if_fea)
 
+        combined = np.concatenate(fea_t).reshape(1, -1)
+        if combined.shape[-1] < config["rpna.lags"]:
+            continue
+        # Features from RPNA dataset
+        df_fea_rpna = pd.DataFrame(
+            data=combined,
+            index=[t],
+            columns=[f"rpna_feature_{i}" for i in range(combined.shape[-1])]
+        )
+
         # look into fred table
-        lags = timedelta(days=config["fred.lags"])
-        rg = pd.date_range(t - lags, t - one_day).intersection(DF_MACRO.index)
-        macro_vars = DF_MACRO.loc[rg]
-        macro_vars.fillna(value=0.0, inplace=True)
-        fea_t.append(macro_vars.values.reshape(-1,))
+        # for now, not using the fred dataset.
+        # lags = timedelta(days=config["fred.lags"])
+        # rg = pd.date_range(t - lags, t - one_day).intersection(DF_MACRO.index)
+        # macro_vars = DF_MACRO.loc[rg]
+        # macro_vars.fillna(value=0.0, inplace=True)
+        # fea_t.append(macro_vars.values.reshape(-1,))
 
-        X_lst.append(np.concatenate(fea_t))
-        y_lst.append(r)
-        t_lst.append(t)
+        # include lagged returns
+        lags = timedelta(days=config["oil.lags"])
+        rg = pd.date_range(
+            t - lags, t - one_day).intersection(DF_RETURNS_FILLED.index)
 
-    max_len = max(len(x) for x in X_lst)
+        if len(rg) < config["oil.lags"]:
+            # Insufficient lags
+            continue
+        fea_wti = DF_RETURNS_FILLED.loc[rg].values.squeeze()
+
+        # Features from crude oil dataset.
+        df_fea_wti = pd.DataFrame(data=fea_wti.reshape(1, -1), index=[t], columns=lagged_names)
+
+        df_fea_all = pd.concat([df_fea_rpna, df_fea_wti], axis=1)
+
+        df_fea_all["TARGET"] = r
+        df_lst.append(df_fea_all)
+
+    max_len = max(x.shape[-1] for x in df_lst)
+    min_len = max(x.shape[-1] for x in df_lst)
+    assert max_len == min_len, "Inconsistent length."
+    df_all = pd.concat(df_lst)
+    df_all = df_all.astype(np.float32)
+    print(f"Generated dataframe shape (#columns includes TARGET): {df_all.shape}")
+    if save_to is not None:
+        print(f"Save dataframe generated to {save_to}")
+        df_all.to_csv(save_to)
     # Filtered lists
-    print(f"Number of samples (X, y): {len(X)}")
-    X_f, y_f, t_f = list(), list(), list()
-    for x, y, t in zip(X_lst, y_lst, t_lst):
-        if len(x) == max_len:
-            X_f.append(x)
-            y_f.append(y)
-            t_f.append(t)
-    print(f"Number of samples left: {len(X_f)}")
-    X = np.array(X_f)
-    y = np.array(y_f)
-    t = np.array(t_f)
-    return X, y, t
+    return df_all
 
 
 def main(
