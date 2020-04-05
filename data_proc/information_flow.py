@@ -22,14 +22,16 @@ def extract_IF(
     for fea, val in IF["ESS"].describe().items():
         X["ess_" + fea] = val
 
-    for fea, val in (IF["ESS"] ** 2).describe().items():
+    IF["ESS_sq"] = (IF["ESS"] ** 2) * np.sign(IF["ESS"])
+    for fea, val in (IF["ESS_sq"]).describe().items():
         X["ess_squared_" + fea] = val
 
     IF["WESS"] = IF["ENS"] * IF["ESS"] / 100.0
     for fea, val in IF["WESS"].describe().items():
         X["wess_" + fea] = val
 
-    for fea, val in (IF["WESS"] ** 2).describe().items():
+    IF["WESS_sq"] = (IF["WESS"] ** 2) * np.sign(IF["WESS"])
+    for fea, val in (IF["WESS_sq"]).describe().items():
         X["wess_squared_" + fea] = val
 
     # Seperate positive and negative events.
