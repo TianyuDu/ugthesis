@@ -268,12 +268,30 @@ def convert_to_onehot(y: np.ndarray) -> np.ndarray:
     return onehot
 
 
-def direct_feed(src: str) -> Tuple[np.ndarray]:
+def direct_feed(
+    src: str,
+    test_start = pd.to_datetime("2019-01-01")    
+) -> Tuple[np.ndarray]:
     """
     Feeds the X and y arrays directly.
-    Args:
-        src: a string indicating the location of pickle files.
     """
-    X = np.load(src + "X.npy")
-    y = np.load(src + "y.npy")
-    return X, y
+    df = pd.read_csv(
+        src,
+        date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
+        index_col=0
+    )
+    test_mask = (df.index >= test_start)
+    df_train, df_test = df[~ test_mask], df[test_mask]
+
+    X_train = df_train.drop(columns=["TARGET"])
+    y_train = df_train["TARGET"]
+
+    X_test = df_test.drop(columns=["TARGET"])
+    y_test = df_test["TARGET"]
+
+    X_train, X_test, y_train, y_test = map(
+        lambda x: x.values,
+        (X_train, X_test, y_train, y_test)
+    )
+
+    return X_train, X_test, y_train, y_test
