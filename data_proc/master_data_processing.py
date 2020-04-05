@@ -332,7 +332,7 @@ if __name__ == "__main__":
     now_str = datetime.strftime(datetime.now(), "%Y-%m-%d-%H:%M:%S")
     parser.add_argument(
         "--save_to",
-        default=f"../data/ready_to_use/master_dataset_{now_str}.csv",
+        default=f"../data/ready_to_use/feature_target_{now_str}.csv",
         type=str
     )
     parser.add_argument("--config", default=None, type=str)
@@ -351,7 +351,4 @@ if __name__ == "__main__":
     print("====================================")
     # df = main(config)
     # df.to_csv(args.save_to)
-    X, y, t = generate_pairs(config)
-    np.save("../data/ready_to_use/xyt/" + now_str + "_X.npy", X)
-    np.save("../data/ready_to_use/xyt/" + now_str + "_y.npy", y)
-    np.save("../data/ready_to_use/xyt/" + now_str + "_t.npy", t)
+    generate_pairs(config, save_to=args.save_to)
