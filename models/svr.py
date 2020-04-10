@@ -1,17 +1,19 @@
 """
-Baseline Support Vector Regressor.
+Support Vector Regressor.
 """
 import argparse
+from datetime import datetime
 from typing import Union
 
 import numpy as np
 import pandas as pd
 from sklearn.metrics import make_scorer
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, train_test_split
+from sklearn.model_selection import (GridSearchCV, RandomizedSearchCV,
+                                     train_test_split)
 from sklearn.svm import SVR
 
-import data_feed
-from training_utils import directional_accuracy
+from data_feed import direct_feed
+from training_utils import directional_accuracy, mape
 
 
 def construct_model(
@@ -21,7 +23,10 @@ def construct_model(
     return model
 
 
-def main(result_path: str) -> None:
+def main(
+    result_path: str,
+    n_iter: int = 1000
+) -> None:
     # Create the random grid
     random_grid = {
         "kernel": ["rbf"],
@@ -32,7 +37,6 @@ def main(result_path: str) -> None:
     }
 
     model = SVR()
-
     grid_search = RandomizedSearchCV(
         estimator=model, param_distributions=random_grid,
         n_iter=5,
@@ -45,20 +49,22 @@ def main(result_path: str) -> None:
         refit=False
     )
 
-    # Datafeed:
-    # ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-    # X_train, y_train, X_test, y_test = data_feed.feed(
-    #     include="master",
-    #     day=None,
-    #     task="regression"
-    # )
-    X, y = data_feed.direct_feed("../data/ready_to_use/xyt/")
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
+    data_src = "../data/ready_to_use/feature_target_2020-04-05-14:13:42.csv"
 
+    # Datafeed: avaiable options:
+    # ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    X_train, X_test, y_train, y_test = direct_feed(
+        src=data_src,
+        test_start=pd.to_datetime("2019-01-01"),
+        day=None,
+        return_array=True
+    )
     print(f"X_train @ {X_train.shape}")
     print(f"y_train @ {y_train.shape}")
     print(f"X_test @ {X_test.shape}")
     print(f"y_test @ {y_test.shape}")
+    assert len(X_train) == len(y_train)
+    assert len(X_test) == len(y_test)
     # Flatten
     # N_train, L, D = X_train.shape
     # N_test = X_test.shape[0]

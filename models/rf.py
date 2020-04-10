@@ -88,7 +88,7 @@ def main(
     X_train, X_test, y_train, y_test = direct_feed(
         src=data_src,
         test_start=pd.to_datetime("2019-01-01"),
-        day=["Tuesday", "Wednesday", "Thursday", "Friday"],
+        day=None,
         return_array=True
     )
     print(f"X_train @ {X_train.shape}")
