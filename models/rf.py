@@ -10,8 +10,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import make_scorer
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
-import data_feed
-from training_utils import directional_accuracy
+from data_feed import direct_feed
+from training_utils import directional_accuracy, mape
 
 
 def construct_model(
@@ -64,13 +64,14 @@ def main(
     model = RandomForestRegressor()
     grid_search = RandomizedSearchCV(
         estimator=model,
-        n_iter=50,
+        n_iter=100,
         param_distributions=grid,
         scoring={
-            'neg_mean_squared_error': 'neg_mean_squared_error',
-            'acc': make_scorer(directional_accuracy)
+            "neg_mse": "neg_mean_squared_error",
+            "dir_acc": make_scorer(directional_accuracy),
+            "mape": make_scorer(mape)
         },
-        cv=3,
+        cv=5,
         verbose=10,
         n_jobs=-1,
         return_train_score=True,
@@ -79,31 +80,38 @@ def main(
 
     # Datafeed:
     # ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-    X_train, y_train, X_test, y_test = data_feed.regression_feed(
-        day=["Tuesday", "Wednesday", "Thursday", "Friday"]
+    X_train, X_test, y_train, y_test = direct_feed(
+        src="/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/feature_target_2020-04-05-14:13:42.csv",
+        test_start=pd.to_datetime("2019-01-01"),
+        day=["Tuesday", "Wednesday", "Thursday", "Friday"],
+        return_array=True
     )
     print(f"X_train @ {X_train.shape}")
     print(f"y_train @ {y_train.shape}")
     print(f"X_test @ {X_test.shape}")
     print(f"y_test @ {y_test.shape}")
+    assert len(X_train) == len(y_train)
+    assert len(X_test) == len(y_test)
     # Flatten
-    N_train, L, D = X_train.shape
-    N_test = X_test.shape[0]
+    # N_train, L, D = X_train.shape
+    # N_test = X_test.shape[0]
 
-    X_train = X_train.reshape(N_train, -1)
-    y_train = y_train.reshape(N_train,)
+    # X_train = X_train.reshape(N_train, -1)
+    # y_train = y_train.reshape(N_train,)
 
-    X_test = X_test.reshape(N_test, -1)
-    y_test = y_test.reshape(N_test,)
+    # X_test = X_test.reshape(N_test, -1)
+    # y_test = y_test.reshape(N_test,)
 
     grid_search.fit(X_train, y_train)
     # print("======== Best Parameter ========")
     # print(grid_search.best_params_)
+    report = pd.DataFrame.from_dict(grid_search.cv_results_)
+    report.sort_values(by=["mean_test_dir_acc"], ascending=False, inplace=True)
     if result_path is None:
-        pd.DataFrame.from_dict(grid_search.cv_results_).to_csv(
+        report.to_csv(
             "../model_selection_results/rf_cv_results.csv")
     else:
-        pd.DataFrame.from_dict(grid_search.cv_results_).to_csv(result_path)
+        report.to_csv(result_path)
 
 
 if __name__ == "__main__":
