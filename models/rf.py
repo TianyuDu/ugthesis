@@ -26,7 +26,7 @@ def main(
     result_path: Union[str, None] = None,
     n_iter: int = 1000
 ) -> None:
-    n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=1000)]
+    n_estimators = [int(x) for x in np.linspace(start=1, stop=500, num=200)]
     max_features = ["auto", "log2", None]
     # Maximum number of levels in tree
     max_depth = [int(x) for x in np.linspace(10, 110, num=22)]
