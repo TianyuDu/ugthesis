@@ -8,7 +8,7 @@ sys.path.append("../")
 import numpy as np
 import pandas as pd
 
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Optional
 from datetime import datetime
 
 from sklearn import model_selection
@@ -270,16 +270,25 @@ def convert_to_onehot(y: np.ndarray) -> np.ndarray:
 
 def direct_feed(
     src: str,
-    test_start = pd.to_datetime("2019-01-01")    
-) -> Tuple[np.ndarray]:
+    test_start = pd.to_datetime("2019-01-01"),
+    day: Optional[Union[str, List[str]]] = None,
+    return_array: bool = False
+) -> Tuple[Union[np.ndarray, pd.DataFrame]]:
     """
-    Feeds the X and y arrays directly.
+    Feed (X_train, X_test, y_train, y_test) as dataframes.
     """
     df = pd.read_csv(
         src,
         date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
         index_col=0
     )
+    if day is not None:
+        if isinstance(day, str):
+            day = [day]
+        day_mask = df.index.day_name().isin(day)
+        df = df[day_mask]
+
+    # Split training and testing subsets.
     test_mask = (df.index >= test_start)
     df_train, df_test = df[~ test_mask], df[test_mask]
 
@@ -289,9 +298,16 @@ def direct_feed(
     X_test = df_test.drop(columns=["TARGET"])
     y_test = df_test["TARGET"]
 
-    X_train, X_test, y_train, y_test = map(
-        lambda x: x.values,
-        (X_train, X_test, y_train, y_test)
-    )
+    if day is not None:
+        # Double check day names in the index.
+        for s in X_train, X_test, y_train, y_test:
+            assert set(s.index.day_name()) == set(day)
+
+    if return_array:
+        # Convert to numpy arrays
+        X_train, X_test, y_train, y_test = map(
+            lambda x: x.values,
+            (X_train, X_test, y_train, y_test)
+        )
 
     return X_train, X_test, y_train, y_test
