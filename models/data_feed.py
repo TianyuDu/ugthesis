@@ -282,6 +282,9 @@ def direct_feed(
         date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
         index_col=0
     )
+    original_len = len(df)
+    df.dropna(inplace=True)
+    print(f"Dropped rows involving Nan: {original_len - len(df)}")
     if day is not None:
         if isinstance(day, str):
             day = [day]
