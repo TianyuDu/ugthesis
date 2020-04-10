@@ -2,6 +2,7 @@
 Random Forest
 """
 import argparse
+from datetime import datetime
 from typing import Union
 
 import numpy as np
@@ -22,10 +23,11 @@ def construct_model(
 
 
 def main(
-    result_path: Union[str, None] = None
+    result_path: Union[str, None] = None,
+    n_iter: int = 100
 ) -> None:
     n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=1000)]
-    max_features = ["auto", "sqrt"]
+    max_features = ["auto", "log2", None]
     # Maximum number of levels in tree
     max_depth = [int(x) for x in np.linspace(10, 110, num=22)]
     max_depth.append(None)
@@ -64,7 +66,7 @@ def main(
     model = RandomForestRegressor()
     grid_search = RandomizedSearchCV(
         estimator=model,
-        n_iter=100,
+        n_iter=n_iter,
         param_distributions=grid,
         scoring={
             "neg_mse": "neg_mean_squared_error",
@@ -107,15 +109,22 @@ def main(
     # print(grid_search.best_params_)
     report = pd.DataFrame.from_dict(grid_search.cv_results_)
     report.sort_values(by=["mean_test_dir_acc"], ascending=False, inplace=True)
+    # Move the dir acc column to the first column
+    columns = ["mean_test_dir_acc", "mean_test_mape"] + \
+        [col for col in report.columns if col != "mean_test_dir_acc"]
+    report = report[columns]
     if result_path is None:
         report.to_csv(
-            "../model_selection_results/rf_cv_results.csv")
+            f"../model_selection_results/rf_cv_results_{n_iter}_iters.csv")
     else:
         report.to_csv(result_path)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--report_dir", type=str)
+    parser.add_argument("--log_dir", type=str)
+    parser.add_argument("--n_iter", type=int, default=100)
     args = parser.parse_args()
-    main(args.report_dir)
+    start_time = datetime.now()
+    main(args.log_dir, args.n_iter)
+    print(f"Time taken for {args.n_iter} samples: {datetime.now() - start_time}")
