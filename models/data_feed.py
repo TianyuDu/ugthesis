@@ -19,19 +19,19 @@ from data_proc.rpna_processing import convert_timestamp_wti
 
 # ============ Configs ============
 # MASTER_DIR = "/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis"
-MASTER_DIR = "../"
+MASTER_DIR = ".."
 TARGET_COL = "RETURN"
 LAG_DAYS = 28
-DF_RETURNS = pd.read_csv(
-    MASTER_DIR + "/data/ready_to_use/returns_norm.csv",
-    date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
-    index_col=0
-)
+# DF_RETURNS = pd.read_csv(
+#     MASTER_DIR + "/data/ready_to_use/returns_norm.csv",
+#     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
+#     index_col=0
+# )
 
 # Read the raw news.
-DF_RAW_NEWS = convert_timestamp_wti(
-    pd.read_csv(MASTER_DIR + "/data/ravenpack/crude_oil_all.csv")
-)
+# DF_RAW_NEWS = convert_timestamp_wti(
+#     pd.read_csv(MASTER_DIR + "/data/ravenpack/crude_oil_all.csv")
+# )
 
 # DF_NEWS = pd.read_csv(
 #     MASTER_DIR + "/data/ready_to_use/rpna_r0_wess.csv",
@@ -39,11 +39,11 @@ DF_RAW_NEWS = convert_timestamp_wti(
 #     index_col=0
 # )
 
-DF_MASTER = pd.read_csv(
-    MASTER_DIR + "/data/ready_to_use/master_bothR0.csv",
-    date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
-    index_col=0
-)
+# DF_MASTER = pd.read_csv(
+#     MASTER_DIR + "/data/ready_to_use/master_bothR0.csv",
+#     date_parser=lambda x: datetime.strptime(x, "%Y-%m-%d"),
+#     index_col=0
+# )
 
 # Any tuple of X, y with y.date >= BOUNDARY will be classified as
 # a testing case.

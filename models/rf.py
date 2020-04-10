@@ -26,7 +26,7 @@ def main(
     result_path: Union[str, None] = None,
     n_iter: int = 1000
 ) -> None:
-    n_estimators = [int(x) for x in np.linspace(start=1, stop=500, num=200)]
+    n_estimators = [int(x) for x in np.linspace(start=1, stop=180, num=200)]
     max_features = ["auto", "log2", None]
     # Maximum number of levels in tree
     max_depth = [int(x) for x in np.linspace(10, 110, num=22)]
@@ -108,7 +108,6 @@ def main(
 
     grid_search.fit(X_train, y_train)
     # print("======== Best Parameter ========")
-    # print(grid_search.best_params_)
     report = pd.DataFrame.from_dict(grid_search.cv_results_)
     report.sort_values(by=["mean_test_dir_acc"], ascending=False, inplace=True)
     # Move the dir acc column to the first column
