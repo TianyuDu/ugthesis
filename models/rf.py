@@ -80,10 +80,12 @@ def main(
         refit=False
     )
 
+    data_src = "../data/ready_to_use/feature_target_2020-04-05-14:13:42.csv"
+
     # Datafeed: avaiable options:
     # ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
     X_train, X_test, y_train, y_test = direct_feed(
-        src="/Users/tianyudu/Documents/UToronto/Course/ECO499/ugthesis/data/ready_to_use/feature_target_2020-04-05-14:13:42.csv",
+        src=data_src,
         test_start=pd.to_datetime("2019-01-01"),
         day=["Tuesday", "Wednesday", "Thursday", "Friday"],
         return_array=True
@@ -118,6 +120,7 @@ def main(
             f"../model_selection_results/rf_cv_results_{n_iter}_iters.csv")
     else:
         report.to_csv(result_path)
+    print(f"Data source: {data_src}")
 
 
 if __name__ == "__main__":
