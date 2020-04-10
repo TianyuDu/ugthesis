@@ -24,8 +24,8 @@ def construct_model(
 def main(
     result_path: Union[str, None] = None
 ) -> None:
-    n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
-    max_features = ['auto', 'sqrt']
+    n_estimators = [int(x) for x in np.linspace(start=200, stop=1800, num=10)]
+    max_features = ["auto", "sqrt"]
     # Maximum number of levels in tree
     max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
     max_depth.append(None)
@@ -38,7 +38,7 @@ def main(
 
     # ==== Smaller Profile For Testing Purpose====
     # n_estimators = [10]
-    # max_features = ['auto', 'sqrt']
+    # max_features = ["auto", "sqrt"]
     # # Maximum number of levels in tree
     # max_depth = [10]
     # max_depth.append(None)
@@ -53,12 +53,12 @@ def main(
 
     # Create the random grid
     grid = {
-        'n_estimators': n_estimators,
-        'max_features': max_features,
-        'max_depth': max_depth,
-        'min_samples_split': min_samples_split,
-        'min_samples_leaf': min_samples_leaf,
-        'bootstrap': bootstrap
+        "n_estimators": n_estimators,
+        "max_features": max_features,
+        "max_depth": max_depth,
+        "min_samples_split": min_samples_split,
+        "min_samples_leaf": min_samples_leaf,
+        "bootstrap": bootstrap
     }
 
     model = RandomForestRegressor()
