@@ -24,7 +24,7 @@ def construct_model(
 
 def main(
     result_path: Union[str, None] = None,
-    n_iter: int = 100
+    n_iter: int = 1000
 ) -> None:
     n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=1000)]
     max_features = ["auto", "log2", None]
