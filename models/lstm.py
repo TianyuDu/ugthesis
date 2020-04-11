@@ -16,13 +16,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
 
-sys.path.append("../")
-sys.path.append("./")
+from data_feed import rnn_feed
+from training_utils import directional_accuracy, mape, mse
 
-import data_feed
-import utils.time_series_utils as ts_utils
+sys.path.append("../")
 import utils.training_utils as train_utils
-from training_utils import directional_accuracy
 
 
 class StackedLstm(nn.Module):
@@ -93,13 +91,12 @@ def train(
     model_config: dict,
     epoch: int = 20,
     batch_size: int = 32,
-    lr: float = 0.0001,
-    train_size: float = 0.7,
+    lr: float = 0.001,
+    train_size: float = 0.8,
     shuffle: bool = True,
-    task: Union["regression", "classification"] = "regression"
 ) -> (nn.Module, Tuple[np.ndarray]):
     """
-    # TODO: docstring :P
+    Training the LSTM model.
     """
     # Split dataset.
     X_train, X_val, y_train, y_val = train_test_split(
@@ -107,24 +104,27 @@ def train(
         train_size=train_size,
         shuffle=shuffle
     )
+    # Convert to tensors.
     X_train, X_val, y_train, y_val = map(
         lambda z: torch.Tensor(z.astype(np.float32)),
         (X_train, X_val, y_train, y_val)
     )
-    # Flatten.
-    if task == "classification":
-        y_train = y_train.view(-1,).type(torch.long)
-        y_val = y_val.view(-1,).type(torch.long)
+
+    print(f"X_train @ {X_train.shape}")
+    print(f"y_train @ {y_train.shape}")
+    print(f"X_val @ {X_val.shape}")
+    print(f"y_val @ {y_val.shape}")
+
     # Construct model.
     model = StackedLstm(**model_config)
-    # loss_function = nn.MSELoss()
-    loss_function = nn.CrossEntropyLoss()
+    loss_function = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     print(model)
     batch_index_lst = train_utils.batch_sampler(
         batch_size=batch_size,
         data_size=X_train.shape[0]
     )
+    print(f"Number of mini-batches: {len(batch_index_lst)} with batch size {batch_size}")
 
     for e in range(epoch):
         for (low, high) in batch_index_lst:
@@ -142,9 +142,10 @@ def train(
                 lab.detach().numpy(),
                 y_pred.detach().numpy()
             )
+            train_mape = mape(lab.detach().numpy(), y_pred.detach().numpy())
+        print(f"epoch: {e: 3} train loss: {batch_loss.item(): 10.8f}, DA: {train_acc * 100: 2.1f}%, mape: {train_mape: 2.1f}%")
         # validation
-        # if e % 5 == 1:
-        if True:
+        if e % 5 == 1:
             with torch.no_grad():
                 model.reset_hidden(batch_size=y_val.shape[0])
                 val_pred = model(X_val)
@@ -154,8 +155,11 @@ def train(
                     y_val.detach().numpy(),
                     val_pred.detach().numpy()
                 )
-            print(
-                f"epoch: {e: 3} train loss: {batch_loss.item(): 10.8f} (acc {train_acc * 100}%) validation loss: {val_loss.item(): 10.8f} (acc {val_acc * 100}%)")
+                val_mape = mape(
+                    y_val.detach().numpy(),
+                    val_pred.detach().numpy()
+                )
+            print(f"[Validation] epoch: {e: 3} val loss: {val_loss.item(): 10.8f}, DA: {val_acc * 100: 2.1f} %, mape: {val_mape: 2.1f}%")
     return model, (X_train, X_val, y_train, y_val)
 
 
@@ -174,27 +178,34 @@ def predict(
 
 
 def main():
-    X, y, X_test, y_test = data_feed.feed(
-        day=None,
-        task="classification"
+    src = "../data/ready_to_use/xrt/"
+    X_train, X_test, y_train, y_test = rnn_feed(
+        src=src,
+        test_start=pd.to_datetime("2019-01-01")
     )
 
+    print(f"X_train @ {X_train.shape}")
+    print(f"y_train @ {y_train.shape}")
+    print(f"X_test @ {X_test.shape}")
+    print(f"y_test @ {y_test.shape}")
+    assert len(X_train) == len(y_train)
+    assert len(X_test) == len(y_test)
+
     model_config = dict(
-        input_size=X.shape[-1],
-        hidden_size=128,
-        output_size=2,
-        num_layers=2,
+        input_size=X_train.shape[-1],
+        hidden_size=32,
+        output_size=1,
+        num_layers=1,
         drop_prob=0.5
     )
 
-    train(
+    model, (X_train, X_val, y_train, y_val) = train(
         X, y,
         model_config=model_config,
         epoch=20,
         batch_size=32,
         lr=0.0001,
-        train_size=0.7,
-        task="classification"
+        train_size=0.8
     )
 
 
