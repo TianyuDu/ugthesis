@@ -304,9 +304,9 @@ def generate_rnn_pairs(
     print(f"Number of (X, r, t) pairs generated: {len(X_lst)}")
 
     # Convert to tensors
-    X = np.stack(X_lst)
-    r = np.stack(r_lst)
-    t = np.stack(t_lst)
+    X = np.stack(X_lst).astype(np.float32)
+    r = np.stack(r_lst).astype(np.float32)
+    t = np.stack(t_lst).astype(np.datetime64)
     print(f"Generated tensor: X@{X.shape}")
     print(f"Generated tensor: r@{r.shape}")
     print(f"Generated tensor: t@{t.shape}")
