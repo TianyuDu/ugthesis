@@ -318,13 +318,23 @@ def direct_feed(
 
 def rnn_feed(
     src: str,
-    train_size: float = 0.8
+    train_size: float = 0.8,
+    shuffle: bool = True
 ) -> Tuple[np.ndarray]:
     """
     Feed (X_train, X_test, y_train, y_test) to models.
     X_{train, test} @ (batch_size, seq_len, num_fea)
     y_{train, test} @ (batch_size,)
+
+    Args:
+        src: the directory of (X, y) dataset.
+        train_size: proportion of dataset for training.
+        shuffle: whether to shuffle dataset while selecting training set.
+    Returns:
+        (X_train, X_test, y_train, y_test)
     """
+    X = np.load(f"{src}/X.npy")
+    y = np.load(f"{src}/y.npy")
     X_train, X_test, y_train, y_test = model_selection.train_test_split(
-        X, y, train_size=train_size, shuffle=True)
+        X, y, train_size=train_size, shuffle=shuffle)
     return X_train, X_test, y_train, y_test
