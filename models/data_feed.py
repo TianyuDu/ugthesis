@@ -318,8 +318,8 @@ def direct_feed(
 
 def rnn_feed(
     src: str,
-    train_size: float = 0.8,
-    shuffle: bool = True
+    test_start=pd.to_datetime("2019-01-01"),
+    day: Optional[Union[str, List[str]]] = None,
 ) -> Tuple[np.ndarray]:
     """
     Feed (X_train, X_test, y_train, y_test) to models.
@@ -328,13 +328,19 @@ def rnn_feed(
 
     Args:
         src: the directory of (X, y) dataset.
-        train_size: proportion of dataset for training.
-        shuffle: whether to shuffle dataset while selecting training set.
+        test_start: after which date (inclusive) samples are used as test set.
     Returns:
         (X_train, X_test, y_train, y_test)
     """
     X = np.load(f"{src}/X.npy")
-    y = np.load(f"{src}/y.npy")
-    X_train, X_test, y_train, y_test = model_selection.train_test_split(
-        X, y, train_size=train_size, shuffle=shuffle)
+    y = np.load(f"{src}/r.npy")
+    t = np.load(f"{src}/t.npy")
+
+    # TODO: add day of the week effect filter.
+
+    train_mask = t < test_start
+    X_train = X[train_mask, :, :]
+    X_test = X[~ train_mask, :, :]
+    y_train = y[train_mask]
+    y_test = y[~ train_mask]
     return X_train, X_test, y_train, y_test
