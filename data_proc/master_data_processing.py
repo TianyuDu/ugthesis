@@ -231,7 +231,7 @@ def generate_pairs(
 def generate_rnn_pairs(
     config: dict,
     save_to: Optional[str] = None
-) -> None:
+) -> Tuple[np.ndarray]:
     """
     Generates the (X, y) training pairs for RNN.
     X @ (batch_size, seq_len, num_fea)
@@ -241,6 +241,7 @@ def generate_rnn_pairs(
     DF_RETURNS_FILLED = DF_RETURNS.copy()
     DF_RETURNS_FILLED = DF_RETURNS_FILLED.asfreq("D")
     DF_RETURNS_FILLED.ffill(inplace=True)
+    DF_RETURNS_FILLED.fillna(value=0.0, inplace=True)
 
     dates = pd.bdate_range(
         config["index.start_date"], config["index.end_date"])
@@ -248,8 +249,10 @@ def generate_rnn_pairs(
     original_len = len(dates)
     # Subset returns.
     df_returns = DF_RETURNS.loc[dates]
-    # collect daily (X, y) pairs.
-    df_lst = list()
+    # collect daily (X, y, t) sets.
+    X_lst = list()
+    r_lst = list()
+    t_lst = list()
 
     one_day = timedelta(days=1)
 
@@ -257,76 +260,65 @@ def generate_rnn_pairs(
     lagged_names = [f"r_lag_{x}" for x in range(
         1, config["oil.lags"] + 1)][::-1]
 
+    # While using RNN, the lags for all datasets should be the same.
+    assert config["rpna.lags"] == config["oil.lags"]
+    num_lags = config["rpna.lags"]
+
     for t, r in tqdm(zip(df_returns.index, df_returns["RETURN"].values)):
         fea_t = list()
         if np.isnan(r):
             # For nan returns, skip this.
+            print(f"Date {t}: Nan value of return found.")
             continue
-        # look into summary table of RPNA.
-        lags = timedelta(days=config["rpna.lags"])
-        rg = pd.date_range(t - lags, t - one_day).intersection(DF_NEWS.index)
-        fea_rpna = DF_NEWS.loc[rg]
+
+        lags = timedelta(days=num_lags)
+        rg_rpna = pd.date_range(t - lags, t - one_day).intersection(DF_NEWS.index)
+        rg_wti = pd.date_range(t - lags, t - one_day).intersection(DF_RETURNS_FILLED.index)
+
+        if len(rg_rpna) < num_lags or len(rg_wti) < num_lags:
+            print(f"Date {t}: Insufficient lags. Expected={num_lags}, len(rg_rpna)={len(rg_rpna)}, len(rg_wti)={len(rg_wti)}")
+            continue
+
+        # Aggregate features
+        fea_rpna = DF_NEWS.loc[rg_rpna]
         fea_rpna.fillna(value=0.0, inplace=True)
-        fea_t.append(fea_rpna.values.reshape(-1,))
 
-        # look into raw RPNA news.
-        # get the information flow.
-        subset = (t - lags <= DF_RAW_NEWS["TIMESTAMP_WTI"]
-                  ) & (DF_RAW_NEWS["TIMESTAMP_WTI"] <= t - one_day)
-        if_t = DF_RAW_NEWS[subset]
-        if_fea = IF.extract_IF(if_t)
-        if_fea = np.array(list(if_fea.values())).astype(np.float32)
-        fea_t.append(if_fea)
+        fea_wti = DF_RETURNS_FILLED.loc[rg_wti]["RETURN"]
 
-        combined = np.concatenate(fea_t).reshape(1, -1)
-        if combined.shape[-1] < config["rpna.lags"]:
-            continue
-        # Features from RPNA dataset
-        df_fea_rpna = pd.DataFrame(
-            data=combined,
-            index=[t],
-            columns=[f"rpna_feature_{i}" for i in range(combined.shape[-1])]
-        )
+        assert np.all(fea_wti.index == fea_rpna.index)
+        assert np.all(~ np.isnan(fea_wti))  # Assert all are non-zero.
 
-        # look into fred table
-        # for now, not using the fred dataset.
-        # lags = timedelta(days=config["fred.lags"])
-        # rg = pd.date_range(t - lags, t - one_day).intersection(DF_MACRO.index)
-        # macro_vars = DF_MACRO.loc[rg]
-        # macro_vars.fillna(value=0.0, inplace=True)
-        # fea_t.append(macro_vars.values.reshape(-1,))
+        fea_combined = pd.concat([fea_wti, fea_rpna], axis=1)
 
-        # include lagged returns
-        lags = timedelta(days=config["oil.lags"])
-        rg = pd.date_range(
-            t - lags, t - one_day).intersection(DF_RETURNS_FILLED.index)
+        # Ignore information flow for now.
 
-        if len(rg) < config["oil.lags"]:
-            # Insufficient lags
-            continue
-        fea_wti = DF_RETURNS_FILLED.loc[rg].values.squeeze()
+        # Write up buffer.
+        X_lst.append(fea_combined.values)
+        r_lst.append(r)
+        t_lst.append(t)
 
-        # Features from crude oil dataset.
-        df_fea_wti = pd.DataFrame(data=fea_wti.reshape(
-            1, -1), index=[t], columns=lagged_names)
+    constant_shape = X_lst[0].shape
+    print(f"Feature shape X@{constant_shape}")
+    assert all(X.shape == constant_shape for X in X_lst)
+    assert len(X_lst) == len(r_lst) == len(t_lst)
+    print(f"Number of (X, r, t) pairs generated: {len(X_lst)}")
 
-        df_fea_all = pd.concat([df_fea_rpna, df_fea_wti], axis=1)
-
-        df_fea_all["TARGET"] = r
-        df_lst.append(df_fea_all)
-
-    max_len = max(x.shape[-1] for x in df_lst)
-    min_len = max(x.shape[-1] for x in df_lst)
-    assert max_len == min_len, "Inconsistent length."
-    df_all = pd.concat(df_lst)
-    df_all = df_all.astype(np.float32)
-    print(
-        f"Generated dataframe shape (#columns includes TARGET): {df_all.shape}")
+    # Convert to tensors
+    X = np.stack(X_lst)
+    r = np.stack(r_lst)
+    t = np.stack(t_lst)
+    print(f"Generated tensor: X@{X.shape}")
+    print(f"Generated tensor: r@{r.shape}")
+    print(f"Generated tensor: t@{t.shape}")
     if save_to is not None:
+        if not save_to.endswith("/"):
+            save_to += "/"
         print(f"Save dataframe generated to {save_to}")
-        df_all.to_csv(save_to)
+        np.save(save_to + "X.npy", X)
+        np.save(save_to + "r.npy", r)
+        np.save(save_to + "t.npy", t)
     # Filtered lists
-    return df_all
+    return X, r, t
 
 
 def main(
