@@ -118,12 +118,12 @@ def train(
         for (low, high) in batch_index_lst:
             seq = X_train[low: high, :, :]
             lab = y_train[low: high]
-            lab = lab.reshape(-1, 1)
+            # lab = lab.reshape(-1, 1)
             optimizer.zero_grad()
             # Initialize hidden states and cell states.
             model.reset_hidden(batch_size=lab.shape[0])
             y_pred = model(seq)
-            batch_loss = loss_function(y_pred, lab.view(-1,))
+            batch_loss = loss_function(y_pred.view(-1, 1), lab.view(-1, 1))
             batch_loss.backward()
             optimizer.step()
             train_acc = directional_accuracy(
@@ -133,12 +133,11 @@ def train(
             train_mape = mape(lab.detach().numpy(), y_pred.detach().numpy())
         print(f"epoch: {e: 3} train loss: {batch_loss.item(): 10.8f}, DA: {train_acc * 100: 2.1f}%, mape: {train_mape: 2.1f}%")
         # validation
-        if e % 5 == 1:
+        if e % 3 == 0:
             with torch.no_grad():
                 model.reset_hidden(batch_size=y_val.shape[0])
                 val_pred = model(X_val)
-                y_val = y_val.reshape(-1, 1)
-                val_loss = loss_function(val_pred, y_val.view(-1,))
+                val_loss = loss_function(val_pred.view(-1, 1), y_val.view(-1, 1))
                 val_acc = directional_accuracy(
                     y_val.detach().numpy(),
                     val_pred.detach().numpy()
@@ -192,20 +191,19 @@ def main():
         input_size=X_train.shape[-1],
         hidden_size=32,
         output_size=1,
-        num_layers=1,
+        num_layers=2,
         drop_prob=0.5
     )
 
-    model, (X_train, X_val, y_train, y_val) = train(
-        X, y,
+    model, _ = train(
+        X_train, y_train,
         model_config=model_config,
-        epoch=250,
+        epoch=100,
         batch_size=512,
-        lr=0.003,
-        train_size=0.8
+        lr=0.0001,
+        train_size=0.7
     )
 
 
 if __name__ == "__main__":
-    # main()
-    raise NotImplementedError
+    main()
