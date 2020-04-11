@@ -228,6 +228,107 @@ def generate_pairs(
     return df_all
 
 
+def generate_rnn_pairs(
+    config: dict,
+    save_to: Optional[str] = None
+) -> None:
+    """
+    Generates the (X, y) training pairs for RNN.
+    X @ (batch_size, seq_len, num_fea)
+    y @ (batch_size,)
+    """
+    # Create a filled returns, used to construct lagged values.
+    DF_RETURNS_FILLED = DF_RETURNS.copy()
+    DF_RETURNS_FILLED = DF_RETURNS_FILLED.asfreq("D")
+    DF_RETURNS_FILLED.ffill(inplace=True)
+
+    dates = pd.bdate_range(
+        config["index.start_date"], config["index.end_date"])
+    dates = dates.intersection(DF_RETURNS.index)
+    original_len = len(dates)
+    # Subset returns.
+    df_returns = DF_RETURNS.loc[dates]
+    # collect daily (X, y) pairs.
+    df_lst = list()
+
+    one_day = timedelta(days=1)
+
+    # column names for lagged variables.
+    lagged_names = [f"r_lag_{x}" for x in range(
+        1, config["oil.lags"] + 1)][::-1]
+
+    for t, r in tqdm(zip(df_returns.index, df_returns["RETURN"].values)):
+        fea_t = list()
+        if np.isnan(r):
+            # For nan returns, skip this.
+            continue
+        # look into summary table of RPNA.
+        lags = timedelta(days=config["rpna.lags"])
+        rg = pd.date_range(t - lags, t - one_day).intersection(DF_NEWS.index)
+        fea_rpna = DF_NEWS.loc[rg]
+        fea_rpna.fillna(value=0.0, inplace=True)
+        fea_t.append(fea_rpna.values.reshape(-1,))
+
+        # look into raw RPNA news.
+        # get the information flow.
+        subset = (t - lags <= DF_RAW_NEWS["TIMESTAMP_WTI"]
+                  ) & (DF_RAW_NEWS["TIMESTAMP_WTI"] <= t - one_day)
+        if_t = DF_RAW_NEWS[subset]
+        if_fea = IF.extract_IF(if_t)
+        if_fea = np.array(list(if_fea.values())).astype(np.float32)
+        fea_t.append(if_fea)
+
+        combined = np.concatenate(fea_t).reshape(1, -1)
+        if combined.shape[-1] < config["rpna.lags"]:
+            continue
+        # Features from RPNA dataset
+        df_fea_rpna = pd.DataFrame(
+            data=combined,
+            index=[t],
+            columns=[f"rpna_feature_{i}" for i in range(combined.shape[-1])]
+        )
+
+        # look into fred table
+        # for now, not using the fred dataset.
+        # lags = timedelta(days=config["fred.lags"])
+        # rg = pd.date_range(t - lags, t - one_day).intersection(DF_MACRO.index)
+        # macro_vars = DF_MACRO.loc[rg]
+        # macro_vars.fillna(value=0.0, inplace=True)
+        # fea_t.append(macro_vars.values.reshape(-1,))
+
+        # include lagged returns
+        lags = timedelta(days=config["oil.lags"])
+        rg = pd.date_range(
+            t - lags, t - one_day).intersection(DF_RETURNS_FILLED.index)
+
+        if len(rg) < config["oil.lags"]:
+            # Insufficient lags
+            continue
+        fea_wti = DF_RETURNS_FILLED.loc[rg].values.squeeze()
+
+        # Features from crude oil dataset.
+        df_fea_wti = pd.DataFrame(data=fea_wti.reshape(
+            1, -1), index=[t], columns=lagged_names)
+
+        df_fea_all = pd.concat([df_fea_rpna, df_fea_wti], axis=1)
+
+        df_fea_all["TARGET"] = r
+        df_lst.append(df_fea_all)
+
+    max_len = max(x.shape[-1] for x in df_lst)
+    min_len = max(x.shape[-1] for x in df_lst)
+    assert max_len == min_len, "Inconsistent length."
+    df_all = pd.concat(df_lst)
+    df_all = df_all.astype(np.float32)
+    print(
+        f"Generated dataframe shape (#columns includes TARGET): {df_all.shape}")
+    if save_to is not None:
+        print(f"Save dataframe generated to {save_to}")
+        df_all.to_csv(save_to)
+    # Filtered lists
+    return df_all
+
+
 def main(
     config: dict,
 ) -> None:

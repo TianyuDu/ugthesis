@@ -317,9 +317,14 @@ def direct_feed(
 
 
 def rnn_feed(
-    src: str
+    src: str,
+    train_size: float = 0.8
 ) -> Tuple[np.ndarray]:
     """
-    Feed (X_train, X_test, y_train, y_test) as (batch, seq_len, num_features)
+    Feed (X_train, X_test, y_train, y_test) to models.
+    X_{train, test} @ (batch_size, seq_len, num_fea)
+    y_{train, test} @ (batch_size,)
     """
-    raise NotImplementedError
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(
+        X, y, train_size=train_size, shuffle=True)
+    return X_train, X_test, y_train, y_test
