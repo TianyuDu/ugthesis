@@ -13,7 +13,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from tqdm import tqdm
 
 from data_feed import rnn_feed
@@ -71,18 +71,6 @@ class StackedLstm(nn.Module):
             torch.randn(self.num_layers, batch_size, self.hidden_size),
             torch.randn(self.num_layers, batch_size, self.hidden_size)
         )
-
-
-def preprocessing(
-    df: pd.DataFrame,
-) -> (np.ndarray, "MinMaxScaler"):
-    """
-    Normalizes the dataset.
-    """
-    data = df.values.astype(np.float32)
-    scaler = MinMaxScaler(feature_range=(-1, 1))
-    data_normalized = scaler.fit_transform(data)
-    return data_normalized, scaler
 
 
 def train(
@@ -191,6 +179,15 @@ def main():
     assert len(X_train) == len(y_train)
     assert len(X_test) == len(y_test)
 
+    # Transform data.
+    scalers = {}
+    for i in range(X_train.shape[-1]):
+        scalers[i] = StandardScaler()
+        X_train[:, :, i] = scalers[i].fit_transform(X_train[:, :, i])
+
+    for i in range(X_test.shape[-1]):
+        X_test[:, :, i] = scalers[i].transform(X_test[:, :, i])
+
     model_config = dict(
         input_size=X_train.shape[-1],
         hidden_size=32,
@@ -204,7 +201,7 @@ def main():
         model_config=model_config,
         epoch=250,
         batch_size=512,
-        lr=0.0003,
+        lr=0.003,
         train_size=0.8
     )
 
