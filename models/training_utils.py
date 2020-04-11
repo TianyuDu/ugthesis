@@ -20,3 +20,10 @@ def mape(y_true, y_pred):
     base[base == 0.0] = np.inf  # To avoid infinite.
     err = np.abs(y_pred - y_true)
     return np.mean(err / base) * 100
+
+
+def mse(y_true, y_pred):
+    """
+    Mean squared error.
+    """
+    return np.mean((y_true - y_pred) ** 2)
