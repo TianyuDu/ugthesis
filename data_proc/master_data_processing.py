@@ -241,7 +241,7 @@ def generate_rnn_pairs(
     DF_RETURNS_FILLED = DF_RETURNS.copy()
     DF_RETURNS_FILLED = DF_RETURNS_FILLED.asfreq("D")
     DF_RETURNS_FILLED.ffill(inplace=True)
-    DF_RETURNS_FILLED.fillna(value=0.0, inplace=True)
+    # DF_RETURNS_FILLED.fillna(value=0.0, inplace=True)
 
     dates = pd.bdate_range(
         config["index.start_date"], config["index.end_date"])
@@ -286,7 +286,8 @@ def generate_rnn_pairs(
         fea_wti = DF_RETURNS_FILLED.loc[rg_wti]["RETURN"]
 
         assert np.all(fea_wti.index == fea_rpna.index)
-        assert np.all(~ np.isnan(fea_wti))  # Assert all are non-zero.
+        if not np.all(~ np.isnan(fea_wti)):  # Assert all are non-zero.
+            continue
 
         fea_combined = pd.concat([fea_wti, fea_rpna], axis=1)
 
