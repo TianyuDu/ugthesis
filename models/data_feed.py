@@ -275,7 +275,7 @@ def direct_feed(
     return_array: bool = False
 ) -> Tuple[Union[np.ndarray, pd.DataFrame]]:
     """
-    Feed (X_train, X_test, y_train, y_test) as dataframes.
+    Feed (X_train, X_test, y_train, y_test).
     """
     df = pd.read_csv(
         src,
@@ -314,3 +314,12 @@ def direct_feed(
         )
 
     return X_train, X_test, y_train, y_test
+
+
+def rnn_feed(
+    src: str
+) -> Tuple[np.ndarray]:
+    """
+    Feed (X_train, X_test, y_train, y_test) as (batch, seq_len, num_features)
+    """
+    raise NotImplementedError
