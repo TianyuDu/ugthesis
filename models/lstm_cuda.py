@@ -128,10 +128,10 @@ def train(
             batch_loss.backward()
             optimizer.step()
             train_acc = directional_accuracy(
-                lab.detach().numpy(),
-                y_pred.detach().numpy()
+                lab.cpu().detach().numpy(),
+                y_pred.cpu().detach().numpy()
             )
-            train_mape = mape(lab.detach().numpy(), y_pred.detach().numpy())
+            train_mape = mape(lab.cpu().detach().numpy(), y_pred.cpu().detach().numpy())
         print(f"epoch: {e: 3} train loss: {batch_loss.item(): 10.8f}, DA: {train_acc * 100: 2.1f}%, mape: {train_mape: 2.1f}%")
         # validation
         if e % 3 == 0:
@@ -140,12 +140,12 @@ def train(
                 val_pred = model(X_val)
                 val_loss = loss_function(val_pred.view(-1, 1), y_val.view(-1, 1))
                 val_acc = directional_accuracy(
-                    y_val.detach().numpy(),
-                    val_pred.detach().numpy()
+                    y_val.cpu().detach().numpy(),
+                    val_pred.cpu().detach().numpy()
                 )
                 val_mape = mape(
-                    y_val.detach().numpy(),
-                    val_pred.detach().numpy()
+                    y_val.cpu().detach().numpy(),
+                    val_pred.cpu().detach().numpy()
                 )
             print(f"[Validation] epoch: {e: 3} val loss: {val_loss.item(): 10.8f}, DA: {val_acc * 100: 2.1f} %, mape: {val_mape: 2.1f}%")
     return model, (val_loss, val_acc, val_mape), (X_train, X_val, y_train, y_val)
@@ -205,7 +205,7 @@ def main(config: dict) -> str:
         train_size=0.7
     )
     model.reset_hidden(batch_size=X_test.shape[0])
-    pred_test = model(torch.Tensor(X_test.astype(np.float32)).cuda()).detach().numpy().squeeze()
+    pred_test = model(torch.Tensor(X_test.astype(np.float32)).cuda()).cpu().detach().numpy().squeeze()
     test_mse = mse(y_test, pred_test)
     test_acc = directional_accuracy(y_test, pred_test)
     test_mape = mape(y_test, pred_test)
