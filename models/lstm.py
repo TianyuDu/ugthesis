@@ -198,9 +198,9 @@ def main():
     model, _ = train(
         X_train, y_train,
         model_config=model_config,
-        epoch=100,
-        batch_size=512,
-        lr=0.0001,
+        epoch=300,
+        batch_size=1024,
+        lr=0.001,
         train_size=0.7
     )
 
