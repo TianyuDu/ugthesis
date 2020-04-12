@@ -68,9 +68,9 @@ class StackedLstm(nn.Module):
     def reset_hidden(self, batch_size) -> None:
         # both hidden h and cell c.
         self.hidden_cell = (
-            torch.randn(self.num_layers, batch_size, self.hidden_size),
-            torch.randn(self.num_layers, batch_size, self.hidden_size)
-        ).cuda()
+            torch.randn(self.num_layers, batch_size, self.hidden_size).cuda(),
+            torch.randn(self.num_layers, batch_size, self.hidden_size).cuda()
+        )
 
 
 def train(
