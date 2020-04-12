@@ -1,0 +1,4 @@
+sample_id	val_mse	val_acc	val_mape	test_mse	test_acc	test_mape	config
+1	6.427341461181641	0.49748690190632494	406.4101219177246	5.703670501708984	0.48128342245989303	375.99639892578125	{'nn.hidden_size': 128, 'nn.output_size': 1, 'nn.num_layer': 1, 'nn.drop_prob': 0.25, 'train.epoch': 100, 'train.batch_size': 128, 'train.lr': 0.30000000000000004}
+2	4.296658515930176	0.4971673399823255	155.65340518951416	4.171143054962158	0.45454545454545453	117.67767667770386	{'nn.hidden_size': 1024, 'nn.output_size': 1, 'nn.num_layer': 2, 'nn.drop_prob': 0.5, 'train.epoch': 70, 'train.batch_size': 512, 'train.lr': 0.0001}
+3	5.383937358856201	0.4981891490973362	274.53858852386475	4.440528392791748	0.47058823529411764	183.83811712265015	{'nn.hidden_size': 256, 'nn.output_size': 1, 'nn.num_layer': 2, 'nn.drop_prob': 0.5, 'train.epoch': 40, 'train.batch_size': 512, 'train.lr': 0.001}
