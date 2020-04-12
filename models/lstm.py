@@ -206,8 +206,14 @@ def main(config: dict) -> str:
     # TODO: test set preformance.
 
 
-def sample_config(config_scope):
-    raise NotImplementedError
+def sample_config(config_scope: dict) -> dict:
+    """
+    Randomly sample a configuration from the config_scope.
+    """
+    sampled = dict()
+    for k, v in config_scope.items():
+        sampled[k] = np.random.choice(v)
+    return sampled
 
 
 if __name__ == "__main__":
