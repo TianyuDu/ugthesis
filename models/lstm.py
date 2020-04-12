@@ -234,15 +234,16 @@ if __name__ == "__main__":
         "train.lr": [10**(-x) for x in range(1, 6)] + [3 * 10**(-x) for x in range(1, 6)],
     }
 
-    config_scope = {
-        "nn.hidden_size": [32, 64],
-        "nn.output_size": [1],
-        "nn.num_layer": [1],
-        "nn.drop_prob": [0.0, 0.25, 0.5],
-        "train.epoch": [5, 6, 7],
-        "train.batch_size": [32, 128, 512],
-        "train.lr": [10**(-x) for x in range(1, 6)] + [3 * 10**(-x) for x in range(1, 6)],
-    }
+    # A smaller configuration scope for debugging purpose
+    # config_scope = {
+    #     "nn.hidden_size": [32, 64],
+    #     "nn.output_size": [1],
+    #     "nn.num_layer": [1],
+    #     "nn.drop_prob": [0.0, 0.25, 0.5],
+    #     "train.epoch": [5, 6, 7],
+    #     "train.batch_size": [32, 128, 512],
+    #     "train.lr": [10**(-x) for x in range(1, 6)] + [3 * 10**(-x) for x in range(1, 6)],
+    # }
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--N", type=int, default=10)
