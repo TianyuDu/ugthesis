@@ -225,11 +225,11 @@ def sample_config(config_scope: dict) -> dict:
 
 if __name__ == "__main__":
     config_scope = {
-        "nn.hidden_size": [32, 64, 128, 256, 512, 1024, 2048],
+        "nn.hidden_size": [32, 64, 128, 256, 512, 1024],
         "nn.output_size": [1],
         "nn.num_layer": [1, 2, 3],
         "nn.drop_prob": [0.0, 0.25, 0.5],
-        "train.epoch": [20, 50, 100, 200, 300, 500],
+        "train.epoch": [20, 50, 100, 200, 300],
         "train.batch_size": [32, 128, 512],
         "train.lr": [10**(-x) for x in range(1, 6)] + [3 * 10**(-x) for x in range(1, 6)],
     }
