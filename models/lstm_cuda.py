@@ -70,7 +70,7 @@ class StackedLstm(nn.Module):
         self.hidden_cell = (
             torch.randn(self.num_layers, batch_size, self.hidden_size),
             torch.randn(self.num_layers, batch_size, self.hidden_size)
-        )
+        ).cuda()
 
 
 def train(
