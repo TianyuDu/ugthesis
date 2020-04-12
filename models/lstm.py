@@ -209,7 +209,8 @@ def main(config: dict) -> str:
     test_acc = directional_accuracy(y_test, pred_test)
     test_mape = mape(y_test, pred_test)
 
-    # val_loss, val_acc, val_mape = 
+    report = f"{val_mse}\t{val_acc}\t{val_mape}\t{test_mse}\t{test_acc}\t{test_mape}"
+    return report
 
 
 def sample_config(config_scope: dict) -> dict:
@@ -232,19 +233,32 @@ if __name__ == "__main__":
         "train.batch_size": [32, 128, 512],
         "train.lr": [10**(-x) for x in range(1, 6)] + [3 * 10**(-x) for x in range(1, 6)],
     }
+
+    config_scope = {
+        "nn.hidden_size": [32, 64],
+        "nn.output_size": [1],
+        "nn.num_layer": [1],
+        "nn.drop_prob": [0.0, 0.25, 0.5],
+        "train.epoch": [5, 6, 7],
+        "train.batch_size": [32, 128, 512],
+        "train.lr": [10**(-x) for x in range(1, 6)] + [3 * 10**(-x) for x in range(1, 6)],
+    }
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--N", type=int, default=10)
-    parser.add_argument("--log_dir", type=str, default="./lstm_result.csv")
+    parser.add_argument("--log_dir", type=str, default="./lstm_result.txt")
     args = parser.parse_args()
 
     start_time = datetime.now()
     with open(args.log_dir, "w") as f:
-        f.write("sample_id\t\tconfig\n")
+        f.write("sample_id\tval_mse\tval_acc\tval_mape\ttest_mse\ttest_acc\ttest_mape\tconfig\n")
         for i in range(args.N):
             config = sample_config(config_scope)
-            print(f"====Current Round Config: {i + 1} out of {args.N + 1}====")
+            print("=======================================================")
+            print(f"======     Current Round Config: {i + 1} out of {args.N}     ======")
+            print("=======================================================")
             print(config)
             repr_str = main(config)
-            repr_str_extended = f"{i}\t" + repr_str + "\t" + str(config) + "\n"
+            repr_str_extended = f"{i + 1}\t" + repr_str + "\t" + str(config) + "\n"
             f.write(repr_str_extended)
     print(f"Training {args.N} random profiles, time taken{datetime.now() - start_time}")
