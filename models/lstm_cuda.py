@@ -195,7 +195,7 @@ def main(config: dict) -> str:
         output_size=int(config["nn.output_size"]),
         num_layers=int(config["nn.num_layer"]),
         lstm_drop_prob=float(config["nn.lstm_drop_prob"]),
-        fc_dropout=float(config["nn.fc_dropout"]),
+        fc_dropout=float(config["nn.fc_drop_prob"]),
     )
 
     model, (val_mse, val_acc, val_mape), _ = train(
