@@ -164,7 +164,7 @@ def predict(
     # TODO: Stopped here
 
 
-def main():
+def main(config: dict) -> str:
     src = "../data/ready_to_use/xrt/"
     X_train, X_test, y_train, y_test = rnn_feed(
         src=src,
@@ -189,10 +189,10 @@ def main():
 
     model_config = dict(
         input_size=X_train.shape[-1],
-        hidden_size=32,
+        hidden_size=config["nn.hidden_size"],
         output_size=1,
-        num_layers=2,
-        drop_prob=0.5
+        num_layers=config["nn.num_layer"],
+        drop_prob=config["nn.drop_prob"]
     )
 
     model, _ = train(
@@ -203,7 +203,26 @@ def main():
         lr=0.0001,
         train_size=0.7
     )
+    # TODO: test set preformance.
+
+
+def sample_config(config_scope):
+    raise NotImplementedError
 
 
 if __name__ == "__main__":
-    main()
+    config_scope = {
+        "nn.hidden_size": 32,
+        "nn.output_size": 1,
+    }
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--N", type=int, default=10)
+    parser.add_argument("--log_dir", type=str, default="./lstm_result.csv")
+    args = parser.parse_args()
+
+    start_time = datetime.now()
+    for _ in range(args.N):
+        config = sample_config(config_scope)
+        repr_str = main(config)
+    print(f"Training {args.N} random profiles, time taken{datetime.now() - start_time}")
+
