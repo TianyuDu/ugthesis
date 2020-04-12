@@ -104,7 +104,8 @@ def train(
     print(f"y_val @ {y_val.shape}")
 
     # Construct model.
-    model = StackedLstm(**model_config).cuda()
+    model = StackedLstm(**model_config)
+    model = model.cuda()
     loss_function = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     print(model)
@@ -224,6 +225,7 @@ def sample_config(config_scope: dict) -> dict:
 
 
 if __name__ == "__main__":
+    print(torch.cuda.get_device_name(0))
     config_scope = {
         "nn.hidden_size": [32, 64, 128, 256, 512, 1024],
         "nn.output_size": [1],
