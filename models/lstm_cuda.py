@@ -30,7 +30,8 @@ class StackedLstm(nn.Module):
         hidden_size: int,
         output_size: int,
         num_layers: int,
-        drop_prob: float = 0.5
+        lstm_drop_prob: float = 0.5,
+        fc_drop_prob: float = 0.5
     ) -> None:
         super(StackedLstm, self).__init__()
         self.input_size = input_size
@@ -42,11 +43,11 @@ class StackedLstm(nn.Module):
             input_size=self.input_size,
             hidden_size=self.hidden_size,
             num_layers=self.num_layers,
-            dropout=drop_prob,
+            dropout=lstm_drop_prob,
             batch_first=True  # Only affect input tensor and output tensor
         )
 
-        self.dropout = nn.Dropout(drop_prob)
+        self.dropout = nn.Dropout(fc_drop_prob)
 
         self.fc = nn.Linear(self.hidden_size, self.output_size)
 
@@ -60,8 +61,7 @@ class StackedLstm(nn.Module):
             self.hidden_cell
         )
         # lstm output of shape (batch, seq_len, num_directions * hidden_size)
-        # out = self.dropout(lstm_outg)
-        out = lstm_out
+        out = self.dropout(lstm_out)
         pred = self.fc(out)
         # pred of shape (batch, seq_len, output_size)
         return pred[:, -1, :]
@@ -194,7 +194,8 @@ def main(config: dict) -> str:
         hidden_size=int(config["nn.hidden_size"]),
         output_size=int(config["nn.output_size"]),
         num_layers=int(config["nn.num_layer"]),
-        drop_prob=float(config["nn.drop_prob"])
+        lstm_drop_prob=float(config["nn.lstm_drop_prob"]),
+        fc_dropout=float(config["nn.fc_dropout"]),
     )
 
     model, (val_mse, val_acc, val_mape), _ = train(
@@ -231,7 +232,8 @@ if __name__ == "__main__":
         "nn.hidden_size": [32, 64, 128, 256, 512, 1024],
         "nn.output_size": [1],
         "nn.num_layer": [1, 2, 3],
-        "nn.drop_prob": [0.0, 0.25, 0.5],
+        "nn.lstm_drop_prob": [0.0, 0.25, 0.5],
+        "nn.fc_drop_prob": [0.0, 0.25, 0.5],
         "train.epoch": [20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 300],
         "train.batch_size": [32, 128, 512],
         "train.lr": [10**(-x) for x in range(1, 6)] + [3 * 10**(-x) for x in range(1, 6)],
