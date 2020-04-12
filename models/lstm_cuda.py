@@ -60,7 +60,7 @@ class StackedLstm(nn.Module):
             self.hidden_cell
         )
         # lstm output of shape (batch, seq_len, num_directions * hidden_size)
-        # out = self.dropout(lstm_out)
+        # out = self.dropout(lstm_outg)
         out = lstm_out
         pred = self.fc(out)
         # pred of shape (batch, seq_len, output_size)
