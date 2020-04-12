@@ -82,7 +82,7 @@ def train(
     lr: float = 0.001,
     train_size: float = 0.8,
     shuffle: bool = True,
-) -> (nn.Module, Tuple[np.ndarray]):
+) -> (nn.Module, Tuple[float], Tuple[np.ndarray]):
     """
     Training the LSTM model.
     """
@@ -114,7 +114,7 @@ def train(
     )
     print(f"Number of mini-batches: {len(batch_index_lst)} with batch size {batch_size}")
 
-    for e in range(epoch):
+    for e in range(1, epoch + 1):
         for (low, high) in batch_index_lst:
             seq = X_train[low: high, :, :]
             lab = y_train[low: high]
@@ -147,7 +147,7 @@ def train(
                     val_pred.detach().numpy()
                 )
             print(f"[Validation] epoch: {e: 3} val loss: {val_loss.item(): 10.8f}, DA: {val_acc * 100: 2.1f} %, mape: {val_mape: 2.1f}%")
-    return model, (X_train, X_val, y_train, y_val)
+    return model, (val_loss, val_acc, val_mape), (X_train, X_val, y_train, y_val)
 
 
 def predict(
@@ -189,21 +189,27 @@ def main(config: dict) -> str:
 
     model_config = dict(
         input_size=X_train.shape[-1],
-        hidden_size=config["nn.hidden_size"],
-        output_size=config["nn.output_size"],
-        num_layers=config["nn.num_layer"],
-        drop_prob=config["nn.drop_prob"]
+        hidden_size=int(config["nn.hidden_size"]),
+        output_size=int(config["nn.output_size"]),
+        num_layers=int(config["nn.num_layer"]),
+        drop_prob=float(config["nn.drop_prob"])
     )
 
-    model, _ = train(
+    model, (val_mse, val_acc, val_mape), _ = train(
         X_train, y_train,
         model_config=model_config,
-        epoch=config["train.epoch"],
-        batch_size=config["train.batch_size"],
-        lr=config["train.lr"],
+        epoch=int(config["train.epoch"]),
+        batch_size=int(config["train.batch_size"]),
+        lr=float(config["train.lr"]),
         train_size=0.7
     )
-    # TODO: test set preformance.
+    model.reset_hidden(batch_size=X_test.shape[0])
+    pred_test = model(torch.Tensor(X_test.astype(np.float32))).detach().numpy().squeeze()
+    test_mse = mse(y_test, pred_test)
+    test_acc = directional_accuracy(y_test, pred_test)
+    test_mape = mape(y_test, pred_test)
+
+    # val_loss, val_acc, val_mape = 
 
 
 def sample_config(config_scope: dict) -> dict:
@@ -218,11 +224,11 @@ def sample_config(config_scope: dict) -> dict:
 
 if __name__ == "__main__":
     config_scope = {
-        "nn.hidden_size": [32, 64, 128, 256, 512],
+        "nn.hidden_size": [32, 64, 128, 256, 512, 1024, 2048],
         "nn.output_size": [1],
-        "nn.num_layer": [1, 2],
+        "nn.num_layer": [1, 2, 3],
         "nn.drop_prob": [0.0, 0.25, 0.5],
-        "train.epoch": [20, 50, 100, 200, 300],
+        "train.epoch": [20, 50, 100, 200, 300, 500],
         "train.batch_size": [32, 128, 512],
         "train.lr": [10**(-x) for x in range(1, 6)] + [3 * 10**(-x) for x in range(1, 6)],
     }
@@ -232,10 +238,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     start_time = datetime.now()
-    with open(parser.log_dir, "w") as f:
-        f.write("sample\t\tconfig\n")
-        for _ in range(args.N):
+    with open(args.log_dir, "w") as f:
+        f.write("sample_id\t\tconfig\n")
+        for i in range(args.N):
             config = sample_config(config_scope)
-            repr_str = main(config) + "\t" + str(config) + "\n"
-            f.write(repr_str)
+            print(f"====Current Round Config: {i + 1} out of {args.N + 1}====")
+            print(config)
+            repr_str = main(config)
+            repr_str_extended = f"{i}\t" + repr_str + "\t" + str(config) + "\n"
+            f.write(repr_str_extended)
     print(f"Training {args.N} random profiles, time taken{datetime.now() - start_time}")
