@@ -42,7 +42,7 @@ class StackedLstm(nn.Module):
             input_size=self.input_size,
             hidden_size=self.hidden_size,
             num_layers=self.num_layers,
-            # dropout=drop_prob,
+            dropout=drop_prob,
             batch_first=True  # Only affect input tensor and output tensor
         )
 
@@ -60,7 +60,8 @@ class StackedLstm(nn.Module):
             self.hidden_cell
         )
         # lstm output of shape (batch, seq_len, num_directions * hidden_size)
-        out = self.dropout(lstm_out)
+        # out = self.dropout(lstm_out)
+        out = lstm_out
         pred = self.fc(out)
         # pred of shape (batch, seq_len, output_size)
         return pred[:, -1, :]
