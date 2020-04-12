@@ -229,7 +229,7 @@ if __name__ == "__main__":
     config_scope = {
         "nn.hidden_size": [32, 64, 128, 256, 512, 1024],
         "nn.output_size": [1],
-        "nn.num_layer": [1, 2],
+        "nn.num_layer": [1, 2, 3],
         "nn.drop_prob": [0.0, 0.25, 0.5],
         "train.epoch": [20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 300],
         "train.batch_size": [32, 128, 512],
