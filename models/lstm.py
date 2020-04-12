@@ -190,7 +190,7 @@ def main(config: dict) -> str:
     model_config = dict(
         input_size=X_train.shape[-1],
         hidden_size=config["nn.hidden_size"],
-        output_size=1,
+        output_size=config["nn.output_size"],
         num_layers=config["nn.num_layer"],
         drop_prob=config["nn.drop_prob"]
     )
@@ -198,9 +198,9 @@ def main(config: dict) -> str:
     model, _ = train(
         X_train, y_train,
         model_config=model_config,
-        epoch=300,
-        batch_size=1024,
-        lr=0.001,
+        epoch=config["train.epoch"],
+        batch_size=config["train.batch_size"],
+        lr=config["train.lr"],
         train_size=0.7
     )
     # TODO: test set preformance.
@@ -218,8 +218,13 @@ def sample_config(config_scope: dict) -> dict:
 
 if __name__ == "__main__":
     config_scope = {
-        "nn.hidden_size": 32,
-        "nn.output_size": 1,
+        "nn.hidden_size": [32, 64, 128, 256, 512],
+        "nn.output_size": [1],
+        "nn.num_layer": [1, 2],
+        "nn.drop_prob": [0.0, 0.25, 0.5],
+        "train.epoch": [20, 50, 100, 200, 300],
+        "train.batch_size": [32, 128, 512],
+        "train.lr": [10**(-x) for x in range(1, 6)] + [3 * 10**(-x) for x in range(1, 6)],
     }
     parser = argparse.ArgumentParser()
     parser.add_argument("--N", type=int, default=10)
@@ -227,8 +232,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     start_time = datetime.now()
-    for _ in range(args.N):
-        config = sample_config(config_scope)
-        repr_str = main(config)
+    with open(parser.log_dir, "w") as f:
+        f.write("sample\t\tconfig\n")
+        for _ in range(args.N):
+            config = sample_config(config_scope)
+            repr_str = main(config) + "\t" + str(config) + "\n"
+            f.write(repr_str)
     print(f"Training {args.N} random profiles, time taken{datetime.now() - start_time}")
-
