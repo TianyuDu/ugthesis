@@ -1,2 +1,0 @@
-sample_id	val_mse	val_acc	val_mape	test_mse	test_acc	test_mape	config
-1	5.13185977935791	0.5112083385936119	178.41594219207764	4.213462829589844	0.4919786096256685	143.30806732177734	{'nn.hidden_size': 256, 'nn.output_size': 1, 'nn.num_layer': 1, 'nn.drop_prob': 0.25, 'train.epoch': 50, 'train.batch_size': 512, 'train.lr': 0.03}
