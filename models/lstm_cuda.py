@@ -170,7 +170,8 @@ def main(config: dict) -> str:
     src = "../data/ready_to_use/xrt/"
     X_train, X_test, y_train, y_test = rnn_feed(
         src=src,
-        test_start=pd.to_datetime("2019-01-01")
+        test_start=pd.to_datetime("2019-01-01"),
+        day=["Monday"]
     )
 
     print(f"X_train @ {X_train.shape}")
