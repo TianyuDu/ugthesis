@@ -172,7 +172,7 @@ def main(config: dict) -> str:
     X_train, X_test, y_train, y_test = rnn_feed(
         src=src,
         test_start=pd.to_datetime("2019-01-01"),
-        day=["Monday"]
+        day=["Tuesday", "Wednesday", "Thursday", "Friday"]
     )
 
     print(f"X_train @ {X_train.shape}")

@@ -32,9 +32,14 @@ def main():
         print(f"y_train @ {y_train.shape}")
         print(f"X_test @ {X_test.shape}")
         print(f"y_test @ {y_test.shape}")
-        
-        test_rf(X_test, y_test, config)
-        test_svr(X_test, y_test, config)
+
+        print("==== Random Forest ====")
+        pprint(rf_config)
+        test_rf(X_test, y_test, rf_config)
+
+        print("==== Support Vector Regressions ====")
+        pprint(svr_config)
+        test_svr(X_test, y_test, svr_config)
 
 
 if __name__ == "__main__":
