@@ -32,10 +32,10 @@ def main():
     svr_alldays_mse = {"tol": 1, "kernel": "rbf", "gamma": 1e-06, "epsilon": 0.001, "C": 1e-09}
     svr_alldays_da = {"tol": 1e-05, "kernel": "rbf", "gamma": 1e-07, "epsilon": 1e-07, "C": 10}
 
-    rf_allday_mse = {"n_estimators": 96, "min_samples_split": 10,
+    rf_alldays_mse = {"n_estimators": 96, "min_samples_split": 10,
                      "min_samples_leaf": 2, "max_features": "log2", "max_depth": 10, "bootstrap": True}
 
-    rf_allday_da = {"n_estimators": 41, "min_samples_split": 5, "min_samples_leaf": 4,
+    rf_alldays_da = {"n_estimators": 41, "min_samples_split": 5, "min_samples_leaf": 4,
                     "max_features": None, "max_depth": 14, "bootstrap": False}
 
     svr_monday_mse = {"tol": 0.001, "kernel": "rbf", "gamma": 1e-10, "epsilon": 0.0001, "C": 10}
@@ -57,12 +57,13 @@ def main():
                        "min_samples_leaf": 1, "max_features": None, "max_depth": 10, "bootstrap": False}
 
     day_lst = [["Monday"], ["Tuesday", "Wednesday", "Thursday", "Friday"], None]
+
     config_lst = [
-        (rf_monday, svr_monday),
-        (rf_otherdays, svr_otherdays),
-        (rf_alldays, svr_alldays),
+        ([rf_monday_mse, rf_monday_da], [svr_monday_mse, svr_monday_da]),
+        ([rf_otherdays_mse, rf_otherdays_da], [svr_otherdays_mse, svr_otherdays_da]),
+        ([rf_alldays_mse, rf_alldays_da], [svr_alldays_mse, svr_alldays_da]),
     ]
-    for day, (rf_config, svr_config) in zip(day_lst, config_lst):
+    for day, (rf_configs, svr_configs) in zip(day_lst, config_lst):
         print(f"================= {day} =================")
         X_train, X_test, y_train, y_test = direct_feed(
             src="../data/ready_to_use/feature_target_2020-04-05-14:13:42.csv",
@@ -75,13 +76,24 @@ def main():
         print(f"X_test @ {X_test.shape}")
         print(f"y_test @ {y_test.shape}")
 
-        print("==== Random Forest ====")
-        pprint(rf_config)
-        test_rf(X_train, X_test, y_train, y_test, rf_config)
+        print("======== Random Forest ========")
+        print("RF MSE")
+        pprint(rf_configs[0])
+        test_rf(X_train, X_test, y_train, y_test, rf_configs[0])
 
-        print("==== Support Vector Regressions ====")
-        pprint(svr_config)
-        test_svr(X_train, X_test, y_train, y_test, svr_config)
+        print("RF DA")
+        pprint(rf_configs[1])
+        test_rf(X_train, X_test, y_train, y_test, rf_configs[1])
+
+        print("======== Support Vector Regressions ========")
+        print("SVR MSE")
+        pprint(svr_configs[0])
+        test_svr(X_train, X_test, y_train, y_test, svr_configs[0])
+
+        print("SVR DA")
+        pprint(rf_configs[1])
+        pprint(svr_configs)
+        test_svr(X_train, X_test, y_train, y_test, svr_configs[1])
 
 
 if __name__ == "__main__":
