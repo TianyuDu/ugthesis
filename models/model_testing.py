@@ -4,6 +4,8 @@ Evaluate model performance on the test set.
 import numpy as np
 import pandas as pd
 
+from pprint import pprint
+
 from data_feed import direct_feed
 
 
@@ -16,7 +18,9 @@ def test_svr(X_test: np.ndarray, y_test: np.ndarray, config: dict):
 
 
 def main():
-    for day in [["Monday"], ["Tuesday", "Wednesday", "Thursday", "Friday"], None]:
+    day_lst = [["Monday"], ["Tuesday", "Wednesday", "Thursday", "Friday"], None]
+    config_lst = [(), (), ()]
+    for day, (rf_config, svr_config) in zip(day_lst, config_lst):
         print(f"================= {day} =================")
         X_train, X_test, y_train, y_test = direct_feed(
             src="../data/ready_to_use/feature_target_2020-04-05-14:13:42.csv",
@@ -28,8 +32,9 @@ def main():
         print(f"y_train @ {y_train.shape}")
         print(f"X_test @ {X_test.shape}")
         print(f"y_test @ {y_test.shape}")
-        test_rf(X_test, y_test)
-        test_svr(X_test, y_test)
+        
+        test_rf(X_test, y_test, config)
+        test_svr(X_test, y_test, config)
 
 
 if __name__ == "__main__":
