@@ -168,6 +168,7 @@ def predict(
 
 def main(config: dict) -> str:
     src = "../data/ready_to_use/xrt/"
+    # ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
     X_train, X_test, y_train, y_test = rnn_feed(
         src=src,
         test_start=pd.to_datetime("2019-01-01"),
