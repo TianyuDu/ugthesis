@@ -336,7 +336,13 @@ def rnn_feed(
     y = np.load(f"{src}/r.npy")
     t = np.load(f"{src}/t.npy")
 
-    # TODO: add day of the week effect filter.
+    if day is not None:
+        if isinstance(day, str):
+            day = [day]
+        day_mask = pd.to_datetime(t).day_name().isin(day)
+        X = X[day_mask, :, :]
+        y = y[day_mask]
+        t = t[day_mask]
 
     train_mask = t < test_start
     X_train = X[train_mask, :, :]
