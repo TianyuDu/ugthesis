@@ -11,6 +11,8 @@ from sklearn.svm import SVR
 
 from data_feed import direct_feed
 
+from training_utils import mse, directional_accuracy
+
 
 def test_rf(
     X_train: np.ndarray,
@@ -20,23 +22,37 @@ def test_rf(
     config: dict
 ) -> None:
     model = RandomForestRegressor(**config)
-    model.fit(X_train)
-    model.predict(X_test)
+    model.fit(X_train, y_train)
+    y_test_pred = model.predict(X_test)
+    test_mse = mse(y_test, y_test_pred)
+    test_da = directional_accuracy(y_test, y_test_pred)
+    print(f"Test MSE & Test DA: {test_mse:0.3f} & {test_da * 100:0.3f}%")
 
 
-def test_svr(X_test: np.ndarray, y_test: np.ndarray, config: dict):
-    pass
+def test_svr(
+    X_train: np.ndarray,
+    X_test: np.ndarray,
+    y_train: np.ndarray,
+    y_test: np.ndarray,
+    config: dict
+) -> None:
+    model = SVR(**config)
+    model.fit(X_train, y_train)
+    y_test_pred = model.predict(X_test)
+    test_mse = mse(y_test, y_test_pred)
+    test_da = directional_accuracy(y_test, y_test_pred)
+    print(f"Test MSE & Test DA: {test_mse:0.3f} & {test_da * 100:0.3f}%")
 
 
 def main():
     svr_alldays_mse = {"tol": 1, "kernel": "rbf", "gamma": 1e-06, "epsilon": 0.001, "C": 1e-09}
     svr_alldays_da = {"tol": 1e-05, "kernel": "rbf", "gamma": 1e-07, "epsilon": 1e-07, "C": 10}
 
-    rf_alldays_mse = {"n_estimators": 96, "min_samples_split": 10,
-                     "min_samples_leaf": 2, "max_features": "log2", "max_depth": 10, "bootstrap": True}
+    rf_alldays_mse = {"n_estimators": 96, "min_samples_split": 10, 
+                      "min_samples_leaf": 2, "max_features": "log2", "max_depth": 10, "bootstrap": True}
 
     rf_alldays_da = {"n_estimators": 41, "min_samples_split": 5, "min_samples_leaf": 4,
-                    "max_features": None, "max_depth": 14, "bootstrap": False}
+                     "max_features": None, "max_depth": 14, "bootstrap": False}
 
     svr_monday_mse = {"tol": 0.001, "kernel": "rbf", "gamma": 1e-10, "epsilon": 0.0001, "C": 10}
     svr_monday_da = {"tol": 0.1, "kernel": "rbf", "gamma": 1e-06, "epsilon": 1e-06, "C": 1}
@@ -63,8 +79,9 @@ def main():
         ([rf_otherdays_mse, rf_otherdays_da], [svr_otherdays_mse, svr_otherdays_da]),
         ([rf_alldays_mse, rf_alldays_da], [svr_alldays_mse, svr_alldays_da]),
     ]
+
     for day, (rf_configs, svr_configs) in zip(day_lst, config_lst):
-        print(f"================= {day} =================")
+        print(f"\n================= {day} =================")
         X_train, X_test, y_train, y_test = direct_feed(
             src="../data/ready_to_use/feature_target_2020-04-05-14:13:42.csv",
             test_start=pd.to_datetime("2019-01-01"),
