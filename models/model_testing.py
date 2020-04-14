@@ -4,8 +4,6 @@ Evaluate model performance on the test set.
 import numpy as np
 import pandas as pd
 
-from pprint import pprint
-
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
 
@@ -20,13 +18,14 @@ def test_rf(
     y_train: np.ndarray,
     y_test: np.ndarray,
     config: dict
-) -> None:
+) -> str:
     model = RandomForestRegressor(**config)
     model.fit(X_train, y_train)
     y_test_pred = model.predict(X_test)
     test_mse = mse(y_test, y_test_pred)
     test_da = directional_accuracy(y_test, y_test_pred)
-    print(f"Test MSE & Test DA: {test_mse:0.3f} & {test_da * 100:0.3f}%")
+    report_str = f"Test MSE & Test DA: {test_mse:0.3f} & {test_da * 100:0.3f}%\n"
+    return report_str
 
 
 def test_svr(
@@ -35,13 +34,14 @@ def test_svr(
     y_train: np.ndarray,
     y_test: np.ndarray,
     config: dict
-) -> None:
+) -> str:
     model = SVR(**config)
     model.fit(X_train, y_train)
     y_test_pred = model.predict(X_test)
     test_mse = mse(y_test, y_test_pred)
     test_da = directional_accuracy(y_test, y_test_pred)
-    print(f"Test MSE & Test DA: {test_mse:0.3f} & {test_da * 100:0.3f}%")
+    report_str = f"Test MSE & Test DA: {test_mse:0.3f} & {test_da * 100:0.3f}%\n"
+    return report_str
 
 
 def main():
@@ -79,38 +79,41 @@ def main():
         ([rf_otherdays_mse, rf_otherdays_da], [svr_otherdays_mse, svr_otherdays_da]),
         ([rf_alldays_mse, rf_alldays_da], [svr_alldays_mse, svr_alldays_da]),
     ]
+    with open("./model_testing_log.txt", "w") as f:
+        for day, (rf_configs, svr_configs) in zip(day_lst, config_lst):
+            f.write(f"================= {day} =================\n\n")
+            X_train, X_test, y_train, y_test = direct_feed(
+                src="../data/ready_to_use/feature_target_2020-04-05-14:13:42.csv",
+                test_start=pd.to_datetime("2019-01-01\n"),
+                day=day,
+                return_array=True
+            )
+            f.write(f"X_train @ {X_train.shape}\n\n")
+            (f"y_train @ {y_train.shape}\n\n")
+            f.write(f"X_test @ {X_test.shape}\n\n")
+            f.write(f"y_test @ {y_test.shape}\n\n")
 
-    for day, (rf_configs, svr_configs) in zip(day_lst, config_lst):
-        print(f"\n================= {day} =================")
-        X_train, X_test, y_train, y_test = direct_feed(
-            src="../data/ready_to_use/feature_target_2020-04-05-14:13:42.csv",
-            test_start=pd.to_datetime("2019-01-01"),
-            day=day,
-            return_array=True
-        )
-        print(f"X_train @ {X_train.shape}")
-        print(f"y_train @ {y_train.shape}")
-        print(f"X_test @ {X_test.shape}")
-        print(f"y_test @ {y_test.shape}")
+            f.write("======== Random Forest ========\n")
+            f.write("RF MSE\n")
+            f.write(str(rf_configs[0]) + "\n")
+            s = test_rf(X_train, X_test, y_train, y_test, rf_configs[0])
+            f.write(s)
 
-        print("======== Random Forest ========")
-        print("RF MSE")
-        pprint(rf_configs[0])
-        test_rf(X_train, X_test, y_train, y_test, rf_configs[0])
+            f.write("RF DA\n")
+            f.write(str(rf_configs[1]) + "\n")
+            s = test_rf(X_train, X_test, y_train, y_test, rf_configs[1])
+            f.write(s)
 
-        print("RF DA")
-        pprint(rf_configs[1])
-        test_rf(X_train, X_test, y_train, y_test, rf_configs[1])
+            f.write("======== Support Vector Regressions ========\n")
+            f.write("SVR MSE\n")
+            f.write(str(svr_configs[0]) + "\n")
+            s = test_svr(X_train, X_test, y_train, y_test, svr_configs[0])
+            f.write(s)
 
-        print("======== Support Vector Regressions ========")
-        print("SVR MSE")
-        pprint(svr_configs[0])
-        test_svr(X_train, X_test, y_train, y_test, svr_configs[0])
-
-        print("SVR DA")
-        pprint(rf_configs[1])
-        pprint(svr_configs)
-        test_svr(X_train, X_test, y_train, y_test, svr_configs[1])
+            f.write("SVR DA\n")
+            f.write(str(svr_configs[1]) + "\n")
+            s = test_svr(X_train, X_test, y_train, y_test, svr_configs[1])
+            f.write(s)
 
 
 if __name__ == "__main__":
