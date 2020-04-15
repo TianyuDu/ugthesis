@@ -132,6 +132,7 @@ def _add_target(
 
 def generate_pairs(
     config: dict,
+    partial_info: bool = False,
     save_to: Optional[str] = None
 ) -> pd.DataFrame:
     """
@@ -210,7 +211,10 @@ def generate_pairs(
         # Features from crude oil dataset.
         df_fea_wti = pd.DataFrame(data=fea_wti.reshape(1, -1), index=[t], columns=lagged_names)
 
-        df_fea_all = pd.concat([df_fea_rpna, df_fea_wti], axis=1)
+        if partial_info:
+            df_fea_all = pd.concat([df_fea_wti], axis=1)
+        else:
+            df_fea_all = pd.concat([df_fea_rpna, df_fea_wti], axis=1)
 
         df_fea_all["TARGET"] = r
         df_lst.append(df_fea_all)
