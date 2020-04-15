@@ -470,7 +470,7 @@ if __name__ == "__main__":
     # df.to_csv(args.save_to)
 
     # Option 2.
-    # generate_pairs(config, save_to=args.save_to)
+    generate_pairs(config, partial_info=True, save_to=args.save_to)
 
     # Option 3.
-    generate_rnn_pairs(config, save_to=args.save_to)
+    # generate_rnn_pairs(config, save_to=args.save_to)

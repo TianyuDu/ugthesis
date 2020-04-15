@@ -81,7 +81,10 @@ def main(
         refit=False
     )
 
-    data_src = "../data/ready_to_use/feature_target_2020-04-05-14:13:42.csv"
+    # Complete Information.
+    # data_src = "../data/ready_to_use/complete_feature_target.csv"
+    # Partial Information.
+    data_src = "../data/ready_to_use/partial_feature_target.csv"
 
     # Datafeed: avaiable options:
     # ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
