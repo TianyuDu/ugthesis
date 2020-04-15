@@ -230,6 +230,7 @@ def generate_pairs(
 
 def generate_rnn_pairs(
     config: dict,
+    partial_info: bool = False,
     save_to: Optional[str] = None
 ) -> Tuple[np.ndarray]:
     """
@@ -270,26 +271,43 @@ def generate_rnn_pairs(
             # For nan returns, skip this.
             print(f"Date {t}: Nan value of return found.")
             continue
+        if partial_info:
+            # use lagged values of returns only.
+            lags = timedelta(days=num_lags)
+            rg_wti = pd.date_range(
+                t - lags, t - one_day).intersection(DF_RETURNS_FILLED.index)
 
-        lags = timedelta(days=num_lags)
-        rg_rpna = pd.date_range(t - lags, t - one_day).intersection(DF_NEWS.index)
-        rg_wti = pd.date_range(t - lags, t - one_day).intersection(DF_RETURNS_FILLED.index)
+            if len(rg_wti) < num_lags:
+                print(
+                    f"Date {t}: Insufficient lags. Expected={num_lags}, len(rg_wti)={len(rg_wti)}")
+                continue
 
-        if len(rg_rpna) < num_lags or len(rg_wti) < num_lags:
-            print(f"Date {t}: Insufficient lags. Expected={num_lags}, len(rg_rpna)={len(rg_rpna)}, len(rg_wti)={len(rg_wti)}")
-            continue
+            fea_wti = DF_RETURNS_FILLED.loc[rg_wti]["RETURN"]
 
-        # Aggregate features
-        fea_rpna = DF_NEWS.loc[rg_rpna]
-        fea_rpna.fillna(value=0.0, inplace=True)
+            if not np.all(~ np.isnan(fea_wti)):  # Assert all are non-zero.
+                continue
 
-        fea_wti = DF_RETURNS_FILLED.loc[rg_wti]["RETURN"]
+            fea_combined = pd.concat([fea_wti], axis=1)        
+        else:
+            lags = timedelta(days=num_lags)
+            rg_rpna = pd.date_range(t - lags, t - one_day).intersection(DF_NEWS.index)
+            rg_wti = pd.date_range(t - lags, t - one_day).intersection(DF_RETURNS_FILLED.index)
 
-        assert np.all(fea_wti.index == fea_rpna.index)
-        if not np.all(~ np.isnan(fea_wti)):  # Assert all are non-zero.
-            continue
+            if len(rg_rpna) < num_lags or len(rg_wti) < num_lags:
+                print(f"Date {t}: Insufficient lags. Expected={num_lags}, len(rg_rpna)={len(rg_rpna)}, len(rg_wti)={len(rg_wti)}")
+                continue
 
-        fea_combined = pd.concat([fea_wti, fea_rpna], axis=1)
+            # Aggregate features
+            fea_rpna = DF_NEWS.loc[rg_rpna]
+            fea_rpna.fillna(value=0.0, inplace=True)
+
+            fea_wti = DF_RETURNS_FILLED.loc[rg_wti]["RETURN"]
+
+            assert np.all(fea_wti.index == fea_rpna.index)
+            if not np.all(~ np.isnan(fea_wti)):  # Assert all are non-zero.
+                continue
+
+            fea_combined = pd.concat([fea_wti, fea_rpna], axis=1)
 
         # Ignore information flow for now.
 
