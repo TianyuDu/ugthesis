@@ -45,6 +45,20 @@ def test_svr(
 
 
 def main():
+    # For partial and complete information set.
+    # Partial information set.
+    svr_alldays_mse = {'tol': 0.01, 'kernel': 'rbf',
+                       'gamma': 0.1, 'epsilon': 1, 'C': 1}
+    svr_alldays_da = {'tol': 1e-07, 'kernel': 'rbf',
+                      'gamma': 0.1, 'epsilon': 1e-06, 'C': 1}
+
+    rf_alldays_mse = {'n_estimators': 54, 'min_samples_split': 2,
+                      'min_samples_leaf': 1, 'max_features': 'log2', 'max_depth': 10, 'bootstrap': True}
+
+    rf_alldays_da = {'n_estimators': 130, 'min_samples_split': 10,
+                     'min_samples_leaf': 1, 'max_features': 'auto', 'max_depth': 10, 'bootstrap': False}
+
+    # Complete information set.
     svr_alldays_mse = {"tol": 1, "kernel": "rbf", "gamma": 1e-06, "epsilon": 0.001, "C": 1e-09}
     svr_alldays_da = {"tol": 1e-05, "kernel": "rbf", "gamma": 1e-07, "epsilon": 1e-07, "C": 10}
 
@@ -54,6 +68,7 @@ def main():
     rf_alldays_da = {"n_estimators": 41, "min_samples_split": 5, "min_samples_leaf": 4,
                      "max_features": None, "max_depth": 14, "bootstrap": False}
 
+    # Experiments on day-of-the-week effect.
     svr_monday_mse = {"tol": 0.001, "kernel": "rbf", "gamma": 1e-10, "epsilon": 0.0001, "C": 10}
     svr_monday_da = {"tol": 0.1, "kernel": "rbf", "gamma": 1e-06, "epsilon": 1e-06, "C": 1}
 
@@ -79,11 +94,17 @@ def main():
         ([rf_otherdays_mse, rf_otherdays_da], [svr_otherdays_mse, svr_otherdays_da]),
         ([rf_alldays_mse, rf_alldays_da], [svr_alldays_mse, svr_alldays_da]),
     ]
+
+    # Complete Information.
+    # data_src = "../data/ready_to_use/complete_feature_target.csv"
+    # Partial Information.
+    data_src = "../data/ready_to_use/partial_feature_target.csv"
+
     with open("./model_testing_log.txt", "w") as f:
         for day, (rf_configs, svr_configs) in zip(day_lst, config_lst):
             f.write(f"================= {day} =================\n\n")
             X_train, X_test, y_train, y_test = direct_feed(
-                src="../data/ready_to_use/feature_target_2020-04-05-14:13:42.csv",
+                src=data_src,
                 test_start=pd.to_datetime("2019-01-01\n"),
                 day=day,
                 return_array=True
