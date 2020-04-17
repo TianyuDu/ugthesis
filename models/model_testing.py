@@ -47,16 +47,16 @@ def test_svr(
 def main():
     # For partial and complete information set.
     # Partial information set.
-    svr_alldays_mse = {'tol': 0.01, 'kernel': 'rbf',
-                       'gamma': 0.1, 'epsilon': 1, 'C': 1}
-    svr_alldays_da = {'tol': 1e-07, 'kernel': 'rbf',
-                      'gamma': 0.1, 'epsilon': 1e-06, 'C': 1}
+    svr_alldays_mse = {"tol": 0.01, "kernel": "rbf",
+                       "gamma": 0.1, "epsilon": 1, "C": 1}
+    svr_alldays_da = {"tol": 1e-07, "kernel": "rbf",
+                      "gamma": 0.1, "epsilon": 1e-06, "C": 1}
 
-    rf_alldays_mse = {'n_estimators': 54, 'min_samples_split': 2,
-                      'min_samples_leaf': 1, 'max_features': 'log2', 'max_depth': 10, 'bootstrap': True}
+    rf_alldays_mse = {"n_estimators": 41, "min_samples_split": 5,
+                      "min_samples_leaf": 1, "max_features": "log2", "max_depth": 10, "bootstrap": True}
 
-    rf_alldays_da = {'n_estimators': 130, 'min_samples_split': 10,
-                     'min_samples_leaf': 1, 'max_features': 'auto', 'max_depth': 10, 'bootstrap': False}
+    rf_alldays_da = {"n_estimators": 130, "min_samples_split": 10,
+                     "min_samples_leaf": 1, "max_features": "auto", "max_depth": 10, "bootstrap": False}
 
     # Complete information set.
     # svr_alldays_mse = {"tol": 1, "kernel": "rbf", "gamma": 1e-06, "epsilon": 0.001, "C": 1e-09}
