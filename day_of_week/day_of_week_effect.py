@@ -153,12 +153,13 @@ def summary_stats(
     for d in days:
         values = collection[d].dropna().values
         print(
-            "{} & {} & {:0.3f} & {:0.3f} & {:0.3f} \\\\".format(
+            "{} & {} & {:0.3f} & {:0.3f} & {:0.3f} & {:0.3f}\\\\".format(
                 d,
                 len(collection[d].dropna()),
                 np.mean(values),
                 np.std(values),
-                moment(values, moment=3) / (np.std(values) ** 3)
+                moment(values, moment=3) / (np.std(values) ** 3),
+                moment(values, moment=4) / (np.std(values) ** 4) - 3
             )
         )
 
