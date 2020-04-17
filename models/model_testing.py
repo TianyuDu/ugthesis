@@ -59,14 +59,14 @@ def main():
                      'min_samples_leaf': 1, 'max_features': 'auto', 'max_depth': 10, 'bootstrap': False}
 
     # Complete information set.
-    svr_alldays_mse = {"tol": 1, "kernel": "rbf", "gamma": 1e-06, "epsilon": 0.001, "C": 1e-09}
-    svr_alldays_da = {"tol": 1e-05, "kernel": "rbf", "gamma": 1e-07, "epsilon": 1e-07, "C": 10}
+    # svr_alldays_mse = {"tol": 1, "kernel": "rbf", "gamma": 1e-06, "epsilon": 0.001, "C": 1e-09}
+    # svr_alldays_da = {"tol": 1e-05, "kernel": "rbf", "gamma": 1e-07, "epsilon": 1e-07, "C": 10}
 
-    rf_alldays_mse = {"n_estimators": 96, "min_samples_split": 10, 
-                      "min_samples_leaf": 2, "max_features": "log2", "max_depth": 10, "bootstrap": True}
+    # rf_alldays_mse = {"n_estimators": 96, "min_samples_split": 10, 
+    #                   "min_samples_leaf": 2, "max_features": "log2", "max_depth": 10, "bootstrap": True}
 
-    rf_alldays_da = {"n_estimators": 41, "min_samples_split": 5, "min_samples_leaf": 4,
-                     "max_features": None, "max_depth": 14, "bootstrap": False}
+    # rf_alldays_da = {"n_estimators": 41, "min_samples_split": 5, "min_samples_leaf": 4,
+    #                  "max_features": None, "max_depth": 14, "bootstrap": False}
 
     # Experiments on day-of-the-week effect.
     svr_monday_mse = {"tol": 0.001, "kernel": "rbf", "gamma": 1e-10, "epsilon": 0.0001, "C": 10}

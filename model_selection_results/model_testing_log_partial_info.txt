@@ -1,0 +1,22 @@
+================= None =================
+
+X_train @ (4746, 31)
+
+X_test @ (187, 31)
+
+y_test @ (187,)
+
+======== Random Forest ========
+RF MSE
+{'n_estimators': 54, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_features': 'log2', 'max_depth': 10, 'bootstrap': True}
+Test MSE & Test DA: 4.034 & 55.080%
+RF DA
+{'n_estimators': 130, 'min_samples_split': 10, 'min_samples_leaf': 1, 'max_features': 'auto', 'max_depth': 10, 'bootstrap': False}
+Test MSE & Test DA: 4.053 & 53.476%
+======== Support Vector Regressions ========
+SVR MSE
+{'tol': 0.01, 'kernel': 'rbf', 'gamma': 0.1, 'epsilon': 1, 'C': 1}
+Test MSE & Test DA: 4.036 & 52.941%
+SVR DA
+{'tol': 1e-07, 'kernel': 'rbf', 'gamma': 0.1, 'epsilon': 1e-06, 'C': 1}
+Test MSE & Test DA: 4.040 & 53.476%
