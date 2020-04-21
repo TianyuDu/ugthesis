@@ -17,6 +17,8 @@ data/stock_news/
 writeup/sections/
 writeup/.texpadtmp/
 writeup/main.tex
+writeup/old.tex
+writeup/*.docs
 .texpadtemp/
 data/.DS_Store
 .DS_Store
